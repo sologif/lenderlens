@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LenderLens — Interactive Demo Hub</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #f8fafc;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --success: #16a34a;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg-subtle); color: var(--text-main); font-family: var(--font); line-height: 1.5; padding: 40px 20px; }
+    .container { max-width: 1080px; margin: 0 auto; }
+    
+    .header { text-align: center; margin-bottom: 40px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px; }
+    .header p { color: var(--text-muted); font-size: 16px; max-width: 650px; margin: 0 auto; }
+    
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+    .card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); }
+    
+    .card-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; margin-bottom: 14px; width: fit-content; }
+    .badge-success { background: #f0fdf4; color: var(--success); border: 1px solid #bbf7d0; }
+    .badge-warning { background: #fffbeb; color: var(--warning); border: 1px solid #fde68a; }
+    .badge-danger  { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
+    
+    .card-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .card-domain { font-size: 12px; color: var(--text-muted); font-family: monospace; margin-bottom: 14px; }
+    .card-desc { font-size: 13px; color: #334155; margin-bottom: 16px; flex: 1; }
+    
+    .traits-list { list-style: none; margin-bottom: 20px; font-size: 12.5px; border-top: 1px dashed var(--border); padding-top: 12px; }
+    .traits-list li { padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; }
+    
+    .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer; border: none; transition: background 0.15s; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-warning { background: var(--warning); color: #fff; }
+    .btn-warning:hover { background: #b45309; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    
+    .dashboard-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .dash-btn { background: var(--primary); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .dash-btn:hover { background: #1d4ed8; }
+
+    .disclaimer-box { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <span>🛡️</span>
+        <span>LenderLens Interactive Demo Hub</span>
+      </div>
+      <p>Test the Chrome Extension and AI Risk Engine across 3 distinct loan scenarios with simulated RBI verification, permission risk, LSTM temporal sequences, and GNN fraud syndicate detection.</p>
+    </div>
+
+    <div class="grid">
+      <!-- 🟢 1. Legitimate Scenario -->
+      <div class="card" style="border-top: 4px solid var(--success);">
+        <span class="card-badge badge-success">🟢 SCENARIO 1 · LEGITIMATE</span>
+        <div class="card-title">ABC Finance Ltd.</div>
+        <div class="card-domain">abcfinance.com</div>
+        <div class="card-desc">
+          Official licensed non-banking financial company (NBFC) registered with Reserve Bank of India with transparent terms.
+        </div>
+        <ul class="traits-list">
+          <li><span>✓</span> <strong>Risk Score:</strong> 8 / 100 (LOW)</li>
+          <li><span>✓</span> <strong>Decision:</strong> ALLOW</li>
+          <li><span>✓</span> <strong>Layer 1:</strong> Exact match with RBI NBFC Registry</li>
+          <li><span>✓</span> <strong>Layer 2:</strong> Transparent 14.5% APR, ₹0 advance fee</li>
+          <li><span>✓</span> <strong>Layer 3 & 4:</strong> Organic baseline activity & clean graph</li>
+        </ul>
+        <a href="/demo/legitimate/index.html" class="btn btn-success" target="_blank">Launch Legitimate Demo →</a>
+      </div>
+
+      <!-- 🟡 2. Uncertain Scenario -->
+      <div class="card" style="border-top: 4px solid var(--warning);">
+        <span class="card-badge badge-warning">🟡 SCENARIO 2 · UNCERTAIN</span>
+        <div class="card-title">QuickLoan Financial</div>
+        <div class="card-domain">quickloan-app.in</div>
+        <div class="card-desc">
+          Operating on an unlisted marketing domain alias with incomplete regulatory disclosures and contacts permission requests.
+        </div>
+        <ul class="traits-list">
+          <li><span>⚠️</span> <strong>Risk Score:</strong> 49 / 100 (UNCERTAIN)</li>
+          <li><span>⚠️</span> <strong>Decision:</strong> HUMAN REVIEW</li>
+          <li><span>⚠️</span> <strong>Layer 1:</strong> Registered entity, but unverified domain alias</li>
+          <li><span>⚠️</span> <strong>Layer 2:</strong> 38.5% APR, requests device Contacts</li>
+          <li><span>⚠️</span> <strong>Layer 3:</strong> Moderate inquiry elevation (+2.4x)</li>
+        </ul>
+        <a href="/demo/uncertain/index.html" class="btn btn-warning" target="_blank">Launch Uncertain Demo →</a>
+      </div>
+
+      <!-- 🔴 3. Fraudulent Scenario -->
+      <div class="card" style="border-top: 4px solid var(--danger);">
+        <span class="card-badge badge-danger">🔴 SCENARIO 3 · FRAUD SYNDICATE</span>
+        <div class="card-title">FastCash Instant Loans</div>
+        <div class="card-domain">fastcash-instantloans.net</div>
+        <div class="card-desc">
+          High-risk predatory loan scam impersonating ABC Finance Ltd. with invasive permissions, advance fee demand, and mule UPI routing.
+        </div>
+        <ul class="traits-list">
+          <li><span>🚨</span> <strong>Risk Score:</strong> 96 / 100 (CRITICAL)</li>
+          <li><span>🚨</span> <strong>Decision:</strong> BLOCK</li>
+          <li><span>🚨</span> <strong>Layer 1:</strong> Identity mismatch / Phishing impersonator</li>
+          <li><span>🚨</span> <strong>Layer 2:</strong> Mandatory ₹1,500 advance fee demand</li>
+          <li><span>🚨</span> <strong>Layer 3 & 4:</strong> 18.4x LSTM burst & linked to 3 flagged domains</li>
+        </ul>
+        <a href="/demo/fraudulent/index.html" class="btn btn-danger" target="_blank">Launch Fraudulent Demo →</a>
+      </div>
+    </div>
+
+    <!-- Dashboard Link Banner -->
+    <div class="dashboard-banner">
+      <div>
+        <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 4px;">Analyst Console & Human-in-the-Loop Dashboard</h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Explore live cases, inspect interactive GNN knowledge graphs, view LSTM temporal timelines, and execute review actions.</p>
+      </div>
+      <a href="/dashboard/index.html" class="dash-btn" target="_blank">
+        <span>🛡️ Open Analyst Dashboard →</span>
+      </a>
+    </div>
+
+    <div class="disclaimer-box">
+      <strong>Prototype Demonstration Notice:</strong> Reference registry data and graph relationships use simulated benchmark data.
+    </div>
+  </div>
+
+</body>
+</html>

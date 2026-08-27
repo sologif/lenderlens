@@ -15,6 +15,21 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: var(--bg); color: var(--text); line-height: 1.6; }
+    
+    /* Top Demo Switcher Bar */
+    .demo-bar {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 8px 16px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .demo-bar a { color: #38bdf8; text-decoration: none; font-weight: 600; margin-left: 8px; }
+    .demo-bar a:hover { text-decoration: underline; }
+    .demo-tag { background: #dc2626; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+
     header { background: #111827; color: white; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
     .brand { font-size: 20px; font-weight: 800; color: #f59e0b; }
     .container { max-width: 650px; margin: 40px auto; padding: 0 20px; }
@@ -29,6 +44,20 @@
   </style>
 </head>
 <body>
+
+  <!-- Demo Quick Switcher -->
+  <div class="demo-bar">
+    <div>
+      <span class="demo-tag">🔴 PAYMENT STAGE DEMO</span>
+      <span>Simulated URL: <code>fastcash-instantloans.net/payment</code></span>
+    </div>
+    <div>
+      <span>Switch Demo:</span>
+      <a href="/demo/legitimate/index.html">🟢 Legit (ABC Finance)</a>
+      <a href="/demo/uncertain/index.html">🟡 Uncertain (QuickLoan)</a>
+      <a href="/dashboard/index.html" style="color: #4ade80; margin-left: 14px;">🛡️ Analyst Dashboard →</a>
+    </div>
+  </div>
 
   <header>
     <div class="brand">⚡ FastCash Payment Gateway</div>
