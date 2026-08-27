@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LenderLens — AI Loan Fraud Detection & Early-Warning Platform</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='20'>🛡️</text></svg>">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-main); font-family: var(--font); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    
+    /* ── Header / Navbar ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .brand-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+    }
+    .brand-title-text {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+    }
+    .brand-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      border: 1px solid #bfdbfe;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--primary); }
+    .nav-btn-download {
+      background: var(--primary);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .nav-btn-download:hover { background: var(--primary-dark); }
+
+    /* ── Hero Section ── */
+    .hero-section {
+      padding: 70px 20px 60px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 10%, #f0fdf4 0%, #ffffff 70%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-container { max-width: 920px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .btn-hero-primary {
+      background: #0f172a;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      transition: transform 0.15s, background 0.15s;
+    }
+    .btn-hero-primary:hover { background: #1e293b; transform: translateY(-2px); }
+    .btn-hero-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border-dark);
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+    .btn-hero-secondary:hover { background: var(--bg-subtle); }
+
+    /* ── Trust Card Preview in Hero ── */
+    .hero-preview-box {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.07);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      text-align: left;
+    }
+    .preview-card-col {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .preview-trust-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    /* ── Section Structure ── */
+    .section {
+      padding: 80px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-alt { background: var(--bg-subtle); }
+    .container { max-width: 1100px; margin: 0 auto; }
+    
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 50px;
+    }
+    .section-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    /* ── Problem Cards Grid ── */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .problem-card {
+      background: #ffffff;
+      border: 1px solid #fee2e2;
+      border-radius: var(--radius-md);
+      padding: 24px;
+      position: relative;
+    }
+    .problem-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--danger);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+    .problem-icon { font-size: 28px; margin-bottom: 14px; }
+    .problem-title { font-size: 16px; font-weight: 700; color: #991b1b; margin-bottom: 8px; }
+    .problem-text { font-size: 13.5px; color: #475569; line-height: 1.5; }
+
+    /* ── Solution / 4-Layer Architecture ── */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .layer-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .layer-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .layer-num {
+      width: 34px;
+      height: 34px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .layer-title { font-size: 18px; font-weight: 800; color: #0f172a; }
+    .layer-body { font-size: 14px; color: #475569; margin-bottom: 16px; line-height: 1.55; }
+    .layer-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .layer-pill {
+      font-size: 11.5px;
+      font-weight: 600;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #334155;
+    }
+
+    /* ── Fusion Callout Box ── */
+    .fusion-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .fusion-left { max-width: 600px; }
+    .fusion-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: #f8fafc; }
+    .fusion-desc { font-size: 14px; color: #94a3b8; line-height: 1.55; }
+
+    /* ── Dashboard Feature Section ── */
+    .dashboard-preview-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .dash-top {
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dash-content {
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 32px;
+    }
+    .dash-feature-list { list-style: none; }
+    .dash-feature-item {
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .dash-feature-item:last-child { border-bottom: none; }
+    .dash-feature-icon { font-size: 18px; line-height: 1; }
+    .dash-feature-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+    .dash-feature-sub { font-size: 12.5px; color: var(--text-muted); }
+
+    /* ── Demo Scenarios Grid ── */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .demo-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .demo-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+    .badge-success { background: var(--success-light); color: var(--success); border: 1px solid #bbf7d0; }
+    .badge-warning { background: var(--warning-light); color: var(--warning); border: 1px solid #fde68a; }
+    .badge-danger  { background: var(--danger-light); color: var(--danger); border: 1px solid #fecaca; }
+
+    .demo-card-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .demo-card-domain { font-size: 12px; color: var(--text-muted); font-family: monospace; margin-bottom: 12px; }
+    .demo-card-desc { font-size: 13px; color: #475569; margin-bottom: 16px; flex: 1; }
+    
+    .btn-launch {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    /* ── Install Guide ── */
+    .install-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .install-step-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+    }
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      margin: 0 auto 12px;
+    }
+    .step-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .step-desc { font-size: 13px; color: var(--text-muted); }
+
+    /* ── Footer ── */
+    .footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 40px 20px;
+      font-size: 13px;
+    }
+    .footer-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="#" class="nav-brand">
+      <div class="brand-logo-icon">🛡️</div>
+      <div class="brand-title-text">LenderLens</div>
+      <span class="brand-tag">AI DEFENSE</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#problem" class="nav-link">The Problem</a>
+      <a href="#solution" class="nav-link">4-Layer Solution</a>
+      <a href="#dashboard" class="nav-link">Analyst Dashboard</a>
+      <a href="#demos" class="nav-link">Interactive Demos</a>
+      <a href="#install" class="nav-link">Installation</a>
+      <a href="/static/lenderlens-extension.zip" class="nav-btn-download" download>
+        <span>⬇</span> Download Extension (.zip)
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-badge">
+        <span>🛡️</span> REAL-TIME AI LOAN FRAUD DEFENSE
+      </div>
+      <h1 class="hero-title">
+        Detect Predatory Loan Scams &<br><span>Syndicate Phishing in Real-Time</span>
+      </h1>
+      <p class="hero-subtitle">
+        LenderLens combines Manifest V3 browser intelligence with a 4-layer AI engine (RBI Regulatory Verification, Permission Risk, LSTM Temporal Anomaly, and GNN Syndicate Graph) to protect borrowers and empower fraud analysts.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/static/lenderlens-extension.zip" class="btn-hero-primary" download>
+          <span>⬇</span> Download Chrome Extension
+        </a>
+        <a href="/dashboard/index.html" class="btn-hero-secondary" target="_blank">
+          <span>🛡️</span> Launch Analyst Dashboard →
+        </a>
+        <a href="#demos" class="btn-hero-secondary">
+          <span>⚡</span> Try Demo Scenarios
+        </a>
+      </div>
+
+      <!-- Live Trust Card Preview -->
+      <div class="hero-preview-box">
+        <div class="preview-card-col">
+          <div class="preview-trust-header">
+            <span>🛡️ LenderLens Trust Card</span>
+            <span style="color:#dc2626;">🔴 96 / 100</span>
+          </div>
+          <div style="font-size:14px; font-weight:700; margin-bottom:2px;">FastCash Instant Loans</div>
+          <div style="font-size:11px; color:#64748b; margin-bottom:8px;">fastcash-instantloans.net</div>
+          <div style="font-size:12px; color:#991b1b; background:#fee2e2; padding:6px 8px; border-radius:4px; margin-bottom:8px; font-weight:600;">
+            ⚠ DO NOT TRANSFER MONEY
+          </div>
+          <div style="font-size:11.5px; color:#334155; line-height:1.4;">
+            <div>✕ Identity Mismatch (Impersonates ABC Finance)</div>
+            <div>✕ Advance Fee Demand (₹1,500 Upfront)</div>
+            <div>✕ Connected to 3 Flagged Phishing Domains</div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:8px;">Instant In-Browser Early Warning</h3>
+          <p style="font-size:13.5px; color:#475569; margin-bottom:14px;">
+            The Chrome Extension injects a lightweight, style-isolated Shadow DOM Trust Card directly into suspicious loan websites before users enter confidential personal details or transfer advance fees.
+          </p>
+          <div style="font-size:12px; color:#16a34a; font-weight:700;">
+            ✓ Strictly Zero Capture of Passwords, OTPs, or Bank Credentials
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. The Problem Section -->
+  <section class="section" id="problem">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">The Threat Landscape</div>
+        <h2 class="section-title">Why Retail Borrowers Fall Victim</h2>
+        <p class="section-desc">Predatory lending syndicates exploit regulatory blindspots, spoof legitimate NBFCs, and weaponize device permissions.</p>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon">🎭</div>
+          <div class="problem-title">NBFC Impersonation</div>
+          <div class="problem-text">Scam portals claim to be licensed entities like "ABC Finance Ltd." but operate on lookalike rogue domains to bypass basic trust checks.</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">💸</div>
+          <div class="problem-title">Advance Fee Demands</div>
+          <div class="problem-text">Borrowers are coerced into paying ₹1,500 – ₹5,000 "security deposits" or "insurance processing fees" to mule UPI accounts before loan release.</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">📱</div>
+          <div class="problem-title">Extortion Permissions</div>
+          <div class="problem-text">Sideloaded APKs steal device Contacts, SMS messages, Call Logs, and Photos, using them for harassment and blackmail.</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">⏱️</div>
+          <div class="problem-title">Lack of Early Warning</div>
+          <div class="problem-text">Victims only discover they have been defrauded after funds are sent or personal contacts are contacted by recovery syndicates.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. The Solution Section -->
+  <section class="section section-alt" id="solution">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Our Solution</div>
+        <h2 class="section-title">4-Layer Parallel AI Risk Defense</h2>
+        <p class="section-desc">LenderLens evaluates parallel evidence sources and combines them via the Risk Fusion Engine into an actionable verdict.</p>
+      </div>
+
+      <div class="solution-grid">
+        <!-- Layer 1 -->
+        <div class="layer-card">
+          <div class="layer-header">
+            <div class="layer-num">L1</div>
+            <div class="layer-title">Identity & Regulatory Cross-Check</div>
+          </div>
+          <div class="layer-body">
+            Cross-checks claimed company names against official RBI NBFC registries, validates MCA corporate filings, and detects domain mismatches to expose phishing impersonators.
+          </div>
+          <div class="layer-pills">
+            <span class="layer-pill">RBI NBFC Verification</span>
+            <span class="layer-pill">Official Domain Match</span>
+            <span class="layer-pill">Impersonation Shield</span>
+          </div>
+        </div>
+
+        <!-- Layer 2 -->
+        <div class="layer-card">
+          <div class="layer-header">
+            <div class="layer-num">L2</div>
+            <div class="layer-title">Loan Terms & Permission Risk</div>
+          </div>
+          <div class="layer-body">
+            Parses Key Fact Statements (KFS), evaluates APR interest disclosures, flags advance deposit demands, and scores invasive device permissions (`Contacts`, `SMS`, `Media`).
+          </div>
+          <div class="layer-pills">
+            <span class="layer-pill">KFS Disclosure Check</span>
+            <span class="layer-pill">Advance Fee Detector</span>
+            <span class="layer-pill">Permission Risk Score</span>
+          </div>
+        </div>
+
+        <!-- Layer 3 -->
+        <div class="layer-card">
+          <div class="layer-header">
+            <div class="layer-num">L3</div>
+            <div class="layer-title">LSTM Temporal Behavioral Risk</div>
+          </div>
+          <div class="layer-body">
+            Evaluates 90-day activity, complaint velocity, and grievance sequences using a recurrent neural model to flag syndication pump-and-dump spikes and burst anomalies.
+          </div>
+          <div class="layer-pills">
+            <span class="layer-pill">Recurrent LSTM Anomaly</span>
+            <span class="layer-pill">Complaint Burst Velocity</span>
+            <span class="layer-pill">Temporal Spike Signature</span>
+          </div>
+        </div>
+
+        <!-- Layer 4 -->
+        <div class="layer-card">
+          <div class="layer-header">
+            <div class="layer-num">L4</div>
+            <div class="layer-title">GNN Graph Syndicate Risk</div>
+          </div>
+          <div class="layer-body">
+            Maps entity-relationship graphs across Domains, Phone Hotlines, Mule UPI IDs, and Bank Accounts to expose hidden historical ties to known criminal syndicates.
+          </div>
+          <div class="layer-pills">
+            <span class="layer-pill">NetworkX Graph Analysis</span>
+            <span class="layer-pill">Shared Hotline Matching</span>
+            <span class="layer-pill">Mule UPI Tracking</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fusion Box -->
+      <div class="fusion-box">
+        <div class="fusion-left">
+          <div class="fusion-title">🧠 Configurable Risk Fusion Engine</div>
+          <div class="fusion-desc">
+            Combines parallel evidence streams with critical override heuristics (e.g. advance fee detection or identity spoofing instantly enforces minimum high-risk thresholds).
+          </div>
+        </div>
+        <div>
+          <a href="/dashboard/index.html" class="btn-hero-primary" style="background:#2563eb;" target="_blank">
+            Explore Engine in Dashboard →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Analyst Dashboard Preview Section -->
+  <section class="section" id="dashboard">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Human-in-the-Loop</div>
+        <h2 class="section-title">Notion-Inspired Analyst Console</h2>
+        <p class="section-desc">Equip risk reviewers and platform investigators with deep evidence cards, interactive GNN knowledge graphs, and decision workflows.</p>
+      </div>
+
+      <div class="dashboard-preview-card">
+        <div class="dash-top">
+          <div style="font-weight:800; font-size:15px;">🛡️ LenderLens Analyst Console</div>
+          <a href="/dashboard/index.html" class="nav-btn-download" target="_blank">Open Live Dashboard ↗</a>
+        </div>
+        <div class="dash-content">
+          <div>
+            <ul class="dash-feature-list">
+              <li class="dash-feature-item">
+                <div class="dash-feature-icon">📊</div>
+                <div>
+                  <div class="dash-feature-title">Case Overview & 7-Day Risk Trends</div>
+                  <div class="dash-feature-sub">Real-time counts of Total Cases (128), High-Risk Flags (31), and Pending Review Queues (12).</div>
+                </div>
+              </li>
+              <li class="dash-feature-item">
+                <div class="dash-feature-icon">🕸️</div>
+                <div>
+                  <div class="dash-feature-title">Interactive GNN Knowledge Graph Visualizer</div>
+                  <div class="dash-feature-sub">Canvas-based network graph with zoom, pan, node inspection, and highlighted mule UPI relationships.</div>
+                </div>
+              </li>
+              <li class="dash-feature-item">
+                <div class="dash-feature-icon">📈</div>
+                <div>
+                  <div class="dash-feature-title">LSTM Temporal Activity Sequence Plots</div>
+                  <div class="dash-feature-sub">Line charts tracking 90-day grievance curves, burst multipliers, and baseline anomaly thresholds.</div>
+                </div>
+              </li>
+              <li class="dash-feature-item">
+                <div class="dash-feature-icon">⚖️</div>
+                <div>
+                  <div class="dash-feature-title">Human-in-the-Loop Review Actions</div>
+                  <div class="dash-feature-sub">Record formal decisions: <code>APPROVE</code>, <code>WARN</code>, <code>BLOCK</code>, or <code>ESCALATE</code> with analyst case notes.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; display:flex; flex-direction:column; justify-content:center;">
+            <div style="font-weight:700; font-size:14px; margin-bottom:8px;">Live Case Investigation View</div>
+            <div style="font-size:12.5px; color:#64748b; margin-bottom:14px;">Inspect claimed entity identity vs official RBI registration, review 4-layer evidence breakdown cards, and explore the syndicate graph.</div>
+            <a href="/dashboard/index.html" class="btn-hero-primary" style="text-align:center; justify-content:center;" target="_blank">
+              Launch Live Console
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Interactive Demo Scenarios -->
+  <section class="section section-alt" id="demos">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Live Demonstration</div>
+        <h2 class="section-title">Interactive Test Scenarios</h2>
+        <p class="section-desc">Click any of the benchmark test portals below to trigger the Chrome Extension and view real-time risk scores.</p>
+      </div>
+
+      <div class="demo-grid">
+        <!-- 🟢 Legit -->
+        <div class="demo-card" style="border-top: 4px solid var(--success);">
+          <span class="demo-badge badge-success">🟢 SCENARIO 1 · LEGITIMATE</span>
+          <div class="demo-card-title">ABC Finance Ltd.</div>
+          <div class="demo-card-domain">abcfinance.com</div>
+          <div class="demo-card-desc">
+            Verified RBI NBFC Registry record, official domain match, transparent 14.5% APR KFS, ₹0 advance fee, and isolated network graph.
+          </div>
+          <a href="/demo/legitimate/index.html" class="btn-launch" style="background:var(--success);" target="_blank">Launch Legitimate Demo →</a>
+        </div>
+
+        <!-- 🟡 Uncertain -->
+        <div class="demo-card" style="border-top: 4px solid var(--warning);">
+          <span class="demo-badge badge-warning">🟡 SCENARIO 2 · UNCERTAIN</span>
+          <div class="demo-card-title">QuickLoan Financial</div>
+          <div class="demo-card-domain">quickloan-app.in</div>
+          <div class="demo-card-desc">
+            Registered entity operating on an unlisted marketing domain alias with incomplete KFS and contacts permission requests.
+          </div>
+          <a href="/demo/uncertain/index.html" class="btn-launch" style="background:var(--warning);" target="_blank">Launch Uncertain Demo →</a>
+        </div>
+
+        <!-- 🔴 Fraud -->
+        <div class="demo-card" style="border-top: 4px solid var(--danger);">
+          <span class="demo-badge badge-danger">🔴 SCENARIO 3 · FRAUD SYNDICATE</span>
+          <div class="demo-card-title">FastCash Instant Loans</div>
+          <div class="demo-card-domain">fastcash-instantloans.net</div>
+          <div class="demo-card-desc">
+            Impersonates ABC Finance, demands ₹1,500 advance deposit, connects to 3 flagged domains, and routes to mule UPI.
+          </div>
+          <a href="/demo/fraudulent/index.html" class="btn-launch" style="background:var(--danger);" target="_blank">Launch Fraudulent Demo →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Chrome Extension Download & Installation Guide -->
+  <section class="section" id="install">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Get Started</div>
+        <h2 class="section-title">Install the Chrome Extension</h2>
+        <p class="section-desc">Download the Manifest V3 extension package and load it into Google Chrome in 3 simple steps.</p>
+      </div>
+
+      <div style="text-align:center; margin-bottom:40px;">
+        <a href="/static/lenderlens-extension.zip" class="btn-hero-primary" style="padding:16px 36px; font-size:16px;" download>
+          <span>⬇</span> Download <code>lenderlens-extension.zip</code> (1-Click)
+        </a>
+      </div>
+
+      <div class="install-steps">
+        <div class="install-step-card">
+          <div class="step-badge">1</div>
+          <div class="step-title">Download & Unzip</div>
+          <div class="step-desc">Download <code>lenderlens-extension.zip</code> and extract the contents to a folder on your computer.</div>
+        </div>
+        <div class="install-step-card">
+          <div class="step-badge">2</div>
+          <div class="step-title">Enable Developer Mode</div>
+          <div class="step-desc">Open Google Chrome, navigate to <code>chrome://extensions</code>, and toggle on <strong>Developer mode</strong> in the top right.</div>
+        </div>
+        <div class="install-step-card">
+          <div class="step-badge">3</div>
+          <div class="step-title">Click "Load Unpacked"</div>
+          <div class="step-desc">Click the <strong>Load unpacked</strong> button and select the unzipped <code>extension</code> folder. LenderLens is now active!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <strong style="color:#fff;">LenderLens AI Fraud Detection Platform</strong><br>
+        <span style="font-size:12px;">Manifest V3 Chrome Extension · 4-Layer Risk Fusion · Analyst Dashboard</span>
+      </div>
+      <div>
+        <a href="https://github.com/sologif/lenderlens" target="_blank" style="color:#38bdf8; text-decoration:none;">GitHub Repository ↗</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

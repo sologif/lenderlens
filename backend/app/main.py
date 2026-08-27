@@ -9,7 +9,7 @@ if APP_DIR not in sys.path:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, RedirectResponse
 
 from database import init_db
 from config import PROTOTYPE_DISCLAIMER
@@ -39,38 +39,39 @@ app.include_router(cases.router)
 app.include_router(lenders.router)
 app.include_router(demo.router)
 
-# Mount Static Demo Websites and Dashboard
+# Mount Static Folders
 BASE_DIR = os.path.dirname(APP_DIR)
 DEMO_DIR = os.path.join(BASE_DIR, "demo_sites")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 DASHBOARD_DIR = os.path.join(os.path.dirname(BASE_DIR), "extension", "dashboard")
 
-if not os.path.exists(DEMO_DIR):
-    os.makedirs(DEMO_DIR, exist_ok=True)
+os.makedirs(DEMO_DIR, exist_ok=True)
+os.makedirs(STATIC_DIR, exist_ok=True)
 
 app.mount("/demo", StaticFiles(directory=DEMO_DIR, html=True), name="demo_sites")
+app.mount("/static", StaticFiles(directory=STATIC_DIR, html=True), name="static")
 
 if os.path.exists(DASHBOARD_DIR):
     app.mount("/dashboard", StaticFiles(directory=DASHBOARD_DIR, html=True), name="dashboard")
 
 @app.get("/")
-def root():
+def home_page():
+    landing_file = os.path.join(STATIC_DIR, "index.html")
+    if os.path.exists(landing_file):
+        return FileResponse(landing_file)
     return {
         "system": "LenderLens AI Fraud Detection Platform",
         "version": "1.0.0",
         "status": "ONLINE",
-        "disclaimer": PROTOTYPE_DISCLAIMER,
-        "endpoints": {
-            "analyze": "POST /api/analyze",
-            "payment_analyze": "POST /api/payment-analyze",
-            "cases": "GET /api/cases",
-            "lenders": "GET /api/lenders",
-            "demo_scenarios": "GET /api/demo/scenarios",
-            "dashboard_ui": "/dashboard/index.html",
-            "demo_legitimate": "/demo/legitimate/index.html",
-            "demo_uncertain": "/demo/uncertain/index.html",
-            "demo_fraudulent": "/demo/fraudulent/index.html"
-        }
+        "disclaimer": PROTOTYPE_DISCLAIMER
     }
+
+@app.get("/download-extension")
+def download_extension():
+    zip_path = os.path.join(STATIC_DIR, "lenderlens-extension.zip")
+    if os.path.exists(zip_path):
+        return FileResponse(zip_path, filename="lenderlens-extension.zip", media_type="application/zip")
+    return RedirectResponse(url="/static/lenderlens-extension.zip")
 
 @app.get("/api/health")
 def health_check():
