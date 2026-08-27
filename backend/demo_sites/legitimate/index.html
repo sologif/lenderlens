@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABC Finance Ltd. — Official Personal & Business Loans</title>
+  <meta property="og:site_name" content="ABC Finance Ltd.">
+  <meta name="description" content="ABC Finance Ltd. is an RBI Registered Non-Banking Financial Company offering transparent personal and business credit.">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --muted: #555555;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --success: #16a34a;
+      --card-bg: #f8fafc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-size: 20px; font-weight: 700; color: #1e3a8a; display: flex; align-items: center; gap: 8px; }
+    .reg-tag { font-size: 11px; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 999px; font-weight: 600; }
+    .container { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+    .hero { text-align: center; margin-bottom: 40px; }
+    .hero h1 { font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 12px; }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 600px; margin: 0 auto; }
+    
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .card h2 { font-size: 18px; margin-bottom: 16px; color: #1e293b; }
+    
+    .kfs-box { background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 13px; }
+    .kfs-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+    .kfs-row:last-child { border-bottom: none; font-weight: 700; color: var(--primary); }
+    
+    .btn { display: inline-block; width: 100%; background: var(--primary); color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; font-size: 15px; margin-top: 20px; }
+    .btn:hover { background: #1d4ed8; }
+    
+    .features { list-style: none; margin-top: 12px; font-size: 14px; }
+    .features li { padding: 6px 0; display: flex; align-items: center; gap: 8px; }
+    .check { color: var(--success); font-weight: bold; }
+    
+    footer { border-top: 1px solid var(--border); margin-top: 60px; padding: 32px; font-size: 12px; color: var(--muted); text-align: center; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    "name": "ABC Finance Ltd.",
+    "url": "https://abcfinance.com",
+    "telephone": "+91-22-68940000"
+  }
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>🏛️ ABC Finance Ltd.</span>
+      <span class="reg-tag">RBI Registered NBFC</span>
+    </div>
+    <div style="font-size: 13px; color: #64748b;">
+      Reg No: <strong>NBFC-CORP-109482</strong> | Helpline: +91-22-68940000
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="hero">
+      <h1>Transparent Personal & Business Loans</h1>
+      <p>Licensed non-banking financial institution complying with Reserve Bank of India fair practices guidelines.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Personal Loan Overview</h2>
+        <ul class="features">
+          <li><span class="check">✓</span> Clear Annual Percentage Rate (APR) from 14.5% p.a.</li>
+          <li><span class="check">✓</span> Flexible repayment tenure from 12 to 60 months</li>
+          <li><span class="check">✓</span> Zero advance fees or hidden collateral demands</li>
+          <li><span class="check">✓</span> Standard paperless KYC via official Digilocker</li>
+        </ul>
+
+        <div class="kfs-box">
+          <div style="font-weight: 700; margin-bottom: 8px; color: #0f172a;">Key Fact Statement (KFS) Disclosure</div>
+          <div class="kfs-row"><span>Loan Amount Range:</span><span>₹50,000 – ₹10,00,000</span></div>
+          <div class="kfs-row"><span>Annual Percentage Rate (APR):</span><span>14.5% – 18.0%</span></div>
+          <div class="kfs-row"><span>Advance Upfront Fee:</span><span>₹0 (Zero)</span></div>
+          <div class="kfs-row"><span>Processing Fee (Deducted on disbursal):</span><span>1.5%</span></div>
+          <div class="kfs-row"><span>Grievance Officer:</span><span>grievance@abcfinance.com</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Apply for Instant Pre-Approval</h2>
+        <form onsubmit="event.preventDefault(); alert('Application submitted to ABC Finance Ltd.');">
+          <div style="margin-bottom: 12px;">
+            <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 4px;">Requested Loan Amount (₹)</label>
+            <input type="text" value="₹2,00,000" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px;">
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 4px;">Loan Tenure</label>
+            <select style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px;">
+              <option>24 Months (EMI: ₹9,650/mo)</option>
+              <option>36 Months (EMI: ₹6,890/mo)</option>
+              <option>48 Months (EMI: ₹5,520/mo)</option>
+            </select>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 4px;">Monthly Salary / Income (₹)</label>
+            <input type="text" placeholder="e.g. ₹65,000" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px;">
+          </div>
+          <button type="submit" class="btn">Submit Loan Application</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 ABC Finance Ltd. All rights reserved. | Corporate Office: Nariman Point, Mumbai 400021.</p>
+    <p style="margin-top: 6px;">Licensed by Reserve Bank of India (RBI) under Section 45-IA of RBI Act 1934. Official Website: abcfinance.com</p>
+  </footer>
+
+</body>
+</html>

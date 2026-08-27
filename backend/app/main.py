@@ -1,0 +1,81 @@
+import os
+import sys
+
+# Ensure backend/app directory is on sys.path
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+if APP_DIR not in sys.path:
+    sys.path.insert(0, APP_DIR)
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, JSONResponse
+
+from database import init_db
+from config import PROTOTYPE_DISCLAIMER
+from routers import analyze, cases, lenders, demo
+
+# Initialize SQLite database schema
+init_db()
+
+app = FastAPI(
+    title="LenderLens API",
+    description="AI-powered Loan Fraud Detection & Early-Warning System Backend",
+    version="1.0.0"
+)
+
+# Configure CORS for Chrome Extension & Dashboard Web UI
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register API Routers
+app.include_router(analyze.router)
+app.include_router(cases.router)
+app.include_router(lenders.router)
+app.include_router(demo.router)
+
+# Mount Static Demo Websites and Dashboard
+BASE_DIR = os.path.dirname(APP_DIR)
+DEMO_DIR = os.path.join(BASE_DIR, "demo_sites")
+DASHBOARD_DIR = os.path.join(os.path.dirname(BASE_DIR), "extension", "dashboard")
+
+if not os.path.exists(DEMO_DIR):
+    os.makedirs(DEMO_DIR, exist_ok=True)
+
+app.mount("/demo", StaticFiles(directory=DEMO_DIR, html=True), name="demo_sites")
+
+if os.path.exists(DASHBOARD_DIR):
+    app.mount("/dashboard", StaticFiles(directory=DASHBOARD_DIR, html=True), name="dashboard")
+
+@app.get("/")
+def root():
+    return {
+        "system": "LenderLens AI Fraud Detection Platform",
+        "version": "1.0.0",
+        "status": "ONLINE",
+        "disclaimer": PROTOTYPE_DISCLAIMER,
+        "endpoints": {
+            "analyze": "POST /api/analyze",
+            "payment_analyze": "POST /api/payment-analyze",
+            "cases": "GET /api/cases",
+            "lenders": "GET /api/lenders",
+            "demo_scenarios": "GET /api/demo/scenarios",
+            "dashboard_ui": "/dashboard/index.html",
+            "demo_legitimate": "/demo/legitimate/index.html",
+            "demo_uncertain": "/demo/uncertain/index.html",
+            "demo_fraudulent": "/demo/fraudulent/index.html"
+        }
+    }
+
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok", "service": "lenderlens-backend"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

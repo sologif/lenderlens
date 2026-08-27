@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LenderLens — AI Loan Fraud Analyst Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-shield">🛡️</div>
+          <div>
+            <div class="brand-title">LenderLens</div>
+            <div class="brand-subtitle">Analyst Console</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <div class="menu-label">Workspace</div>
+        <button class="nav-btn active" data-view="overview">
+          <span class="nav-icon">📊</span> Overview
+        </button>
+        <button class="nav-btn" data-view="cases">
+          <span class="nav-icon">📁</span> Cases
+          <span class="badge badge-neutral" id="sidebar-cases-count">3</span>
+        </button>
+        <button class="nav-btn" data-view="network">
+          <span class="nav-icon">🕸️</span> Network Graph
+        </button>
+        <button class="nav-btn" data-view="lenders">
+          <span class="nav-icon">🏛️</span> Regulatory Registry
+        </button>
+        <button class="nav-btn" data-view="reports">
+          <span class="nav-icon">📥</span> User Reports
+          <span class="badge badge-neutral" id="sidebar-reports-count">0</span>
+        </button>
+
+        <div class="menu-label" style="margin-top: 24px;">Demo Presets</div>
+        <button class="nav-btn demo-btn" onclick="window.open('http://localhost:8000/demo/legitimate/index.html', '_blank')">
+          <span>🟢 ABC Finance (Legit)</span>
+        </button>
+        <button class="nav-btn demo-btn" onclick="window.open('http://localhost:8000/demo/uncertain/index.html', '_blank')">
+          <span>🟡 QuickLoan (Uncertain)</span>
+        </button>
+        <button class="nav-btn demo-btn" onclick="window.open('http://localhost:8000/demo/fraudulent/index.html', '_blank')">
+          <span>🔴 FastCash (Fraud Scam)</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="disclaimer-text">
+          <strong>Prototype Demo</strong><br>
+          Reference & simulated intelligence.
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ── -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-title" id="page-title">Analyst Overview</div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" id="btn-refresh-data">↻ Refresh</button>
+          <button class="btn btn-secondary" onclick="exportDataJSON()">⤓ Export JSON</button>
+        </div>
+      </header>
+
+      <!-- Views Container -->
+      <div class="content-body">
+        
+        <!-- ── 1. Overview View ── -->
+        <div class="view-panel active" id="view-overview">
+          
+          <!-- Metric Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-title">Total Cases</div>
+              <div class="metric-value" id="stat-total-cases">128</div>
+              <div class="metric-sub">Monitored loan applications</div>
+            </div>
+            <div class="metric-card metric-danger">
+              <div class="metric-title">High & Critical Risk</div>
+              <div class="metric-value" id="stat-high-risk">31</div>
+              <div class="metric-sub">Flagged fraud syndicates</div>
+            </div>
+            <div class="metric-card metric-warning">
+              <div class="metric-title">Pending Human Review</div>
+              <div class="metric-value" id="stat-pending">12</div>
+              <div class="metric-sub">Uncertain cases awaiting analyst</div>
+            </div>
+            <div class="metric-card metric-success">
+              <div class="metric-title">Cleared Legitimate</div>
+              <div class="metric-value" id="stat-reviewed">85</div>
+              <div class="metric-sub">Verified RBI NBFCs</div>
+            </div>
+          </div>
+
+          <!-- Risk Trend Section -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <div class="card-title">Risk Distribution Trend (Past 7 Days)</div>
+              <div class="card-sub">Aggregated daily signals from extension scanners</div>
+            </div>
+            <div class="card-body">
+              <div class="trend-bars-container" id="trend-bars"></div>
+              <div class="trend-legend">
+                <span><span class="legend-dot" style="background:#16a34a;"></span> Low Risk (Allow)</span>
+                <span><span class="legend-dot" style="background:#d97706;"></span> Uncertain (Review)</span>
+                <span><span class="legend-dot" style="background:#dc2626;"></span> High / Critical (Block)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Cases Table -->
+          <div class="card">
+            <div class="card-header flex-between">
+              <div>
+                <div class="card-title">Recent High-Risk Cases</div>
+                <div class="card-sub">Suspected fraud syndicates and impersonators</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="switchView('cases')">View All Cases →</button>
+            </div>
+            <div class="card-body p-0">
+              <table class="table" id="overview-cases-table">
+                <thead>
+                  <tr>
+                    <th>Lender / Domain</th>
+                    <th>Risk Score</th>
+                    <th>Status</th>
+                    <th>Key Evidence</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="overview-cases-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── 2. Cases List View ── -->
+        <div class="view-panel" id="view-cases">
+          <div class="card">
+            <div class="card-header flex-between">
+              <div>
+                <div class="card-title">Investigated Cases</div>
+                <div class="card-sub">All analyzed websites and human-in-the-loop review queues</div>
+              </div>
+              <div class="filter-group">
+                <select id="case-filter-risk" class="select-input" onchange="loadCases()">
+                  <option value="">All Risk Levels</option>
+                  <option value="CRITICAL">🚨 Critical</option>
+                  <option value="HIGH">🔴 High</option>
+                  <option value="UNCERTAIN">🟡 Uncertain</option>
+                  <option value="LOW">🟢 Low</option>
+                </select>
+                <select id="case-filter-status" class="select-input" onchange="loadCases()">
+                  <option value="">All Statuses</option>
+                  <option value="PENDING">Pending Review</option>
+                  <option value="REVIEWED">Reviewed</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table" id="full-cases-table">
+                <thead>
+                  <tr>
+                    <th>Case ID</th>
+                    <th>Claimed Lender</th>
+                    <th>Domain</th>
+                    <th>Risk Score</th>
+                    <th>Decision</th>
+                    <th>Review Status</th>
+                    <th>Investigate</th>
+                  </tr>
+                </thead>
+                <tbody id="full-cases-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 3. Case Investigation View (Single Case Detail) ── -->
+        <div class="view-panel" id="view-case-detail">
+          <div class="back-link" onclick="switchView('cases')">← Back to Cases</div>
+
+          <!-- Header Bar -->
+          <div class="case-detail-header card mb-4">
+            <div class="flex-between align-start">
+              <div>
+                <div class="flex-center gap-2">
+                  <h1 class="case-detail-name" id="cd-claimed-name">ABC Finance (Impersonated)</h1>
+                  <span class="badge badge-danger" id="cd-risk-badge">HIGH RISK (91/100)</span>
+                </div>
+                <div class="case-detail-meta" id="cd-meta">
+                  Domain: <strong id="cd-domain">fastcash-instantloans.net</strong> | Case ID: <span id="cd-case-id">case_fc_001</span>
+                </div>
+              </div>
+              <div class="score-pill" id="cd-score-pill">
+                <div class="score-pill-num" id="cd-score-num">91</div>
+                <div class="score-pill-label">Risk Score</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Evidence Breakdown Cards Grid -->
+          <div class="evidence-grid mb-4">
+            
+            <!-- Layer 1: Identity & Govt Registry -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>🏛️ Layer 1: Identity & Regulatory</span>
+                  <span class="badge" id="cd-l1-badge">FAILED</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l1-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Layer 2: Loan & Permission Analysis -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>📋 Layer 2: Loan & Permissions</span>
+                  <span class="badge" id="cd-l2-badge">CRITICAL</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l2-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Layer 3: LSTM Temporal Risk -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>📈 Layer 3: LSTM Temporal Risk</span>
+                  <span class="badge" id="cd-l3-badge">ABNORMAL BURST</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l3-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Layer 4: GNN Graph Network Risk -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>🕸️ Layer 4: GNN Network Risk</span>
+                  <span class="badge" id="cd-l4-badge">HIGH SYNDICATE</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l4-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Interactive Visualizations: GNN Network & LSTM Timeline -->
+          <div class="vis-grid mb-4">
+            
+            <!-- Interactive GNN Subgraph -->
+            <div class="card">
+              <div class="card-header flex-between">
+                <div>
+                  <div class="card-title">🕸️ GNN Entity Relationship Graph</div>
+                  <div class="card-sub">Interactive neighborhood fraud cluster (Click node to inspect)</div>
+                </div>
+                <div class="graph-legend">
+                  <span><span class="legend-node-dot" style="background:#2563eb;"></span> Domain</span>
+                  <span><span class="legend-node-dot" style="background:#7c3aed;"></span> Lender</span>
+                  <span><span class="legend-node-dot" style="background:#dc2626;"></span> Mule UPI / Account</span>
+                  <span><span class="legend-node-dot" style="background:#d97706;"></span> Phone</span>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="canvas-wrapper">
+                  <canvas id="gnn-canvas" width="600" height="380"></canvas>
+                  <div class="graph-tooltip" id="graph-tooltip"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LSTM Sequence Timeline -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">📈 LSTM Activity Sequence & Anomaly Velocity</div>
+                <div class="card-sub">Temporal volume of inquiries, complaints, and velocity bursts</div>
+              </div>
+              <div class="card-body">
+                <div class="timeline-canvas-wrapper">
+                  <canvas id="lstm-canvas" width="500" height="280"></canvas>
+                </div>
+                <div class="timeline-stats-row" id="lstm-stats-row">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Reviewer Action Box (Human in the Loop) -->
+          <div class="card reviewer-card">
+            <div class="card-header">
+              <div class="card-title">🛡️ Human-in-the-Loop Analyst Decision</div>
+              <div class="card-sub">Take formal regulatory/platform action on this investigated entity</div>
+            </div>
+            <div class="card-body">
+              <div class="reviewer-form">
+                <div class="form-group mb-3">
+                  <label class="form-label">Analyst Case Notes & Rationales</label>
+                  <textarea class="textarea-input" id="analyst-notes-input" placeholder="Provide investigation details, regulatory citations, or escalation reasons..."></textarea>
+                </div>
+
+                <div class="action-buttons-group">
+                  <button class="btn btn-success" onclick="submitReviewDecision('APPROVE')">✓ APPROVE (Allow)</button>
+                  <button class="btn btn-warning" onclick="submitReviewDecision('WARN')">⚠️ WARN (Add Warning)</button>
+                  <button class="btn btn-danger" onclick="submitReviewDecision('BLOCK')">⛔ BLOCK (Flag Fraud Syndicate)</button>
+                  <button class="btn btn-purple" onclick="submitReviewDecision('ESCALATE')">🔺 ESCALATE (Send to RBI/Cyber Cell)</button>
+                </div>
+                <div id="review-feedback" class="review-feedback"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── 4. Global Network Graph View ── -->
+        <div class="view-panel" id="view-network">
+          <div class="card">
+            <div class="card-header flex-between">
+              <div>
+                <div class="card-title">Global Fraud Syndicate Knowledge Graph</div>
+                <div class="card-sub">Aggregated entities, shared phone numbers, mule accounts, and predatory APK relationships</div>
+              </div>
+              <div class="graph-legend">
+                <span><span class="legend-node-dot" style="background:#dc2626;"></span> Flagged Entity</span>
+                <span><span class="legend-node-dot" style="background:#16a34a;"></span> Verified Legitimate</span>
+                <span><span class="legend-node-dot" style="background:#2563eb;"></span> Active Investigation</span>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="canvas-wrapper">
+                <canvas id="global-graph-canvas" width="960" height="560"></canvas>
+                <div class="graph-tooltip" id="global-graph-tooltip"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 5. Regulatory Registry View ── -->
+        <div class="view-panel" id="view-lenders">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Government / Regulatory Reference Directory</div>
+              <div class="card-sub">Reserve Bank of India (RBI) Registered NBFC reference baseline data</div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Registration No.</th>
+                    <th>Legal Entity Name</th>
+                    <th>Regulator</th>
+                    <th>Status</th>
+                    <th>Official Domain</th>
+                    <th>Official Phone</th>
+                    <th>Date Registered</th>
+                  </tr>
+                </thead>
+                <tbody id="registry-table-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 6. User Reports View ── -->
+        <div class="view-panel" id="view-reports">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Borrower Incident Reports</div>
+              <div class="card-sub">Direct fraud reports submitted via Chrome extension Trust Card</div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Report ID</th>
+                    <th>Reported URL / Domain</th>
+                    <th>Lender Name</th>
+                    <th>Reason</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="reports-table-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Prototype Disclaimer Footer -->
+      <footer class="app-footer">
+        <div class="disclaimer-banner">
+          <strong>Prototype Notice:</strong> Government/regulatory records, fraud histories, LSTM sequences, and GNN relationships shown in this demonstration use simulated/reference data. Production deployment requires authorized data sources, validated datasets, security review, and model validation.
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LenderLens</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- Security Header -->
+  <div class="header">
+    <div class="brand">
+      <span class="shield-icon">🛡️</span>
+      <span class="brand-name">LenderLens</span>
+      <span class="sec-badge">SECURE</span>
+    </div>
+    <button class="icon-btn" id="openDashboard" title="Open Analyst Dashboard">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Popup Body Container -->
+  <div id="popup-content">
+    <div class="loading-box">
+      <div class="pulse-spinner"></div>
+      <div style="font-size:12px; color:#64748b; margin-top:8px;">Scanning financial site...</div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
