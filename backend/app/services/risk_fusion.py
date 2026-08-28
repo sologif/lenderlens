@@ -71,14 +71,19 @@ def fuse_risk_scores(
         )
         weighted_score = max(weighted_score, 85.0)
 
+    # 5. Trusted Entities & Government Override Bypasses
+    is_trusted = (layer1.website_match_status == "MATCHED") or (layer1.regulator and ("Ministry" in layer1.regulator or "Government" in layer1.regulator))
+    if is_trusted:
+        weighted_score = 5.0
+        # Clear out any threat warning reasons
+        reasons = ["Official verified regulatory identity and official registered domain match"]
+
     final_score = round(min(max(weighted_score, 5.0), 99.0), 1)
 
     # Classify Risk Level & Decision
-    if final_score <= LOW_RISK_THRESHOLD:
+    if final_score <= LOW_RISK_THRESHOLD or is_trusted:
         risk_level = "LOW"
         decision = "ALLOW"
-        if not reasons:
-            reasons.append("Official registered entity with verified domain, transparent terms, and clean network graph")
     elif final_score <= MEDIUM_RISK_THRESHOLD:
         risk_level = "UNCERTAIN"
         decision = "HUMAN_REVIEW"

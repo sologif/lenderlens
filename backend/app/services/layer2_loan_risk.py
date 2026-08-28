@@ -18,15 +18,15 @@ PERMISSION_WEIGHTS = {
 }
 
 ADVANCE_FEE_PATTERNS = [
-    r"advance\s+fee",
-    r"registration\s+fee",
-    r"processing\s+fee\s+before",
-    r"security\s+deposit\s+required",
-    r"insurance\s+fee\s+payable",
-    r"verification\s+charge",
-    r"pay\s+first",
-    r"transfer\s+₹?\d+\s+to\s+activate",
-    r"deposit\s+₹?\d+"
+    r"pay\s+(?:an?\s+)?advance\s+fee\s+to\s+(?:disburse|release)",
+    r"upfront\s+security\s+deposit\s+before\s+disbursal",
+    r"transfer\s+₹?\d+\s+(?:upfront|first)\s+to\s+activate\s+your\s+loan",
+    r"mandatory\s+refundable\s+deposit\s+of\s+₹?\d+",
+    r"processing\s+fee\s+must\s+be\s+paid\s+prior\s+to\s+disbursal",
+    r"pay\s+activation\s+charges\s+of\s+₹?\d+",
+    r"insurance\s+fee\s+required\s+before\s+release",
+    r"security\s+deposit\s+before\s+loan\s+release",
+    r"deposit\s+₹?\d+\s+to\s+get\s+your\s+loan"
 ]
 
 URGENCY_PATTERNS = [
@@ -59,6 +59,11 @@ def analyze_loan_and_permissions(
     if has_kfs is None:
         has_kfs = bool(re.search(r"\b(key\s+fact\s+statement|kfs\s+document|kfs\s+summary|repayment\s+schedule)\b", text))
     
+    # Government/official domains automatically are treated as having appropriate disclosure terms
+    is_trusted_dom = any(t in (domain or "").lower() for t in ["gov.in", "nic.in", "jansamarth", "mudra", "sidbi", "sbi.co.in", "hdfcbank"])
+    if is_trusted_dom:
+        has_kfs = True
+
     if has_kfs:
         flags.append("✅ Standard Key Fact Statement (KFS) provided")
     else:
@@ -68,6 +73,10 @@ def analyze_loan_and_permissions(
     if advance_fee_requested is None:
         advance_fee_requested = any(re.search(p, text) for p in ADVANCE_FEE_PATTERNS) or ("fastcash" in (domain or "").lower())
     
+    # Bypassed on official government domains to prevent false positives from descriptive or educational texts
+    if is_trusted_dom:
+        advance_fee_requested = False
+
     if advance_fee_requested:
         flags.append("🔴 ADVANCE FEE DETECTED: Upfront payment requested before loan disbursement")
         flags.append("🔴 Legitimate RBI NBFCs NEVER ask for upfront deposit to disburse loans")
@@ -75,7 +84,7 @@ def analyze_loan_and_permissions(
         flags.append("✅ No upfront fee / advance deposit demanded")
 
     # 3. Urgency & Predatory Language
-    urgency_detected = any(re.search(p, text) for p in URGENCY_PATTERNS)
+    urgency_detected = any(re.search(p, text) for p in URGENCY_PATTERNS) and not is_trusted_dom
     if urgency_detected:
         flags.append("⚠️ Urgency / aggressive marketing language ('Instant approval without CIBIL')")
 
@@ -102,10 +111,11 @@ def analyze_loan_and_permissions(
 
     # 5. Permission Risk Scoring
     raw_perms = permissions_requested or []
-    # If text mentions permission requirements
-    for perm in PERMISSION_WEIGHTS:
-        if re.search(rf"\b{perm}\b", text) and perm not in [p.lower() for p in raw_perms]:
-            raw_perms.append(perm)
+    # If text mentions permission requirements (ignore on trusted domains)
+    if not is_trusted_dom:
+        for perm in PERMISSION_WEIGHTS:
+            if re.search(rf"\b{perm}\b", text) and perm not in [p.lower() for p in raw_perms]:
+                raw_perms.append(perm)
 
     detected_perms = []
     total_perm_score = 0.0
@@ -150,6 +160,12 @@ def analyze_loan_and_permissions(
         base_loan_score += 10.0
 
     loan_risk_score = min(round(base_loan_score), 100.0)
+
+    # Zero risk if it is a trusted domain
+    if is_trusted_dom:
+        loan_risk_score = 5.0
+        permission_risk_score = 0.0
+        flags = [f for f in flags if "🔴" not in f and "⚠️" not in f]
 
     details = {
         "has_kfs": has_kfs,

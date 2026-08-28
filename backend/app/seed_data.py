@@ -15,9 +15,134 @@ def seed_database():
     cursor.execute("DELETE FROM temporal_activities;")
     cursor.execute("DELETE FROM cases;")
 
-    # 1. Seed Government Registry
+    # 1. Seed Government & Regulatory Registry (including Govt Portals, Banks, Top NBFCs)
     # Schema: lender_id, legal_name, registration_number, status, official_domain, official_phone, registration_date, regulator
     govt_records = [
+        # Official Government Portals & National Credit Initiatives
+        (
+            "gov_jansamarth",
+            "JanSamarth — National Portal for Credit-Linked Government Schemes",
+            "GOV-INIT-MIN-FIN",
+            "ACTIVE",
+            "jansamarth.in",
+            "1800-11-5565",
+            "2022-06-10",
+            "Ministry of Finance (Government of India)"
+        ),
+        (
+            "gov_mudra",
+            "Pradhan Mantri MUDRA Yojana (PMMY)",
+            "GOV-MUDRA-PMMY",
+            "ACTIVE",
+            "mudra.org.in",
+            "1800-180-1111",
+            "2015-04-08",
+            "Department of Financial Services (DFS)"
+        ),
+        (
+            "gov_psb59",
+            "PSB Loans in 59 Minutes",
+            "GOV-SIDBI-PSB59",
+            "ACTIVE",
+            "psbloansin59minutes.com",
+            "079-41055999",
+            "2018-11-02",
+            "SIDBI / Ministry of Finance"
+        ),
+        (
+            "gov_vidyalakshmi",
+            "Vidya Lakshmi Education Loan Portal",
+            "GOV-NSDL-VIDYA",
+            "ACTIVE",
+            "vidyalakshmi.co.in",
+            "022-24997000",
+            "2015-08-15",
+            "Ministry of Education (Govt of India)"
+        ),
+        (
+            "gov_standup",
+            "Stand-Up India Portal",
+            "GOV-SIDBI-STANDUP",
+            "ACTIVE",
+            "standupmitra.in",
+            "1800-180-1111",
+            "2016-04-05",
+            "SIDBI / Government of India"
+        ),
+
+        # Scheduled Commercial Banks
+        (
+            "bank_sbi",
+            "State Bank of India (SBI)",
+            "BANK-SCHEDULED-SBI-001",
+            "ACTIVE",
+            "sbi.co.in",
+            "1800-1234",
+            "1955-07-01",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "bank_hdfc",
+            "HDFC Bank Limited",
+            "BANK-SCHEDULED-HDFC-002",
+            "ACTIVE",
+            "hdfcbank.com",
+            "1800-202-6161",
+            "1994-08-05",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "bank_icici",
+            "ICICI Bank Limited",
+            "BANK-SCHEDULED-ICICI-003",
+            "ACTIVE",
+            "icicibank.com",
+            "1800-1080",
+            "1994-01-05",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "bank_axis",
+            "Axis Bank Limited",
+            "BANK-SCHEDULED-AXIS-004",
+            "ACTIVE",
+            "axisbank.com",
+            "1800-419-5959",
+            "1993-12-03",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "bank_kotak",
+            "Kotak Mahindra Bank Limited",
+            "BANK-SCHEDULED-KOTAK-005",
+            "ACTIVE",
+            "kotak.com",
+            "1860-266-2666",
+            "2003-02-11",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "bank_pnb",
+            "Punjab National Bank (PNB)",
+            "BANK-SCHEDULED-PNB-006",
+            "ACTIVE",
+            "pnbindia.in",
+            "1800-180-2222",
+            "1894-05-19",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "bank_bob",
+            "Bank of Baroda",
+            "BANK-SCHEDULED-BOB-007",
+            "ACTIVE",
+            "bankofbaroda.in",
+            "1800-5700",
+            "1908-07-20",
+            "Reserve Bank of India (RBI)"
+        ),
+
+        # Registered NBFCs & Digital Lenders
         (
             "lender_abc_finance",
             "ABC Finance Ltd.",
@@ -26,26 +151,6 @@ def seed_database():
             "abcfinance.com",
             "+91-22-68940000",
             "2016-04-12",
-            "Reserve Bank of India (RBI)"
-        ),
-        (
-            "lender_quickloan_nbfc",
-            "QuickLoan Financial Services Ltd.",
-            "NBFC-ND-SI-992144",
-            "ACTIVE",
-            "quickloanfinance.org",
-            "+91-11-45892211",
-            "2020-09-18",
-            "Reserve Bank of India (RBI)"
-        ),
-        (
-            "lender_tata_capital",
-            "Tata Capital Financial Services Limited",
-            "NBFC-TATA-00129",
-            "ACTIVE",
-            "tatacapital.com",
-            "+91-22-66069000",
-            "2011-01-05",
             "Reserve Bank of India (RBI)"
         ),
         (
@@ -59,13 +164,103 @@ def seed_database():
             "Reserve Bank of India (RBI)"
         ),
         (
-            "lender_habb_lending",
-            "Habb Lending Microcredit Inc.",
-            "NBFC-REVOKED-4410",
-            "REVOKED",
-            "habblending.in",
-            "+91-80-33445566",
-            "2018-06-11",
+            "lender_tata_capital",
+            "Tata Capital Financial Services Limited",
+            "NBFC-TATA-00129",
+            "ACTIVE",
+            "tatacapital.com",
+            "+91-22-66069000",
+            "2011-01-05",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_muthoot",
+            "Muthoot Finance Limited",
+            "NBFC-MUTHOOT-0089",
+            "ACTIVE",
+            "muthootfinance.com",
+            "1800-313-1212",
+            "1997-03-14",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_shriram",
+            "Shriram Finance Limited",
+            "NBFC-SHRIRAM-0021",
+            "ACTIVE",
+            "shriramfinance.in",
+            "1800-103-4959",
+            "1979-05-09",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_lendingkart",
+            "Lendingkart Finance Limited",
+            "NBFC-LENDINGKART-014",
+            "ACTIVE",
+            "lendingkart.com",
+            "1800-572-0202",
+            "2015-06-18",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_kreditbee",
+            "Krazybee Services Private Limited (KreditBee)",
+            "NBFC-KRAZYBEE-099",
+            "ACTIVE",
+            "kreditbee.in",
+            "080-44292200",
+            "2017-05-12",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_navi",
+            "Navi Finserv Limited",
+            "NBFC-NAVI-00312",
+            "ACTIVE",
+            "navi.com",
+            "080-45663333",
+            "2019-12-01",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_moneyview",
+            "Whizdm Innovations Pvt Ltd (Moneyview)",
+            "NBFC-WHIZDM-041",
+            "ACTIVE",
+            "moneyview.in",
+            "080-69390476",
+            "2014-04-10",
+            "Reserve Bank of India (RBI)"
+        ),
+        (
+            "lender_paisabazaar",
+            "Paisabazaar Marketing and Consulting Pvt Ltd",
+            "AGG-PAISABAZAAR-01",
+            "ACTIVE",
+            "paisabazaar.com",
+            "1800-208-8877",
+            "2014-02-14",
+            "Direct Lending Platform & Marketplace"
+        ),
+        (
+            "lender_bankbazaar",
+            "BankBazaar (A & A Dukaan Financial Services)",
+            "AGG-BANKBAZAAR-02",
+            "ACTIVE",
+            "bankbazaar.com",
+            "044-66511800",
+            "2008-05-20",
+            "Direct Lending Platform & Marketplace"
+        ),
+        (
+            "lender_quickloan_nbfc",
+            "QuickLoan Financial Services Ltd.",
+            "NBFC-ND-SI-992144",
+            "ACTIVE",
+            "quickloanfinance.org",
+            "+91-11-45892211",
+            "2020-09-18",
             "Reserve Bank of India (RBI)"
         )
     ]
@@ -77,8 +272,10 @@ def seed_database():
     """, govt_records)
 
     # 2. Seed Graph Nodes
-    # Entities: LENDER, DOMAIN, PHONE, APP, PAYMENT_ACCOUNT, UPI_ID, BANK_ACCOUNT
     nodes = [
+        # Government / Public Portal Node
+        ("node_gov_jansamarth", "GOVERNMENT_PORTAL", "jansamarth.in", "JanSamarth Government Portal", 0, 0, json.dumps({"verified": True, "gov": True})),
+        
         # ABC Finance (Legitimate Cluster)
         ("node_lender_abc", "LENDER", "ABC Finance Ltd.", "ABC Finance Ltd.", 0, 10, json.dumps({"verified": True})),
         ("node_domain_abc", "DOMAIN", "abcfinance.com", "abcfinance.com", 0, 8, json.dumps({"official": True})),
@@ -110,7 +307,6 @@ def seed_database():
     """, nodes)
 
     # 3. Seed Graph Edges
-    # relation_types: USES, OWNS, CONNECTED_TO, REGISTERED_AS, PAYS_TO, SHARES_PHONE, SHARES_DOMAIN, SHARES_ACCOUNT
     edges = [
         # ABC Finance Edges
         ("edge_1", "node_lender_abc", "node_domain_abc", "REGISTERED_AS", 0),
@@ -142,136 +338,23 @@ def seed_database():
     VALUES (?, ?, ?, ?, ?);
     """, edges)
 
-    # 4. Seed Temporal Activities (LSTM sequences)
-    # Sequence types: Normal organic, Moderate fluctuation, Sudden burst anomaly
+    # 4. Seed Temporal Activities
     now = datetime.utcnow()
-
-    # Normal sequence for ABC Finance
     abc_sequence = [12, 14, 15, 13, 16, 14, 15, 17, 16]
     for i, val in enumerate(abc_sequence):
         t = (now - timedelta(days=(len(abc_sequence) - i) * 3)).strftime("%Y-%m-%d")
         cursor.execute("INSERT INTO temporal_activities (entity_id, timestamp, activity_type, activity_value) VALUES (?, ?, ?, ?)",
                        ("abcfinance.com", t, "COMPLAINTS_AND_INQUIRIES", val))
 
-    # Moderate sequence for QuickLoan
-    ql_sequence = [20, 24, 22, 28, 35, 42, 48, 55, 58]
-    for i, val in enumerate(ql_sequence):
-        t = (now - timedelta(days=(len(ql_sequence) - i) * 3)).strftime("%Y-%m-%d")
-        cursor.execute("INSERT INTO temporal_activities (entity_id, timestamp, activity_type, activity_value) VALUES (?, ?, ?, ?)",
-                       ("quickloan-app.in", t, "COMPLAINTS_AND_INQUIRIES", val))
-
-    # Burst sequence for FastCash: [10, 12, 11, 14, 16, 18, 75, 180, 350]
     fc_sequence = [10, 12, 11, 14, 16, 18, 75, 180, 350]
     for i, val in enumerate(fc_sequence):
         t = (now - timedelta(days=(len(fc_sequence) - i) * 3)).strftime("%Y-%m-%d")
         cursor.execute("INSERT INTO temporal_activities (entity_id, timestamp, activity_type, activity_value) VALUES (?, ?, ?, ?)",
                        ("fastcash-instantloans.net", t, "COMPLAINTS_AND_INQUIRIES", val))
 
-    # 5. Pre-seed Benchmark Cases for the Analyst Dashboard
-    cases = [
-        (
-            "case_fc_001",
-            "lender_fastcash",
-            "ABC Finance (Impersonated)",
-            "fastcash-instantloans.net",
-            "https://fastcash-instantloans.net/apply",
-            91.0,
-            "HIGH",
-            "BLOCK",
-            0.94,
-            json.dumps([
-                "Website-Domain mismatch (Impersonating ABC Finance Ltd.)",
-                "Advance fee of ₹1,500 demanded before loan disbursement",
-                "Connected to 3 previously flagged domains via shared phone hotline",
-                "Mule UPI payment receiver fastpay.collect@okhdfcbank detected",
-                "Abnormal burst in temporal activity / consumer grievance volume (+1840%)"
-            ]),
-            json.dumps({
-                "identity": {"consistency_score": 90, "claimed": "ABC Finance Ltd.", "official_domain": "abcfinance.com", "actual_domain": "fastcash-instantloans.net", "match": "FAILED"},
-                "loan_risk": {"score": 85, "advance_fee": True, "fee_amount": 1500, "kfs": False, "urgency": True},
-                "permission_risk": {"score": 95, "permissions": ["Contacts (HIGH)", "SMS (HIGH)", "Media (HIGH)", "Location (MEDIUM)"]},
-                "lstm": {"score": 88, "pattern": "ABNORMAL_BURST", "burst_multiplier": 19.4},
-                "gnn": {"score": 92, "flagged_domains": 3, "suspicious_accounts": 2, "reported_phones": 1}
-            }),
-            "PENDING",
-            None,
-            "",
-            "",
-            (now - timedelta(minutes=15)).strftime("%Y-%m-%d %H:%M:%S"),
-            (now - timedelta(minutes=15)).strftime("%Y-%m-%d %H:%M:%S")
-        ),
-        (
-            "case_ql_002",
-            "lender_quickloan_nbfc",
-            "QuickLoan Financial",
-            "quickloan-app.in",
-            "https://quickloan-app.in/loan-offer",
-            56.0,
-            "UNCERTAIN",
-            "HUMAN_REVIEW",
-            0.82,
-            json.dumps([
-                "Valid RBI registration found under legal entity, but unofficial domain alias used",
-                "Key Fact Statement (KFS) format incomplete",
-                "Contacts permission requested for references verification",
-                "Elevated inquiry trend over past 30 days"
-            ]),
-            json.dumps({
-                "identity": {"consistency_score": 45, "claimed": "QuickLoan Financial Services Ltd.", "official_domain": "quickloanfinance.org", "actual_domain": "quickloan-app.in", "match": "INCONCLUSIVE"},
-                "loan_risk": {"score": 52, "advance_fee": False, "kfs": False, "apr": 38.5},
-                "permission_risk": {"score": 60, "permissions": ["Contacts (HIGH)", "Location (MEDIUM)"]},
-                "lstm": {"score": 58, "pattern": "MODERATE_ELEVATION", "burst_multiplier": 2.4},
-                "gnn": {"score": 45, "flagged_domains": 0, "suspicious_accounts": 0, "reported_phones": 0}
-            }),
-            "PENDING",
-            None,
-            "",
-            "",
-            (now - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S"),
-            (now - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
-        ),
-        (
-            "case_abc_003",
-            "lender_abc_finance",
-            "ABC Finance Ltd.",
-            "abcfinance.com",
-            "https://abcfinance.com/personal-loan",
-            18.0,
-            "LOW",
-            "ALLOW",
-            0.96,
-            json.dumps([
-                "Direct match with official RBI Registered NBFC registry record",
-                "Domain abcfinance.com fully verified with SSL & MCA registration",
-                "Comprehensive Key Fact Statement (KFS) disclosed with transparent APR (14.5%)",
-                "No advance fees or abusive permissions requested",
-                "Network graph isolated from known fraudulent syndicates"
-            ]),
-            json.dumps({
-                "identity": {"consistency_score": 5, "claimed": "ABC Finance Ltd.", "official_domain": "abcfinance.com", "actual_domain": "abcfinance.com", "match": "VERIFIED"},
-                "loan_risk": {"score": 12, "advance_fee": False, "kfs": True, "apr": 14.5},
-                "permission_risk": {"score": 10, "permissions": []},
-                "lstm": {"score": 15, "pattern": "NORMAL_ORGANIC", "burst_multiplier": 1.05},
-                "gnn": {"score": 8, "flagged_domains": 0, "suspicious_accounts": 0, "reported_phones": 0}
-            }),
-            "REVIEWED",
-            "APPROVE",
-            "Official licensed lender, fully compliant.",
-            "analyst_1",
-            (now - timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S"),
-            (now - timedelta(hours=4)).strftime("%Y-%m-%d %H:%M:%S")
-        )
-    ]
-
-    cursor.executemany("""
-    INSERT INTO cases 
-    (id, lender_id, claimed_name, domain, url, risk_score, risk_level, decision, confidence, reasons_json, evidence_json, status, analyst_action, analyst_notes, analyst_id, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-    """, cases)
-
     conn.commit()
     conn.close()
-    print("Database seeded with comprehensive reference data for Legitimate, Uncertain, and Fraudulent scenarios!")
+    print("Database seeded with comprehensive reference data including Government Portals, Scheduled Banks, and Verified NBFCs!")
 
 if __name__ == "__main__":
     seed_database()

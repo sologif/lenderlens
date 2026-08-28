@@ -63,7 +63,7 @@
       if (bodyText.toLowerCase().includes(p)) perms.push(p);
     });
 
-    const hasAdvanceFee = bodyText.toLowerCase().includes('advance') || bodyText.toLowerCase().includes('security deposit') || domain.includes('fastcash');
+    const hasAdvanceFee = bodyText.toLowerCase().includes('security deposit') || bodyText.toLowerCase().includes('advance processing fee') || bodyText.toLowerCase().includes('activation fee') || bodyText.toLowerCase().includes('insurance processing fee') || domain.includes('fastcash');
 
     return {
       url: url,
