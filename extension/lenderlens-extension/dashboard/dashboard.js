@@ -271,7 +271,7 @@ function renderGNNGraph(canvasId, nodes, edges, isHighRisk) {
 
   // Default synthetic nodes if not provided
   let graphNodes = nodes && nodes.length ? [...nodes] : [
-    { id: 'n_domain', label: 'fastcash-instantloans.net', entity_type: 'DOMAIN', is_suspicious: isHighRisk, is_focal: true },
+    { id: 'n_domain', label: 'scam-instant-loans.net', entity_type: 'DOMAIN', is_suspicious: isHighRisk, is_focal: true },
     { id: 'n_phone', label: '+91-9988776655 (Syndicate Hotline)', entity_type: 'PHONE', is_suspicious: isHighRisk },
     { id: 'n_oldloan', label: 'rupee-instant-loan.xyz (Flagged)', entity_type: 'DOMAIN', is_suspicious: true },
     { id: 'n_upi', label: 'fastpay.collect@okhdfcbank', entity_type: 'UPI_ID', is_suspicious: true },
@@ -559,14 +559,14 @@ async function loadReports() {
   tbody.innerHTML = `
     <tr>
       <td><code>rep_8891</code></td>
-      <td><a href="${BACKEND_ORIGIN}/demo/fraudulent/payment.html" target="_blank" style="color:#dc2626;">fastcash-instantloans.net/payment</a></td>
-      <td>FastCash Instant Loans</td>
+      <td><a href="${BACKEND_ORIGIN}/demo/fraudulent/payment.html" target="_blank" style="color:#dc2626;">scam-instant-loans.net/payment</a></td>
+      <td>Fraudulent Syndicate</td>
       <td>Demand for ₹1,500 advance processing fee before sanction</td>
       <td>Just now</td>
     </tr>
     <tr>
       <td><code>rep_8890</code></td>
-      <td><a href="${BACKEND_ORIGIN}/demo/uncertain/index.html" target="_blank" style="color:#d97706;">quickloan-app.in</a></td>
+      <td><a href="${BACKEND_ORIGIN}/demo/uncertain/index.html" target="_blank" style="color:#d97706;">unknown-loan-app.in</a></td>
       <td>QuickLoan Financial</td>
       <td>Aggressive SMS permission request</td>
       <td>2 hours ago</td>

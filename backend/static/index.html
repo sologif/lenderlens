@@ -613,15 +613,18 @@
 
     <!-- ─── TAB 2: LIVE SIMULATOR (JUDGE VIEW) ─── -->
     <div class="tab-panel" id="tab-simulator">
+      <div style="text-align:center; margin-bottom:24px;">
+        <h2 style="color:#fff; font-size:20px; margin-bottom:6px;">⚡ Live ML Risk Simulator</h2>
+        <p style="color:var(--text-secondary); font-size:13px;">Select a scenario — the backend runs real LSTM (IsolationForest) and GNN (RandomForest) inference on each request.</p>
+      </div>
       <div class="scan-row">
-        <select class="scan-input" style="max-width: 250px;" id="sim-presets" onchange="applyPreset(this.value)">
-          <option value="fraud">🔴 FastCash (Advance Fee Scam)</option>
-          <option value="uncertain">🟡 QuickLoan (Unlisted Alias)</option>
-          <option value="legit">🟢 JanSamarth Govt Portal (Verified)</option>
-          <option value="abc">🟢 ABC Finance Ltd. (Matched NBFC)</option>
+        <select class="scan-input" style="max-width: 280px;" id="sim-presets" onchange="applyPreset(this.value)">
+          <option value="fraud">🔴 Scenario A — Fraudulent Advance-Fee Scam</option>
+          <option value="uncertain">🟡 Scenario B — Uncertain / Unverified Platform</option>
+          <option value="legit">🟢 Scenario C — Verified Registered Lender</option>
         </select>
-        <input type="text" class="scan-input" id="sim-url" value="https://fastcash-instantloans.net/apply">
-        <button class="btn-action" onclick="runSimAnalysis()">Execute Risk Analysis</button>
+        <input type="text" class="scan-input" id="sim-url" value="https://scam-instant-loans.net/apply">
+        <button class="btn-action" onclick="runSimAnalysis()">⚡ Run ML Analysis</button>
       </div>
 
       <div class="panel-grid">
@@ -629,27 +632,32 @@
         <div class="trust-card" id="sim-trust-card">
           <div class="trust-card-header">
             <div>
-              <h3 id="sim-claimed-name" style="font-size: 16px; color:#fff;">FastCash Instant Loans</h3>
-              <div id="sim-domain" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);">fastcash-instantloans.net</div>
+              <h3 id="sim-claimed-name" style="font-size: 16px; color:#fff;">Fraudulent Syndicate</h3>
+              <div id="sim-domain" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);">scam-instant-loans.net</div>
             </div>
             <span class="badge badge-danger" id="sim-verdict">BLOCK</span>
           </div>
 
           <div style="background:var(--accent-red-subtle); border: 1px solid rgba(239,68,68,0.25); border-radius: 6px; padding:10px; margin-bottom:14px;" id="sim-banner">
             <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13px; color:var(--accent-red);">
-              <span>🔴 CRITICAL RISK</span>
+              <span id="sim-risk-label">🔴 CRITICAL RISK</span>
               <span id="sim-score-num">96.0 / 100</span>
             </div>
             <div style="height:6px; background:rgba(255,255,255,0.08); border-radius:3px; margin-top:8px; overflow:hidden;">
-              <div style="height:100%; background:var(--accent-red); width: 96%;" id="sim-score-bar"></div>
+              <div style="height:100%; background:var(--accent-red); width: 96%; transition: width 0.6s;" id="sim-score-bar"></div>
             </div>
           </div>
 
           <div class="evidence-list" id="sim-evidence">
-            <div class="evidence-item"><span class="icon-fail">✕</span><span>RBI Registry Mismatch (Impersonates ABC Finance)</span></div>
-            <div class="evidence-item"><span class="icon-fail">✕</span><span>Advance fee detected (₹1,500 demand)</span></div>
-            <div class="evidence-item"><span class="icon-fail">✕</span><span>Abnormal LSTM burst (+18.4x grievance surge)</span></div>
-            <div class="evidence-item"><span class="icon-fail">✕</span><span>Connected to 3 flagged phishing domains in GNN</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>RBI Registry: No matching NBFC registration found</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>Advance fee detected before disbursement</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>LSTM: Abnormal complaint burst (+18.4x surge)</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>GNN: Connected to flagged phishing domains</span></div>
+          </div>
+
+          <!-- ML Model Attribution -->
+          <div style="margin-top:12px; font-size:10px; color:var(--text-tertiary); border-top:1px solid var(--border-subtle); padding-top:8px;" id="sim-ml-meta">
+            <strong>LSTM:</strong> IsolationForest (200 trees) · <strong>GNN:</strong> RandomForest (150 trees)
           </div>
 
           <div style="background:rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color:#fca5a5; font-weight:700; font-size:11.5px; padding:8px; border-radius:4px; text-align:center; margin-top:14px;" id="sim-alert">
@@ -661,7 +669,7 @@
         <div class="console-wrap">
           <div class="console-box">
             <div class="console-header">
-              <span>🕸️ Layer 4: GNN Syndicate Graph Extraction</span>
+              <span>🕸️ Layer 4: GNN Syndicate Graph</span>
               <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);" id="sim-gnn-meta">3 Domains · 2 Mule UPIs</span>
             </div>
             <div class="canvas-wrap">
@@ -671,7 +679,7 @@
 
           <div class="console-box">
             <div class="console-header">
-              <span>📈 Layer 3: LSTM Temporal Sequence Anomaly</span>
+              <span>📈 Layer 3: LSTM Temporal Anomaly</span>
               <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);" id="sim-lstm-meta">Pattern: ABNORMAL BURST (+18.4x)</span>
             </div>
             <div class="canvas-wrap">
@@ -681,6 +689,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- ─── TAB: EXTENSION DEMO (INTERACTIVE BROWSER SIMULATION) ─── -->
     <div class="tab-panel" id="tab-extension">
@@ -724,7 +733,7 @@
             </div>
             <div class="browser-url-bar" id="ext-url-bar">
               <span class="url-lock">🔓</span>
-              <span id="ext-url-text">https://fastcash-instantloans.net/apply</span>
+              <span id="ext-url-text">https://scam-instant-loans.net/apply</span>
             </div>
             <div class="browser-ext-icon" id="ext-toolbar-icon" title="LenderLens Extension">
               🛡️
@@ -735,7 +744,7 @@
             <!-- Fake Loan Page -->
             <div id="ext-fake-page">
               <div class="fake-page-header">
-                <h2>💰 FastCash Instant Loans</h2>
+                <h2>💰 Fraudulent Syndicate</h2>
                 <p>Get ₹50,000 deposited in 10 minutes! No documents needed. Trusted by ABC Finance Ltd.</p>
               </div>
               <div class="fake-page-form">
@@ -795,7 +804,7 @@
           <div class="console-box" id="ext-step-description">
             <div style="font-weight:700; color:#fff; margin-bottom:8px; font-size:14px;" id="ext-step-title">Step 1: User Visits a Loan Site</div>
             <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;" id="ext-step-body">
-              A borrower searches for "instant loan" and lands on <strong>fastcash-instantloans.net</strong>.
+              A borrower searches for "instant loan" and lands on <strong>scam-instant-loans.net</strong>.
               The page claims to be affiliated with RBI-registered "ABC Finance Ltd." and asks for an upfront ₹1,500 processing fee.
             </p>
           </div>
@@ -990,9 +999,9 @@
   <script>
     const PRESETS = {
       fraud: {
-        url: 'https://fastcash-instantloans.net/apply',
-        claimed_name: 'ABC Finance (Impersonated)',
-        domain: 'fastcash-instantloans.net',
+        url: 'https://scam-instant-loans.net/apply',
+        claimed_name: 'Impersonated NBFC',
+        domain: 'scam-instant-loans.net',
         score: 96.0,
         level: '🔴 CRITICAL RISK',
         verdict: 'BLOCK',
@@ -1008,7 +1017,7 @@
         gnnMeta: '3 Domains · 2 Mule UPIs · 1 shared hotline',
         lstmMeta: 'Pattern: ABNORMAL BURST (+18.4x surge)',
         nodes: [
-          { id: 'fc_dom', label: 'fastcash-instantloans.net', type: 'DOMAIN', susp: true, focal: true },
+          { id: 'fc_dom', label: 'scam-instant-loans.net', type: 'DOMAIN', susp: true, focal: true },
           { id: 'phone', label: '+91-9988776655 (Hotline)', type: 'PHONE', susp: true },
           { id: 'old_dom', label: 'rupee-instant-loan.xyz (Flagged)', type: 'DOMAIN', susp: true },
           { id: 'upi1', label: 'fastpay.collect@okhdfcbank', type: 'UPI', susp: true },
@@ -1023,16 +1032,16 @@
         sequence: [10, 12, 11, 14, 16, 18, 75, 180, 350]
       },
       uncertain: {
-        url: 'https://quickloan-app.in/apply',
+        url: 'https://unknown-loan-app.in/apply',
         claimed_name: 'QuickLoan Financial Services Ltd.',
-        domain: 'quickloan-app.in',
+        domain: 'unknown-loan-app.in',
         score: 48.7,
         level: '🟡 UNCERTAIN',
         verdict: 'HUMAN REVIEW',
         barColor: '#f59e0b',
         bannerClass: 'badge-warning',
         evidence: [
-          'RBI registered entity, but domain alias quickloan-app.in is not listed',
+          'RBI registered entity, but domain alias unknown-loan-app.in is not listed',
           'Incomplete Key Fact Statement (KFS) disclosure',
           'Requests device Contacts access for reference checks',
           'Moderate complain rate elevation (+2.4x)'
@@ -1041,7 +1050,7 @@
         gnnMeta: '1 Domain Alias · 0 Flagged Syndicates',
         lstmMeta: 'Pattern: MODERATE ELEVATION (+2.4x)',
         nodes: [
-          { id: 'ql_dom', label: 'quickloan-app.in (Alias)', type: 'DOMAIN', susp: false, focal: true },
+          { id: 'ql_dom', label: 'unknown-loan-app.in (Alias)', type: 'DOMAIN', susp: false, focal: true },
           { id: 'ql_legal', label: 'QuickLoan Financial Ltd.', type: 'LENDER', susp: false },
           { id: 'ql_off', label: 'quickloanfinance.org (Official)', type: 'DOMAIN', susp: false }
         ],
@@ -1078,9 +1087,9 @@
         sequence: [15, 14, 16, 15, 13, 14, 15, 16, 14]
       },
       abc: {
-        url: 'https://abcfinance.com/home',
+        url: 'https://verified-lender-demo.com/home',
         claimed_name: 'ABC Finance Ltd.',
-        domain: 'abcfinance.com',
+        domain: 'verified-lender-demo.com',
         score: 5.0,
         level: '🟢 LOW RISK',
         verdict: 'ALLOW',
@@ -1095,7 +1104,7 @@
         gnnMeta: 'Verified Registered NBFC Domain',
         lstmMeta: 'Pattern: NORMAL ORGANIC (Baseline)',
         nodes: [
-          { id: 'abc_dom', label: 'abcfinance.com', type: 'DOMAIN', susp: false, focal: true },
+          { id: 'abc_dom', label: 'verified-lender-demo.com', type: 'DOMAIN', susp: false, focal: true },
           { id: 'abc_legal', label: 'ABC Finance Ltd.', type: 'LENDER', susp: false }
         ],
         edges: [
@@ -1121,20 +1130,134 @@
       if (tabId === 'tab-registry') loadRegistry();
     }
 
+    // Scenario page_text payloads — realistic content for each archetype
+    const SCENARIO_PAYLOADS = {
+      fraud: {
+        url: 'https://scam-instant-loans.net/apply',
+        domain: 'scam-instant-loans.net',
+        claimed_lender: 'Unregistered Loan Provider',
+        page_text: 'Get instant loan ₹50,000 in 10 minutes! Guaranteed approval. No CIBIL required. No documents needed. Urgent cash offer. Pay advance security deposit ₹1,500 upfront before loan disbursal. Transfer to fastpay.collect@okhdfcbank. Call +91-9988776655. 100% approval rate. Fast cash now.',
+        has_kfs: false,
+        permissions_requested: ['contacts', 'sms', 'call logs', 'media']
+      },
+      uncertain: {
+        url: 'https://unknown-loan-app.in/apply',
+        domain: 'unknown-loan-app.in',
+        claimed_lender: 'Unlisted Financial Services',
+        page_text: 'Quick personal loan for salaried individuals. Apply online. Documents required: PAN, Aadhaar, salary slip. Interest rates starting 18% per annum. Processing fee applicable. KFS available on request. Loan tenure 12-36 months.',
+        has_kfs: false,
+        permissions_requested: ['contacts', 'location']
+      },
+      legit: {
+        url: 'https://verified-lender-demo.com/apply',
+        domain: 'verified-lender-demo.com',
+        claimed_lender: 'Official Registered NBFC',
+        page_text: 'Personal loan from RBI registered NBFC. Key Fact Statement (KFS) provided. Transparent interest rate 14.5% APR annual. Repayment schedule enclosed. No advance fee required. No upfront deposit. Loan disbursed directly to your bank account after verification. Contact our official helpline.',
+        has_kfs: true,
+        permissions_requested: []
+      }
+    };
+
     function applyPreset(key) {
-      const sc = PRESETS[key];
-      if (!sc) return;
-      document.getElementById('sim-url').value = sc.url;
-      renderSimulator(sc);
+      const urls = { fraud: 'https://scam-instant-loans.net/apply', uncertain: 'https://unknown-loan-app.in/apply', legit: 'https://verified-lender-demo.com/apply' };
+      document.getElementById('sim-url').value = urls[key] || '';
     }
 
-    function runSimAnalysis() {
-      // Simulate scanning animation, then render
-      const presetKey = document.getElementById('sim-presets').value;
-      renderSimulator(PRESETS[presetKey]);
+    async function runSimAnalysis() {
+      const key = document.getElementById('sim-presets').value;
+      const payload = SCENARIO_PAYLOADS[key];
+      if (!payload) return;
+
+      // Show loading state
+      document.getElementById('sim-claimed-name').textContent = 'Analyzing…';
+      document.getElementById('sim-score-num').textContent = '— / 100';
+      document.getElementById('sim-verdict').textContent = 'SCANNING';
+      document.getElementById('sim-verdict').className = 'badge';
+      document.getElementById('sim-evidence').innerHTML = '<div class="evidence-item" style="color:var(--text-tertiary)">⏳ Running LSTM + GNN inference on backend…</div>';
+      document.getElementById('sim-ml-meta').textContent = 'LSTM: IsolationForest · GNN: RandomForest — waiting for response…';
+
+      try {
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: payload.url,
+            domain: payload.domain,
+            claimed_lender: payload.claimed_lender,
+            page_text: payload.page_text,
+            has_kfs: payload.has_kfs,
+            permissions_requested: payload.permissions_requested
+          })
+        });
+        const data = await res.json();
+        renderSimulatorFromAPI(data);
+      } catch (err) {
+        // Fallback: render from preset static data
+        renderSimulator(PRESETS[key]);
+        document.getElementById('sim-ml-meta').textContent = 'API offline — showing cached demo result';
+      }
+    }
+
+    function renderSimulatorFromAPI(data) {
+      const score = data.risk_score || 0;
+      const decision = data.decision || 'ALLOW';
+      const reasons = data.reasons || [];
+      const lstm = data.lstm || {};
+      const gnn = data.gnn || {};
+      const identity = data.identity || {};
+
+      document.getElementById('sim-claimed-name').textContent = identity.claimed_name || 'Unknown';
+      document.getElementById('sim-domain').textContent = data.domain || '';
+      document.getElementById('sim-score-num').textContent = `${score.toFixed(1)} / 100`;
+
+      const verdict = document.getElementById('sim-verdict');
+      verdict.textContent = decision;
+      verdict.className = `badge ${score > 60 ? 'badge-danger' : score > 30 ? 'badge-warning' : 'badge-success'}`;
+
+      const banner = document.getElementById('sim-banner');
+      const barColor = score > 60 ? 'var(--accent-red)' : score > 30 ? '#f59e0b' : 'var(--accent-emerald)';
+      banner.style.background = score > 60 ? 'var(--accent-red-subtle)' : score > 30 ? 'var(--accent-amber-subtle)' : 'var(--accent-emerald-subtle)';
+      banner.style.borderColor = score > 60 ? 'rgba(239,68,68,0.25)' : score > 30 ? 'rgba(245,158,11,0.25)' : 'rgba(16,185,129,0.25)';
+      document.getElementById('sim-risk-label').textContent = score > 60 ? '🔴 CRITICAL RISK' : score > 30 ? '🟡 MODERATE RISK' : '🟢 LOW RISK';
+      document.getElementById('sim-risk-label').style.color = barColor;
+      document.getElementById('sim-score-bar').style.width = `${score}%`;
+      document.getElementById('sim-score-bar').style.background = barColor;
+
+      // Evidence from real ML output
+      const allFlags = [...(identity.flags||[]), ...(lstm.flags||[]), ...(gnn.flags||[])];
+      const evContainer = document.getElementById('sim-evidence');
+      evContainer.innerHTML = allFlags.slice(0, 6).map(f => {
+        const isBad = f.includes('🔴') || f.includes('⚠️') || f.includes('BURST') || f.includes('SPIKE') || f.includes('Mismatch');
+        return `<div class="evidence-item"><span class="${isBad ? 'icon-fail' : 'icon-pass'}">${isBad ? '✕' : '✓'}</span><span>${f.replace(/[🔴🟢⚠️📈🕸️🤖✅]/g, '').trim()}</span></div>`;
+      }).join('');
+
+      // ML attribution with real inference details
+      const lstmPattern = lstm.pattern_type || 'UNKNOWN';
+      const lstmBurst = lstm.burst_multiplier || 0;
+      const gnnProb = gnn.details?.ml_fraud_probability;
+      const isoScore = lstm.details?.iso_forest_score;
+      document.getElementById('sim-ml-meta').innerHTML = `
+        <strong>LSTM (IsolationForest):</strong> Pattern = ${lstmPattern} | Burst = ${lstmBurst}x | IsoScore = ${isoScore !== null && isoScore !== undefined ? parseFloat(isoScore).toFixed(4) : 'N/A'}<br>
+        <strong>GNN (RandomForest):</strong> Fraud P = ${gnnProb !== null && gnnProb !== undefined ? (gnnProb * 100).toFixed(1) + '%' : 'N/A'} | Centrality = ${(gnn.centrality_score || 0).toFixed(3)} | Flagged Nodes = ${gnn.connected_flagged_domains || 0}
+      `;
+
+      document.getElementById('sim-alert').style.display = score > 60 ? 'block' : 'none';
+      document.getElementById('sim-lstm-meta').textContent = `Pattern: ${lstmPattern} (+${lstmBurst}x)`;
+      document.getElementById('sim-gnn-meta').textContent = `Domains: ${gnn.connected_flagged_domains || 0} · UPIs: ${gnn.connected_suspicious_accounts || 0}`;
+
+      // Draw canvases from real GNN subgraph
+      const nodes = (gnn.subgraph_nodes || []).slice(0, 8).map(n => ({
+        id: n.id, label: n.entity_value || n.id, focal: n.is_focal, susp: n.is_suspicious
+      }));
+      const edges = (gnn.subgraph_edges || []).map(e => ({ s: e.source, t: e.target, susp: e.is_suspicious }));
+      if (nodes.length > 0) drawGNN('sim-gnn-canvas', nodes, edges);
+      
+      const seq = (lstm.sequence_data || []).map(d => d.activity_value);
+      if (seq.length > 0) drawLSTM('sim-lstm-canvas', seq, lstmPattern !== 'NORMAL_ORGANIC');
     }
 
     function renderSimulator(sc) {
+      if (!sc) return;
       document.getElementById('sim-claimed-name').textContent = sc.claimed_name;
       document.getElementById('sim-domain').textContent = sc.domain;
       document.getElementById('sim-score-num').textContent = `${sc.score} / 100`;
@@ -1147,9 +1270,8 @@
       banner.style.background = sc.score > 60 ? 'var(--accent-red-subtle)' : sc.score > 30 ? 'var(--accent-amber-subtle)' : 'var(--accent-emerald-subtle)';
       banner.style.borderColor = sc.score > 60 ? 'rgba(239,68,68,0.25)' : sc.score > 30 ? 'rgba(245,158,11,0.25)' : 'rgba(16,185,129,0.25)';
 
-      const scoreLabel = banner.querySelector('span');
-      scoreLabel.textContent = sc.level;
-      scoreLabel.style.color = sc.barColor;
+      const scoreLabel = document.getElementById('sim-risk-label');
+      if (scoreLabel) { scoreLabel.textContent = sc.level; scoreLabel.style.color = sc.barColor; }
 
       document.getElementById('sim-score-bar').style.width = `${sc.score}%`;
       document.getElementById('sim-score-bar').style.background = sc.barColor;
@@ -1168,6 +1290,7 @@
       drawGNN('sim-gnn-canvas', sc.nodes, sc.edges);
       drawLSTM('sim-lstm-canvas', sc.sequence, sc.score > 60);
     }
+
 
     // ─── Visual Canvas Draw Helpers ───
     function drawGNN(canvasId, nodes, edges) {
@@ -1280,8 +1403,8 @@
       } catch {
         // Mock fallback cases so judges can run prototype offline
         loadedCases = [
-          { id: 'case_fc_001', claimed_name: 'ABC Finance (Impersonated)', domain: 'fastcash-instantloans.net', url: '/demo/fraudulent/index.html', risk_score: 96.0, risk_level: 'CRITICAL', decision: 'BLOCK', status: 'PENDING', evidence: PRESETS.fraud },
-          { id: 'case_ql_002', claimed_name: 'QuickLoan Financial Ltd.', domain: 'quickloan-app.in', url: '/demo/uncertain/index.html', risk_score: 48.7, risk_level: 'UNCERTAIN', decision: 'HUMAN_REVIEW', status: 'PENDING', evidence: PRESETS.uncertain }
+          { id: 'case_fc_001', claimed_name: 'Impersonated NBFC', domain: 'scam-instant-loans.net', url: '/demo/fraudulent/index.html', risk_score: 96.0, risk_level: 'CRITICAL', decision: 'BLOCK', status: 'PENDING', evidence: PRESETS.fraud },
+          { id: 'case_ql_002', claimed_name: 'QuickLoan Financial Ltd.', domain: 'unknown-loan-app.in', url: '/demo/uncertain/index.html', risk_score: 48.7, risk_level: 'UNCERTAIN', decision: 'HUMAN_REVIEW', status: 'PENDING', evidence: PRESETS.uncertain }
         ];
       }
 
@@ -1433,7 +1556,7 @@
     const EXT_STEPS = [
       {
         title: 'Step 1: User Visits a Loan Site',
-        body: 'A borrower searches for "instant loan" and lands on <strong>fastcash-instantloans.net</strong>. The page claims to be affiliated with RBI-registered "ABC Finance Ltd." and demands an upfront ₹1,500 processing fee before disbursement.',
+        body: 'A borrower searches for "instant loan" and lands on <strong>scam-instant-loans.net</strong>. The page claims to be affiliated with RBI-registered "ABC Finance Ltd." and demands an upfront ₹1,500 processing fee before disbursement.',
         action() {
           // Reset everything
           document.getElementById('ext-scan-overlay').style.display = 'none';
@@ -1458,7 +1581,7 @@
           const scanDetail = document.getElementById('ext-scan-detail');
           const scanSpinner = document.getElementById('ext-scan-spinner');
           const steps = [
-            { icon: '🔍', status: 'Extracting page content...', detail: 'URL: fastcash-instantloans.net · Title: FastCash Instant Loans' },
+            { icon: '🔍', status: 'Extracting page content...', detail: 'URL: scam-instant-loans.net · Title: Fraudulent Syndicate' },
             { icon: '🏛️', status: 'Layer 1: RBI Registry lookup...', detail: 'Querying government_registry for domain match...' },
             { icon: '📋', status: 'Layer 2: Scanning loan terms...', detail: 'Detected: advance fee ₹1,500, UPI: fastpay.collect@okhdfcbank' },
             { icon: '📈', status: 'Layer 3: LSTM sequence analysis...', detail: 'Grievance velocity: [10,12,11,14,16,18,75,180,350]' },

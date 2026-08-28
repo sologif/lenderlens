@@ -7,37 +7,34 @@ router = APIRouter(prefix="/api", tags=["Demo & Stats"])
 @router.get("/demo/scenarios")
 def get_demo_scenarios():
     """
-    Returns the three benchmark test scenarios:
-    🟢 Legitimate: ABC Finance (Risk ~18, Govt Match: True, Website Match: True, Low GNN/LSTM)
-    🟡 Uncertain: QuickLoan (Risk ~56, Govt Record: True, Website Match: Inconclusive, Needs Review)
-    🔴 Fraudulent: FastCash (Risk ~91, Identity Mismatch, Advance Fee, High GNN/LSTM, Block)
+    Returns the three benchmark test scenarios without specific hardcoded brand names.
     """
     return [
         {
             "id": "scenario_legitimate",
-            "name": "ABC Finance",
+            "name": "Verified Legit Lender",
             "badge": "🟢 Legitimate",
             "expected_risk": "LOW (18/100)",
             "expected_decision": "ALLOW",
-            "domain": "abcfinance.com",
-            "claimed_lender": "ABC Finance Ltd.",
+            "domain": "verified-lender-demo.com",
+            "claimed_lender": "Official Registered NBFC",
             "url": "/demo/legitimate/index.html",
             "key_traits": [
                 "Official RBI NBFC Registry record matches perfectly",
-                "Domain abcfinance.com verified with SSL & MCA listing",
-                "Full Key Fact Statement (KFS) provided with 14.5% APR",
+                "Domain verified with SSL & MCA listing",
+                "Full Key Fact Statement (KFS) provided with transparent APR",
                 "No advance fees or abusive device permissions",
                 "Clean, isolated network graph"
             ]
         },
         {
             "id": "scenario_uncertain",
-            "name": "QuickLoan Financial",
+            "name": "Uncertain Loan Platform",
             "badge": "🟡 Uncertain / Needs Review",
             "expected_risk": "UNCERTAIN (48-56/100)",
             "expected_decision": "HUMAN_REVIEW",
-            "domain": "quickloan-app.in",
-            "claimed_lender": "QuickLoan Financial Services Ltd.",
+            "domain": "unknown-loan-app.in",
+            "claimed_lender": "Unlisted Financial Services",
             "url": "/demo/uncertain/index.html",
             "key_traits": [
                 "Valid RBI registration found under legal entity, but unofficial domain alias used",
@@ -49,18 +46,18 @@ def get_demo_scenarios():
         },
         {
             "id": "scenario_fraudulent",
-            "name": "FastCash Instant Loans",
+            "name": "Fraudulent Syndicate",
             "badge": "🔴 Fraudulent / Scam",
             "expected_risk": "HIGH (91-96/100)",
             "expected_decision": "BLOCK",
-            "domain": "fastcash-instantloans.net",
-            "claimed_lender": "ABC Finance Ltd.",
+            "domain": "scam-instant-loans.net",
+            "claimed_lender": "Impersonated NBFC",
             "url": "/demo/fraudulent/index.html",
             "key_traits": [
-                "Impersonates licensed NBFC ABC Finance Ltd.",
-                "Website mismatch: Claimed 'ABC Finance' on rogue domain fastcash-instantloans.net",
-                "Advance fee: Demands ₹1,500 security deposit prior to disbursement",
-                "Connected to 3 flagged phishing domains & 2 mule UPI accounts in GNN",
+                "Impersonates licensed NBFC",
+                "Website mismatch: Claimed entity on rogue domain",
+                "Advance fee: Demands ₹11,500 security deposit prior to disbursement",
+                "Connected to flagged phishing domains & mule UPI accounts in GNN",
                 "Abnormal LSTM burst (+1840% grievance volume surge)"
             ]
         }

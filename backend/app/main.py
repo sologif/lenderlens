@@ -18,6 +18,20 @@ from routers import analyze, cases, lenders, demo
 # Initialize SQLite database schema
 init_db()
 
+# Auto-train ML models on first startup (Render deploy / fresh clone)
+import os as _os
+_weights_dir = _os.path.join(APP_DIR, "models", "weights")
+_iso_path = _os.path.join(_weights_dir, "lstm_iso_forest.pkl")
+_gnn_path = _os.path.join(_weights_dir, "gnn_classifier.pkl")
+if not (_os.path.exists(_iso_path) and _os.path.exists(_gnn_path)):
+    print("ML weights not found — training models now...")
+    try:
+        from train_ml_models import train_all
+        train_all()
+        print("ML models trained successfully.")
+    except Exception as _e:
+        print(f"Warning: ML model training failed ({_e}). Falling back to heuristic scoring.")
+
 app = FastAPI(
     title="LenderLens API",
     description="AI-powered Loan Fraud Detection & Early-Warning System Backend",
