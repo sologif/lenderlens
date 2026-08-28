@@ -21,7 +21,7 @@ def get_demo_scenarios():
             "expected_decision": "ALLOW",
             "domain": "abcfinance.com",
             "claimed_lender": "ABC Finance Ltd.",
-            "url": "http://localhost:8000/demo/legitimate/index.html",
+            "url": "/demo/legitimate/index.html",
             "key_traits": [
                 "Official RBI NBFC Registry record matches perfectly",
                 "Domain abcfinance.com verified with SSL & MCA listing",
@@ -38,7 +38,7 @@ def get_demo_scenarios():
             "expected_decision": "HUMAN_REVIEW",
             "domain": "quickloan-app.in",
             "claimed_lender": "QuickLoan Financial Services Ltd.",
-            "url": "http://localhost:8000/demo/uncertain/index.html",
+            "url": "/demo/uncertain/index.html",
             "key_traits": [
                 "Valid RBI registration found under legal entity, but unofficial domain alias used",
                 "Incomplete Key Fact Statement disclosure",
@@ -55,7 +55,7 @@ def get_demo_scenarios():
             "expected_decision": "BLOCK",
             "domain": "fastcash-instantloans.net",
             "claimed_lender": "ABC Finance Ltd.",
-            "url": "http://localhost:8000/demo/fraudulent/index.html",
+            "url": "/demo/fraudulent/index.html",
             "key_traits": [
                 "Impersonates licensed NBFC ABC Finance Ltd.",
                 "Website mismatch: Claimed 'ABC Finance' on rogue domain fastcash-instantloans.net",

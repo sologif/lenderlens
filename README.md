@@ -42,7 +42,7 @@ python backend\app\seed_data.py
 # 3. Start the FastAPI server
 uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-The server will start at **`http://localhost:8000`**.
+The server will start at **`https://lenderlens-9rky.onrender.com`**.
 
 ---
 
@@ -57,7 +57,7 @@ The server will start at **`http://localhost:8000`**.
 ---
 
 ### 3. Open the Analyst Dashboard
-Visit **`http://localhost:8000/dashboard/index.html`** in your browser.
+Visit **`https://lenderlens-9rky.onrender.com/dashboard/index.html`** in your browser.
 
 ---
 
@@ -66,17 +66,17 @@ Visit **`http://localhost:8000/dashboard/index.html`** in your browser.
 LenderLens comes with 3 pre-built interactive demo loan websites:
 
 ### 🟢 1. Legitimate Lender — ABC Finance
-- **URL**: `http://localhost:8000/demo/legitimate/index.html`
+- **URL**: `https://lenderlens-9rky.onrender.com/demo/legitimate/index.html`
 - **Result**: `✓ LOW RISK (18/100) — ALLOW`
 - **Signals**: Verified RBI NBFC Registry record (`NBFC-CORP-109482`), official domain match (`abcfinance.com`), transparent Key Fact Statement (14.5% APR), ₹0 advance fee, clean isolated network graph.
 
 ### 🟡 2. Uncertain / Needs Review — QuickLoan
-- **URL**: `http://localhost:8000/demo/uncertain/index.html`
+- **URL**: `https://lenderlens-9rky.onrender.com/demo/uncertain/index.html`
 - **Result**: `⚠️ NEEDS REVIEW (56/100) — HUMAN REVIEW`
 - **Signals**: Entity exists in RBI registry, but current domain (`quickloan-app.in`) is an unlisted marketing alias; partial KFS disclosure; contacts permission requested. Flagged for analyst investigation.
 
 ### 🔴 3. Fraudulent Syndicate — FastCash Instant Loans
-- **URL**: `http://localhost:8000/demo/fraudulent/index.html`
+- **URL**: `https://lenderlens-9rky.onrender.com/demo/fraudulent/index.html`
 - **Result**: `🔴 HIGH RISK (91/100) — BLOCK`
 - **Signals**:
   - **Identity Mismatch**: Claims affiliation with licensed "ABC Finance Ltd.", but operates on rogue domain `fastcash-instantloans.net`.
