@@ -7,12 +7,12 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='20'>🛡️</text></svg>">
   <style>
     :root {
-      --bg-base: #07090e;
-      --bg-surface: #0e131f;
-      --bg-surface-elevated: #141c2e;
-      --bg-surface-hover: #1a253c;
+      --bg-base: #060913;
+      --bg-surface: #0b1120;
+      --bg-surface-elevated: #131b2e;
+      --bg-surface-hover: #1e293b;
       --border-subtle: #1e293b;
-      --border-focus: #334155;
+      --border-focus: #3b82f6;
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-tertiary: #64748b;
@@ -26,8 +26,8 @@
       --accent-emerald: #10b981;
       --accent-emerald-subtle: rgba(16, 185, 129, 0.12);
 
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,11 +39,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Top Security Navbar ─── */
+    /* Navbar */
     .navbar {
       position: sticky;
       top: 0;
-      background: rgba(7, 9, 14, 0.94);
+      background: rgba(6, 9, 19, 0.94);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-subtle);
       z-index: 100;
@@ -95,943 +95,700 @@
       box-shadow: 0 0 8px var(--accent-emerald);
     }
 
+    /* Tab Navigation Links */
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 8px;
     }
-    .nav-link {
+    .tab-btn {
+      background: none;
+      border: none;
       color: var(--text-secondary);
-      text-decoration: none;
       font-size: 13.5px;
-      font-weight: 500;
-      transition: color 0.15s;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
     }
-    .nav-link:hover { color: var(--text-primary); }
+    .tab-btn:hover { color: var(--text-primary); background: var(--bg-surface-hover); }
+    .tab-btn.active { color: #fff; background: var(--accent-blue); }
 
     .btn-nav-download {
       background: var(--accent-blue);
       color: #fff;
-      padding: 7px 14px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: opacity 0.15s;
-    }
-    .btn-nav-download:hover { opacity: 0.9; }
-
-    /* ─── Hero Section ─── */
-    .hero {
-      padding: 70px 20px 50px;
-      border-bottom: 1px solid var(--border-subtle);
-      background: linear-gradient(180deg, #090e18 0%, #07090e 100%);
-    }
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-
-    .hero-pre {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--accent-blue);
-      background: var(--accent-blue-subtle);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      padding: 3px 10px;
-      border-radius: 4px;
-      margin-bottom: 18px;
-    }
-    .hero-h1 {
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.2;
-      color: #ffffff;
-      margin-bottom: 16px;
-      max-width: 820px;
-    }
-    .hero-p {
-      font-size: 16.5px;
-      color: var(--text-secondary);
-      max-width: 760px;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-
-    .hero-btn-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-    .btn-main {
-      background: #ffffff;
-      color: #07090e;
-      padding: 12px 22px;
-      border-radius: 6px;
-      font-size: 14px;
       font-weight: 700;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      border: 1px solid #ffffff;
-      cursor: pointer;
+      gap: 6px;
     }
-    .btn-main:hover { background: #e2e8f0; }
+    .btn-nav-download:hover { opacity: 0.9; }
 
-    .btn-outline {
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      padding: 12px 22px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border-subtle);
+    /* Page Container */
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
     }
-    .btn-outline:hover { background: var(--bg-surface-hover); border-color: var(--border-focus); }
 
-    /* ─── Telemetry Bar ─── */
+    /* Content Panels */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Telemetry Info Cards */
     .telemetry-strip {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border-subtle);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 24px;
     }
     .telemetry-cell {
       background: var(--bg-surface);
-      padding: 14px 18px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
     }
     .tele-label {
       font-family: var(--font-mono);
       font-size: 10.5px;
       color: var(--text-tertiary);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
     .tele-val {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--text-primary);
     }
 
-    /* ─── LIVE INTERACTIVE DEMO SIMULATOR ─── */
-    .simulator-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-focus);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px -10px rgba(0,0,0,0.5);
-      margin-top: 40px;
-    }
-    .sim-header {
-      background: #090d16;
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .sim-title {
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .sim-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      background: var(--accent-blue-subtle);
-      color: var(--accent-blue);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(59, 130, 246, 0.2);
-    }
-
-    .scenario-picker {
-      display: flex;
-      gap: 8px;
-    }
-    .scenario-chip {
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.15s;
-    }
-    .scenario-chip:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
-    .scenario-chip.active { background: #1e293b; border-color: var(--accent-blue); color: #fff; }
-
-    /* Interactive Search & URL Bar */
-    .sim-search-bar {
-      padding: 14px 20px;
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .sim-input {
-      flex: 1;
-      background: #07090e;
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--text-primary);
-    }
-    .sim-input:focus { outline: none; border-color: var(--accent-blue); }
-    .btn-scan {
-      background: var(--accent-blue);
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-scan:hover { opacity: 0.9; }
-
-    /* Simulator Interactive Workspace */
-    .sim-body {
-      padding: 24px;
+    /* Grid Layouts */
+    .panel-grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 360px 1fr;
       gap: 24px;
-      background: #090d16;
     }
 
-    /* Trust Card Widget Inside Simulator */
-    .sim-trust-card {
+    /* Trust Card Widget */
+    .trust-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 18px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
-    .card-top-row {
+    .trust-card-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 12px;
     }
-    .card-site-name { font-size: 15px; font-weight: 800; color: #fff; }
-    .card-domain-name { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
-    
-    .score-banner {
-      padding: 10px 12px;
-      border-radius: 6px;
-      margin-bottom: 14px;
-      border: 1px solid var(--border-subtle);
-    }
-    .score-danger  { background: var(--accent-red-subtle); border-color: rgba(239,68,68,0.3); color: var(--accent-red); }
-    .score-warning { background: var(--accent-amber-subtle); border-color: rgba(245,158,11,0.3); color: var(--accent-amber); }
-    .score-success { background: var(--accent-emerald-subtle); border-color: rgba(16,185,129,0.3); color: var(--accent-emerald); }
-
-    .score-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .trust-score-badge {
+      font-family: var(--font-mono);
+      font-size: 13px;
       font-weight: 800;
-      font-size: 13.5px;
+      padding: 4px 8px;
+      border-radius: 6px;
     }
-    .score-bar-bg {
-      height: 6px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 3px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-    .score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
 
-    .evidence-list {
-      margin-bottom: 16px;
-      font-size: 12px;
-    }
+    /* Evidence Items */
     .evidence-item {
       display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      padding: 5px 0;
-      border-bottom: 1px dashed var(--border-subtle);
+      gap: 8px;
+      font-size: 12.5px;
       color: var(--text-secondary);
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border-subtle);
     }
     .evidence-item:last-child { border-bottom: none; }
+    .icon-fail { color: var(--accent-red); font-weight: bold; }
+    .icon-pass { color: var(--accent-emerald); font-weight: bold; }
 
-    .urgent-banner {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      color: #fca5a5;
-      font-weight: 700;
-      font-size: 11.5px;
-      padding: 8px;
-      border-radius: 4px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
-    /* Diagnostics Visualizer Grid in Simulator */
-    .sim-diagnostics {
+    /* Main Console Workspace */
+    .console-wrap {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
-    .diag-box {
+    .console-box {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 20px;
     }
-    .diag-header {
+    .console-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      padding-bottom: 10px;
       border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
     }
 
-    .canvas-sim-wrap {
+    /* Interactive canvases */
+    .canvas-wrap {
       height: 180px;
       background: #07090e;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid var(--border-subtle);
       position: relative;
     }
+    canvas { width: 100%; height: 100%; display: block; }
 
-    /* ─── Sections ─── */
-    .section {
-      padding: 70px 20px;
+    /* Form Elements */
+    .scan-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .scan-input {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 14px;
+    }
+    .scan-input:focus { outline: none; border-color: var(--accent-blue); }
+    .btn-action {
+      background: var(--accent-blue);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn-action:hover { opacity: 0.9; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--border-subtle);
     }
-    .section-header {
-      margin-bottom: 40px;
-    }
-    .sec-sub {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--accent-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-    .sec-title {
-      font-size: 28px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
-    }
-
-    /* ─── Problem Matrix ─── */
-    .problem-matrix {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .threat-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-top: 3px solid var(--accent-red);
-      border-radius: 6px;
-      padding: 20px;
-    }
-    .threat-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent-red); margin-bottom: 8px; }
-    .threat-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-    .threat-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-
-    /* ─── 4-Layer Architecture Matrix ─── */
-    .layer-matrix {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    .layer-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 24px;
-    }
-    .layer-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .layer-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--accent-blue-subtle);
-      color: var(--accent-blue);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      padding: 2px 7px;
-      border-radius: 4px;
-    }
-    .layer-name { font-size: 16px; font-weight: 800; color: #fff; }
-    .layer-desc { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5; }
-    
-    .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-    .tech-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      background: #090d16;
-      border: 1px solid var(--border-subtle);
-      padding: 2px 7px;
-      border-radius: 4px;
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-subtle);
       color: var(--text-secondary);
     }
+    tr:hover td { background: rgba(255,255,255,0.02); }
 
-    /* ─── Installation Guide ─── */
-    .install-grid {
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .badge-danger { background: var(--accent-red-subtle); color: var(--accent-red); border: 1px solid rgba(239,68,68,0.2); }
+    .badge-warning { background: var(--accent-amber-subtle); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.2); }
+    .badge-success { background: var(--accent-emerald-subtle); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.2); }
+
+    /* Human-in-the-loop review actions */
+    .review-action-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .btn-review {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-review:hover { background: var(--bg-surface-hover); }
+    .btn-approve { border-color: var(--accent-emerald); color: var(--accent-emerald); }
+    .btn-warn { border-color: var(--accent-amber); color: var(--accent-amber); }
+    .btn-block { border-color: var(--accent-red); color: var(--accent-red); }
+
+    /* Info cards */
+    .product-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 20px;
+      margin-top: 30px;
     }
-    .install-box {
+    .product-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 22px;
+      border-radius: 10px;
+      padding: 24px;
     }
-    .step-num {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--accent-blue);
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .step-heading { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-    .step-body { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-
-    /* ─── Footer ─── */
-    .footer {
-      padding: 30px 20px;
-      background: #04060a;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 12.5px;
-      color: var(--text-tertiary);
-    }
-    .footer-flex {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .product-card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
+    .product-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
   </style>
 </head>
 <body>
 
-  <!-- Top Navbar -->
+  <!-- Sticky Navbar -->
   <header class="navbar">
     <a href="#" class="nav-brand">
       <div class="shield-badge">🛡️</div>
       <div class="brand-name">LenderLens</div>
-      <span class="sys-status"><span class="status-dot"></span> ENGINE ONLINE</span>
+      <span class="sys-status"><span class="status-dot"></span> LIVE PROTOTYPE</span>
     </a>
-    <nav class="nav-links">
-      <a href="#simulator" class="nav-link">Live Simulator</a>
-      <a href="#threats" class="nav-link">Threats</a>
-      <a href="#architecture" class="nav-link">4-Layer Architecture</a>
-      <a href="/dashboard/index.html" class="nav-link" target="_blank">Analyst Dashboard ↗</a>
-      <a href="/static/lenderlens-extension.zip" class="btn-nav-download" download>
-        <span>⬇</span> Download Extension (.zip)
-      </a>
-    </nav>
+    
+    <div class="nav-links">
+      <button class="tab-btn active" onclick="switchTab('tab-overview')">🛡️ Overview</button>
+      <button class="tab-btn" onclick="switchTab('tab-simulator')">⚡ Judge Simulator</button>
+      <button class="tab-btn" onclick="switchTab('tab-analyst')">🕵️ Analyst Console</button>
+      <button class="tab-btn" onclick="switchTab('tab-registry')">📋 RBI NBFC Registry</button>
+    </div>
+
+    <a href="/download-extension" class="btn-nav-download">
+      <span>⬇</span> Download Extension
+    </a>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-pre">SYSTEM VERSION 1.0.0 · ACTIVE FRAUD INTERCEPTION</div>
-      <h1 class="hero-h1">Real-Time In-Browser Defense Against Predatory Loan Syndicates</h1>
-      <p class="hero-p">
-        LenderLens pairs a lightweight Manifest V3 Chrome Extension with a 4-layer AI risk fusion engine to cross-check RBI NBFC registries, detect extortionate device permissions, analyze LSTM grievance curves, and map GNN mule payment graphs before borrowers transfer funds.
-      </p>
+  <div class="container">
 
-      <div class="hero-btn-row">
-        <a href="/static/lenderlens-extension.zip" class="btn-main" download>
-          <span>⬇</span> Download Chrome Extension
-        </a>
-        <a href="/dashboard/index.html" class="btn-outline" target="_blank">
-          <span>🛡️</span> Open Analyst Dashboard →
-        </a>
-        <a href="#simulator" class="btn-outline">
-          <span>⚡</span> Run Interactive Demo
-        </a>
+    <!-- ─── TAB 1: OVERVIEW & SYSTEM ARCHITECTURE ─── -->
+    <div class="tab-panel active" id="tab-overview">
+      <div style="margin-bottom: 40px; text-align: center;">
+        <h1 style="font-size: 36px; margin-bottom: 12px; color: #fff;">Real-Time Loan Fraud Interception</h1>
+        <p style="font-size: 16px; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
+          LenderLens provides real-time in-browser warnings to borrowers while feeding multi-layer risk indicators to financial investigators.
+        </p>
       </div>
 
-      <!-- Telemetry Strip -->
+      <div class="product-grid">
+        <div class="product-card" style="border-top: 3px solid var(--accent-blue);">
+          <h3>🔍 4-Layer Detection</h3>
+          <p>We synthesize Layer 1 (RBI NBFC registry), Layer 2 (KFS terms & permissions), Layer 3 (LSTM sequence velocity), and Layer 4 (GNN syndicate mesh) into a unified risk card.</p>
+        </div>
+        <div class="product-card" style="border-top: 3px solid var(--accent-emerald);">
+          <h3>🛑 Advance Fee Intercept</h3>
+          <p>Detects and blocks up-front processing fee scams routing to mule payment networks using actual transaction data templates.</p>
+        </div>
+        <div class="product-card" style="border-top: 3px solid var(--accent-amber);">
+          <h3>⚖️ Human-in-the-Loop</h3>
+          <p>Equips security analysts with an interactive workbench to confirm, override, and record formal decisions instantly.</p>
+        </div>
+      </div>
+
+      <!-- Installation -->
+      <div class="console-box" style="margin-top: 30px;">
+        <h3 style="color:#fff; margin-bottom:12px;">Chrome Extension Setup</h3>
+        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">
+          Load the unpacked Manifest V3 extension in Google Chrome to inspect any of the live simulated loan sites.
+        </p>
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; font-size:13px; color:var(--text-secondary);">
+          <div><strong>1. Extract Bundle</strong><br>Download the extension zip file and extract the contents to a folder.</div>
+          <div><strong>2. Enable Dev Mode</strong><br>Go to <code>chrome://extensions</code> and toggle Developer Mode (top-right).</div>
+          <div><strong>3. Load Unpacked</strong><br>Click <strong>Load unpacked</strong> and select the unzipped <code>extension</code> folder.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB 2: LIVE SIMULATOR (JUDGE VIEW) ─── -->
+    <div class="tab-panel" id="tab-simulator">
+      <div class="scan-row">
+        <select class="scan-input" style="max-width: 250px;" id="sim-presets" onchange="applyPreset(this.value)">
+          <option value="fraud">🔴 FastCash (Advance Fee Scam)</option>
+          <option value="uncertain">🟡 QuickLoan (Unlisted Alias)</option>
+          <option value="legit">🟢 JanSamarth Govt Portal (Verified)</option>
+          <option value="abc">🟢 ABC Finance Ltd. (Matched NBFC)</option>
+        </select>
+        <input type="text" class="scan-input" id="sim-url" value="https://fastcash-instantloans.net/apply">
+        <button class="btn-action" onclick="runSimAnalysis()">Execute Risk Analysis</button>
+      </div>
+
+      <div class="panel-grid">
+        <!-- Trust Card Widget -->
+        <div class="trust-card" id="sim-trust-card">
+          <div class="trust-card-header">
+            <div>
+              <h3 id="sim-claimed-name" style="font-size: 16px; color:#fff;">FastCash Instant Loans</h3>
+              <div id="sim-domain" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);">fastcash-instantloans.net</div>
+            </div>
+            <span class="badge badge-danger" id="sim-verdict">BLOCK</span>
+          </div>
+
+          <div style="background:var(--accent-red-subtle); border: 1px solid rgba(239,68,68,0.25); border-radius: 6px; padding:10px; margin-bottom:14px;" id="sim-banner">
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13px; color:var(--accent-red);">
+              <span>🔴 CRITICAL RISK</span>
+              <span id="sim-score-num">96.0 / 100</span>
+            </div>
+            <div style="height:6px; background:rgba(255,255,255,0.08); border-radius:3px; margin-top:8px; overflow:hidden;">
+              <div style="height:100%; background:var(--accent-red); width: 96%;" id="sim-score-bar"></div>
+            </div>
+          </div>
+
+          <div class="evidence-list" id="sim-evidence">
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>RBI Registry Mismatch (Impersonates ABC Finance)</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>Advance fee detected (₹1,500 demand)</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>Abnormal LSTM burst (+18.4x grievance surge)</span></div>
+            <div class="evidence-item"><span class="icon-fail">✕</span><span>Connected to 3 flagged phishing domains in GNN</span></div>
+          </div>
+
+          <div style="background:rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color:#fca5a5; font-weight:700; font-size:11.5px; padding:8px; border-radius:4px; text-align:center; margin-top:14px;" id="sim-alert">
+            ⚠ DO NOT TRANSFER MONEY
+          </div>
+        </div>
+
+        <!-- 4-Layer Diagnostic Panels -->
+        <div class="console-wrap">
+          <div class="console-box">
+            <div class="console-header">
+              <span>🕸️ Layer 4: GNN Syndicate Graph Extraction</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);" id="sim-gnn-meta">3 Domains · 2 Mule UPIs</span>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="sim-gnn-canvas"></canvas>
+            </div>
+          </div>
+
+          <div class="console-box">
+            <div class="console-header">
+              <span>📈 Layer 3: LSTM Temporal Sequence Anomaly</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);" id="sim-lstm-meta">Pattern: ABNORMAL BURST (+18.4x)</span>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="sim-lstm-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB 3: HUMAN-IN-THE-LOOP ANALYST CONSOLE ─── -->
+    <div class="tab-panel" id="tab-analyst">
       <div class="telemetry-strip">
         <div class="telemetry-cell">
-          <div class="tele-label">Layer 1 Registry</div>
-          <div class="tele-val">RBI NBFC Verification</div>
+          <div class="tele-label">Total Cases</div>
+          <div class="tele-val" id="an-total-cases">128</div>
         </div>
         <div class="telemetry-cell">
-          <div class="tele-label">Layer 2 Policy</div>
-          <div class="tele-val">KFS & Permission Scorer</div>
+          <div class="tele-label">High-Risk Flags</div>
+          <div class="tele-val" id="an-high-risk" style="color:var(--accent-red);">31</div>
         </div>
         <div class="telemetry-cell">
-          <div class="tele-label">Layer 3 Velocity</div>
-          <div class="tele-val">LSTM Temporal Anomaly</div>
+          <div class="tele-label">Pending Queues</div>
+          <div class="tele-val" id="an-pending" style="color:var(--accent-amber);">12</div>
         </div>
         <div class="telemetry-cell">
-          <div class="tele-label">Layer 4 Graph</div>
-          <div class="tele-val">GNN Syndicate Topology</div>
+          <div class="tele-label">Incidents Resolved</div>
+          <div class="tele-val" id="an-resolved" style="color:var(--accent-emerald);">85</div>
         </div>
       </div>
 
-      <!-- ─── LIVE INTERACTIVE DEMO SIMULATOR ─── -->
-      <div class="simulator-card" id="simulator">
-        <div class="sim-header">
-          <div class="sim-title">
-            <span>⚡ Interactive Fraud Diagnostics Console</span>
-            <span class="sim-tag">HACKATHON JUDGE DEMO</span>
-          </div>
-
-          <div class="scenario-picker">
-            <button class="scenario-chip active" id="chip-fraud" onclick="selectScenario('fraud')">
-              🔴 FastCash (Scam)
-            </button>
-            <button class="scenario-chip" id="chip-uncertain" onclick="selectScenario('uncertain')">
-              🟡 QuickLoan (Uncertain)
-            </button>
-            <button class="scenario-chip" id="chip-legit" onclick="selectScenario('legit')">
-              🟢 ABC Finance (Legit)
-            </button>
-          </div>
+      <div class="panel-grid">
+        <!-- Active Cases Queue Table -->
+        <div class="console-box" style="padding: 16px; overflow-x: auto;">
+          <div style="font-weight:700; margin-bottom:12px; color:#fff;">Active Investigations</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Lender</th>
+                <th>Domain</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="case-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
 
-        <div class="sim-search-bar">
-          <input type="text" class="sim-input" id="sim-url-input" value="https://fastcash-instantloans.net/apply">
-          <button class="btn-scan" onclick="triggerScan()">
-            <span>↻</span> Execute Risk Analysis
-          </button>
-        </div>
-
-        <div class="sim-body">
-          <!-- Trust Card Preview -->
-          <div class="sim-trust-card">
-            <div class="card-top-row">
-              <div>
-                <div class="card-site-name" id="sim-lender-name">FastCash Instant Loans</div>
-                <div class="card-domain-name" id="sim-domain-text">fastcash-instantloans.net</div>
-              </div>
-              <span id="sim-verdict-badge" style="font-family:var(--font-mono); font-size:10px; font-weight:700; padding:2px 5px; border-radius:3px; background:#fef2f2; color:#ef4444;">BLOCK</span>
+        <!-- Investigation Workbench -->
+        <div class="console-box" id="workbench-panel">
+          <div class="console-header">
+            <div>
+              <span style="color:var(--text-tertiary); font-size:11px; font-family:var(--font-mono);">WORKBENCH CASE ID:</span>
+              <strong id="wb-case-id" style="color:#fff;">SELECT A CASE</strong>
             </div>
+            <span class="badge" id="wb-risk-badge">N/A</span>
+          </div>
 
-            <div class="score-banner score-danger" id="sim-score-banner">
-              <div class="score-row">
-                <span id="sim-level-label">🔴 HIGH RISK</span>
-                <span id="sim-score-num">96.0 / 100</span>
-              </div>
-              <div class="score-bar-bg">
-                <div class="score-bar-fill" id="sim-score-bar" style="width: 96%; background: #ef4444;"></div>
-              </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:20px;">
+            <div style="background:#07090e; border: 1px solid var(--border-subtle); border-radius:8px; padding:14px;">
+              <div style="font-weight:700; font-size:12px; margin-bottom:8px; color:#fff;">L1: RBI Identity Cross-Check</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);" id="wb-l1-details">No case selected</div>
             </div>
-
-            <div class="evidence-list" id="sim-evidence-list">
-              <div class="evidence-item"><span>✕</span><span>Website-domain mismatch (Claims ABC Finance Ltd.)</span></div>
-              <div class="evidence-item"><span>✕</span><span>Advance fee detected (₹1,500 demand)</span></div>
-              <div class="evidence-item"><span>✕</span><span>Abnormal LSTM burst (+18.4x grievance surge)</span></div>
-              <div class="evidence-item"><span>✕</span><span>Connected to 3 flagged phishing domains in GNN</span></div>
-            </div>
-
-            <div class="urgent-banner" id="sim-urgent-banner">
-              ⚠ DO NOT TRANSFER MONEY
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-              <a href="/dashboard/index.html" target="_blank" class="btn-outline" style="padding:7px; font-size:11.5px; text-align:center; justify-content:center; grid-column:1/-1;">
-                View Case in Dashboard →
-              </a>
-              <a href="/demo/fraudulent/payment.html" id="sim-launch-link" target="_blank" class="btn-main" style="padding:7px; font-size:11.5px; text-align:center; justify-content:center; grid-column:1/-1;">
-                Launch Live Scenario Page ↗
-              </a>
+            <div style="background:#07090e; border: 1px solid var(--border-subtle); border-radius:8px; padding:14px;">
+              <div style="font-weight:700; font-size:12px; margin-bottom:8px; color:#fff;">L2: Loan indicators & Permissions</div>
+              <div style="font-size:11.5px; color:var(--text-secondary);" id="wb-l2-details">No case selected</div>
             </div>
           </div>
 
-          <!-- Diagnostics Visualizer -->
-          <div class="sim-diagnostics">
-            <div class="diag-box">
-              <div class="diag-header">
-                <span>🕸️ Layer 4: GNN Syndicate Graph Extraction</span>
-                <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary);" id="sim-gnn-meta">3 Domains · 2 Mule UPIs</span>
-              </div>
-              <div class="canvas-sim-wrap">
-                <canvas id="sim-gnn-canvas" width="600" height="180"></canvas>
-              </div>
-            </div>
-
-            <div class="diag-box">
-              <div class="diag-header">
-                <span>📈 Layer 3: LSTM Temporal Sequence Anomaly</span>
-                <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-tertiary);" id="sim-lstm-meta">Pattern: ABNORMAL BURST (+18.4x)</span>
-              </div>
-              <div class="canvas-sim-wrap">
-                <canvas id="sim-lstm-canvas" width="600" height="180"></canvas>
-              </div>
+          <div style="margin-bottom:20px;">
+            <div style="font-weight:700; font-size:12px; margin-bottom:8px; color:#fff;">L4: Transaction Syndicate Trail</div>
+            <div class="canvas-wrap" style="height:140px;">
+              <canvas id="wb-gnn-canvas"></canvas>
             </div>
           </div>
-        </div>
-      </div>
 
-    </div>
-  </section>
-
-  <!-- Problem Section -->
-  <section class="section" id="threats">
-    <div class="container">
-      <div class="section-header">
-        <div class="sec-sub">Threat Analysis</div>
-        <h2 class="sec-title">Predatory Syndicate Vectors</h2>
-      </div>
-
-      <div class="problem-matrix">
-        <div class="threat-card">
-          <div class="threat-id">VEC-01 · REGULATORY SPOOFING</div>
-          <div class="threat-title">Licensed NBFC Impersonation</div>
-          <div class="threat-desc">Scam operators cite registered entity names like "ABC Finance Ltd." but host forms on unlisted rogue domains to evade basic name searches.</div>
-        </div>
-
-        <div class="threat-card">
-          <div class="threat-id">VEC-02 · ADVANCE FEE FRAUD</div>
-          <div class="threat-title">Upfront Security Deposits</div>
-          <div class="threat-desc">Victims are told their loan is approved but must pay an upfront ₹1,500 "activation/insurance fee" to disposable mule UPI IDs before release.</div>
-        </div>
-
-        <div class="threat-card">
-          <div class="threat-id">VEC-03 · PERMISSION HARVESTING</div>
-          <div class="threat-title">Blackmail Device Telemetry</div>
-          <div class="threat-desc">Sideloaded apps request Contacts, SMS, Call Logs, and Photos, which recovery syndicates harvest for extortion and reference harassment.</div>
-        </div>
-
-        <div class="threat-card">
-          <div class="threat-id">VEC-04 · ZERO EARLY WARNING</div>
-          <div class="threat-title">Post-Victimization Discovery</div>
-          <div class="threat-desc">Borrowers only realize they have been defrauded after money is sent, with no real-time browser warning to block payment routing.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4-Layer Solution Section -->
-  <section class="section" id="architecture">
-    <div class="container">
-      <div class="section-header">
-        <div class="sec-sub">Defense Architecture</div>
-        <h2 class="sec-title">4 Parallel Evidence Layers</h2>
-      </div>
-
-      <div class="layer-matrix">
-        <div class="layer-box">
-          <div class="layer-top">
-            <span class="layer-tag">LAYER 01</span>
-            <div class="layer-name">Identity & Regulatory Cross-Check</div>
-          </div>
-          <div class="layer-desc">
-            Directly cross-checks claimed lender names against official Reserve Bank of India (RBI) NBFC registries and verifies official registered domains to prevent domain spoofing.
-          </div>
-          <div class="tech-tags">
-            <span class="tech-tag">RBI NBFC Verification</span>
-            <span class="tech-tag">Official Domain Association</span>
-            <span class="tech-tag">Identity Consistency Scorer</span>
-          </div>
-        </div>
-
-        <div class="layer-box">
-          <div class="layer-top">
-            <span class="layer-tag">LAYER 02</span>
-            <div class="layer-name">Loan Policy & Permission Risk</div>
-          </div>
-          <div class="layer-desc">
-            Validates Key Fact Statement (KFS) disclosures, detects predatory APR interest rates, flags advance deposit demands, and scores invasive device permissions.
-          </div>
-          <div class="tech-tags">
-            <span class="tech-tag">KFS Disclosure Validator</span>
-            <span class="tech-tag">Advance Fee Interceptor</span>
-            <span class="tech-tag">Permission Risk Matrix</span>
-          </div>
-        </div>
-
-        <div class="layer-box">
-          <div class="layer-top">
-            <span class="layer-tag">LAYER 03</span>
-            <div class="layer-name">LSTM Temporal Behavioral Risk</div>
-          </div>
-          <div class="layer-desc">
-            Recurrent sequence model analyzing 90-day grievance curves, inquiry rates, and payment velocity to identify sudden pump-and-dump syndication spikes.
-          </div>
-          <div class="tech-tags">
-            <span class="tech-tag">Recurrent Sequence Anomaly</span>
-            <span class="tech-tag">Grievance Burst Multiplier</span>
-            <span class="tech-tag">Velocity Derivative Filter</span>
-          </div>
-        </div>
-
-        <div class="layer-box">
-          <div class="layer-top">
-            <span class="layer-tag">LAYER 04</span>
-            <div class="layer-name">GNN Graph Syndicate Topology</div>
-          </div>
-          <div class="layer-desc">
-            Maps entity-relationship graphs across Domains, Shared Phone Hotlines, Mule UPI Accounts, and Bank Accounts to expose hidden criminal network connections.
-          </div>
-          <div class="tech-tags">
-            <span class="tech-tag">NetworkX Graph Model</span>
-            <span class="tech-tag">Shared Hotline Matching</span>
-            <span class="tech-tag">Mule UPI Cluster Tracker</span>
+          <div style="border-top: 1px solid var(--border-subtle); padding-top:16px;">
+            <div style="font-weight:700; font-size:12px; margin-bottom:6px; color:#fff;">Record Analyst Review Decision</div>
+            <textarea class="scan-input" style="height:60px; font-size:12px; width:100%; margin-bottom:12px;" id="wb-analyst-notes" placeholder="Enter investigation logs and telemetry context..."></textarea>
+            
+            <div class="review-action-row">
+              <button class="btn-review btn-approve" onclick="submitReview('APPROVE')">APPROVE</button>
+              <button class="btn-review btn-warn" onclick="submitReview('WARN')">ENFORCE WARNING</button>
+              <button class="btn-review btn-block" onclick="submitReview('BLOCK')">BLOCK PORTAL</button>
+            </div>
+            <div style="font-size:11.5px; color:var(--accent-emerald); margin-top:8px; font-weight:700;" id="wb-status-message"></div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Installation Guide -->
-  <section class="section" id="install">
-    <div class="container">
-      <div class="section-header">
-        <div class="sec-sub">Deployment</div>
-        <h2 class="sec-title">Load Manifest V3 Extension in 3 Steps</h2>
-      </div>
-
-      <div class="install-grid">
-        <div class="install-box">
-          <div class="step-num">STEP 01</div>
-          <div class="step-heading">Download Package</div>
-          <div class="step-body">Download <code>lenderlens-extension.zip</code> and unzip it to any folder on your machine.</div>
+    <!-- ─── TAB 4: RBI REGULATORY REGISTRY ─── -->
+    <div class="tab-panel" id="tab-registry">
+      <div class="console-box">
+        <div class="console-header">
+          <span>📋 Official Reserve Bank of India (RBI) Registry Lookup</span>
+          <input type="text" class="scan-input" style="max-width:350px; padding:8px 12px; font-size:12.5px;" id="registry-search" placeholder="Search NBFC Name or CoR number..." oninput="searchRegistry(this.value)">
         </div>
 
-        <div class="install-box">
-          <div class="step-num">STEP 02</div>
-          <div class="step-heading">Enable Developer Mode</div>
-          <div class="step-body">Open Google Chrome, navigate to <code>chrome://extensions</code>, and turn on Developer mode in the top right.</div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Legal Registered Name</th>
+                <th>CoR Number</th>
+                <th>Regulator</th>
+                <th>Official Domain</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="registry-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
-
-        <div class="install-box">
-          <div class="step-num">STEP 03</div>
-          <div class="step-heading">Load Unpacked Folder</div>
-          <div class="step-body">Click <strong>Load unpacked</strong> and choose the unzipped <code>extension</code> folder. LenderLens will activate instantly.</div>
-        </div>
-      </div>
-
-      <div style="text-align:center; margin-top:30px;">
-        <a href="/static/lenderlens-extension.zip" class="btn-main" download>
-          <span>⬇</span> Download <code>lenderlens-extension.zip</code>
-        </a>
       </div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-flex">
-      <div>
-        <strong>LenderLens Platform</strong> · Manifest V3 Security Extension & Analyst Console
-      </div>
-      <div>
-        <a href="https://github.com/sologif/lenderlens" target="_blank" style="color:var(--accent-blue); text-decoration:none;">GitHub Repository ↗</a>
-      </div>
-    </div>
+  </div>
+
+  <footer style="text-align:center; padding:30px; border-top:1px solid var(--border-subtle); font-size:12px; color:var(--text-tertiary); margin-top:50px;">
+    LenderLens Platform · Deployable Unified Prototype for Render
   </footer>
 
-  <!-- Interactive Simulator Controller Script -->
   <script>
-    const SCENARIOS = {
+    const PRESETS = {
       fraud: {
         url: 'https://fastcash-instantloans.net/apply',
         claimed_name: 'ABC Finance (Impersonated)',
         domain: 'fastcash-instantloans.net',
         score: 96.0,
-        level: '🔴 HIGH RISK',
+        level: '🔴 CRITICAL RISK',
         verdict: 'BLOCK',
         barColor: '#ef4444',
-        bannerClass: 'score-danger',
+        bannerClass: 'badge-danger',
         evidence: [
-          'Website-domain mismatch (Claims ABC Finance Ltd.)',
-          'Advance fee detected (₹1,500 demand)',
-          'Abnormal LSTM burst (+18.4x grievance surge)',
-          'Connected to 3 flagged phishing domains in GNN'
+          'Website-domain mismatch: Claims ABC Finance Ltd. but operates on unlisted domain',
+          'Advance fee detected: Upfront ₹1,500 payment required before release',
+          'Abnormal LSTM burst: Grievance velocity spiked +18.4x baseline',
+          'GNN connection: Shared phone hotline with blocked ezcash-fastloan.online'
         ],
         urgent: true,
-        launchUrl: '/demo/fraudulent/index.html',
-        gnnMeta: '3 Flagged Domains · 2 Mule UPI Accounts · 1 Shared Hotline',
+        gnnMeta: '3 Domains · 2 Mule UPIs · 1 shared hotline',
         lstmMeta: 'Pattern: ABNORMAL BURST (+18.4x surge)',
         nodes: [
           { id: 'fc_dom', label: 'fastcash-instantloans.net', type: 'DOMAIN', susp: true, focal: true },
-          { id: 'phone', label: '+91-9988776655 (Syndicate Hotline)', type: 'PHONE', susp: true },
+          { id: 'phone', label: '+91-9988776655 (Hotline)', type: 'PHONE', susp: true },
           { id: 'old_dom', label: 'rupee-instant-loan.xyz (Flagged)', type: 'DOMAIN', susp: true },
           { id: 'upi1', label: 'fastpay.collect@okhdfcbank', type: 'UPI', susp: true },
-          { id: 'app', label: 'Fast Cash APK', type: 'APP', susp: true },
-          { id: 'mule', label: 'Yes Bank Mule Account', type: 'BANK', susp: true }
+          { id: 'txn', label: 'TXN_F_90821: ₹1,500', type: 'TXN', susp: true }
         ],
         edges: [
           { s: 'fc_dom', t: 'phone', susp: true },
           { s: 'old_dom', t: 'phone', susp: true },
           { s: 'fc_dom', t: 'upi1', susp: true },
-          { s: 'fc_dom', t: 'app', susp: true },
-          { s: 'upi1', t: 'mule', susp: true }
+          { s: 'upi1', t: 'txn', susp: true }
         ],
         sequence: [10, 12, 11, 14, 16, 18, 75, 180, 350]
       },
       uncertain: {
         url: 'https://quickloan-app.in/apply',
-        claimed_name: 'QuickLoan Financial',
+        claimed_name: 'QuickLoan Financial Services Ltd.',
         domain: 'quickloan-app.in',
         score: 48.7,
         level: '🟡 UNCERTAIN',
         verdict: 'HUMAN REVIEW',
         barColor: '#f59e0b',
-        bannerClass: 'score-warning',
+        bannerClass: 'badge-warning',
         evidence: [
-          'RBI registered entity, but operating on unlisted domain alias',
-          'Key Fact Statement (KFS) format incomplete',
-          'Requests device Contacts access for KYC references',
-          'Moderate elevation in recent inquiry trend'
+          'RBI registered entity, but domain alias quickloan-app.in is not listed',
+          'Incomplete Key Fact Statement (KFS) disclosure',
+          'Requests device Contacts access for reference checks',
+          'Moderate complain rate elevation (+2.4x)'
         ],
         urgent: false,
-        launchUrl: '/demo/uncertain/index.html',
         gnnMeta: '1 Domain Alias · 0 Flagged Syndicates',
         lstmMeta: 'Pattern: MODERATE ELEVATION (+2.4x)',
         nodes: [
           { id: 'ql_dom', label: 'quickloan-app.in (Alias)', type: 'DOMAIN', susp: false, focal: true },
-          { id: 'ql_legal', label: 'QuickLoan Financial Services Ltd.', type: 'LENDER', susp: false },
-          { id: 'ql_off', label: 'quickloanfinance.org (Official)', type: 'DOMAIN', susp: false },
-          { id: 'ql_phone', label: '+91-9820011223', type: 'PHONE', susp: false }
+          { id: 'ql_legal', label: 'QuickLoan Financial Ltd.', type: 'LENDER', susp: false },
+          { id: 'ql_off', label: 'quickloanfinance.org (Official)', type: 'DOMAIN', susp: false }
         ],
         edges: [
           { s: 'ql_dom', t: 'ql_legal', susp: false },
-          { s: 'ql_legal', t: 'ql_off', susp: false },
-          { s: 'ql_dom', t: 'ql_phone', susp: false }
+          { s: 'ql_legal', t: 'ql_off', susp: false }
         ],
         sequence: [20, 24, 22, 28, 35, 42, 48, 55, 58]
       },
       legit: {
-        url: 'https://abcfinance.com/personal-loans',
-        claimed_name: 'ABC Finance Ltd.',
-        domain: 'abcfinance.com',
-        score: 8.1,
+        url: 'https://jansamarth.in/schemes',
+        claimed_name: 'JanSamarth Government Credit Portal',
+        domain: 'jansamarth.in',
+        score: 5.0,
         level: '🟢 LOW RISK',
         verdict: 'ALLOW',
         barColor: '#10b981',
-        bannerClass: 'score-success',
+        bannerClass: 'badge-success',
         evidence: [
-          'Exact match with official RBI Registered NBFC registry',
-          'Domain verified with SSL & MCA corporate registration',
-          'Full Key Fact Statement (KFS) with 14.5% transparent APR',
-          'No advance fees or abusive device permissions requested'
+          'Official Ministry of Finance verified credit portal initiative',
+          'Official registered domain match',
+          'No advance fee demands or predatory permissions requested'
         ],
         urgent: false,
-        launchUrl: '/demo/legitimate/index.html',
-        gnnMeta: 'Verified Corporate Mesh · Isolated from Syndicates',
-        lstmMeta: 'Pattern: NORMAL ORGANIC (Steady Baseline)',
+        gnnMeta: 'Verified Government Infrastructure',
+        lstmMeta: 'Pattern: NORMAL ORGANIC (Baseline)',
         nodes: [
-          { id: 'abc_dom', label: 'abcfinance.com (Official)', type: 'DOMAIN', susp: false, focal: true },
-          { id: 'abc_legal', label: 'ABC Finance Ltd. (RBI NBFC)', type: 'LENDER', susp: false },
-          { id: 'abc_phone', label: '+91-22-68940000', type: 'PHONE', susp: false },
-          { id: 'abc_acc', label: 'HDFC Corporate Settlement', type: 'BANK', susp: false }
+          { id: 'js_dom', label: 'jansamarth.in', type: 'DOMAIN', susp: false, focal: true },
+          { id: 'js_gov', label: 'Ministry of Finance', type: 'GOV', susp: false }
         ],
         edges: [
-          { s: 'abc_dom', t: 'abc_legal', susp: false },
-          { s: 'abc_legal', t: 'abc_phone', susp: false },
-          { s: 'abc_dom', t: 'abc_acc', susp: false }
+          { s: 'js_dom', t: 'js_gov', susp: false }
         ],
-        sequence: [12, 14, 15, 13, 16, 14, 15, 17, 16]
+        sequence: [15, 14, 16, 15, 13, 14, 15, 16, 14]
+      },
+      abc: {
+        url: 'https://abcfinance.com/home',
+        claimed_name: 'ABC Finance Ltd.',
+        domain: 'abcfinance.com',
+        score: 5.0,
+        level: '🟢 LOW RISK',
+        verdict: 'ALLOW',
+        barColor: '#10b981',
+        bannerClass: 'badge-success',
+        evidence: [
+          'Official RBI Registered NBFC record match (NBFC-CORP-109482)',
+          'Official domain matches primary registry record',
+          'Transparent Key Fact Statement (KFS) with 14.5% APR'
+        ],
+        urgent: false,
+        gnnMeta: 'Verified Registered NBFC Domain',
+        lstmMeta: 'Pattern: NORMAL ORGANIC (Baseline)',
+        nodes: [
+          { id: 'abc_dom', label: 'abcfinance.com', type: 'DOMAIN', susp: false, focal: true },
+          { id: 'abc_legal', label: 'ABC Finance Ltd.', type: 'LENDER', susp: false }
+        ],
+        edges: [
+          { s: 'abc_dom', t: 'abc_legal', susp: false }
+        ],
+        sequence: [12, 13, 15, 14, 16, 15, 14, 16, 15]
       }
     };
 
-    let activeScenarioKey = 'fraud';
+    let activeTab = 'tab-overview';
+    let loadedCases = [];
+    let selectedCase = null;
 
-    function selectScenario(key) {
-      activeScenarioKey = key;
-      document.querySelectorAll('.scenario-chip').forEach(c => c.classList.remove('active'));
-      document.getElementById(`chip-${key}`).classList.add('active');
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
-      const sc = SCENARIOS[key];
-      document.getElementById('sim-url-input').value = sc.url;
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+
+      if (tabId === 'tab-analyst') loadCases();
+      if (tabId === 'tab-registry') loadRegistry();
+    }
+
+    function applyPreset(key) {
+      const sc = PRESETS[key];
+      if (!sc) return;
+      document.getElementById('sim-url').value = sc.url;
       renderSimulator(sc);
     }
 
-    function triggerScan() {
-      renderSimulator(SCENARIOS[activeScenarioKey]);
+    function runSimAnalysis() {
+      // Simulate scanning animation, then render
+      const presetKey = document.getElementById('sim-presets').value;
+      renderSimulator(PRESETS[presetKey]);
     }
 
     function renderSimulator(sc) {
-      document.getElementById('sim-lender-name').textContent = sc.claimed_name;
-      document.getElementById('sim-domain-text').textContent = sc.domain;
+      document.getElementById('sim-claimed-name').textContent = sc.claimed_name;
+      document.getElementById('sim-domain').textContent = sc.domain;
       document.getElementById('sim-score-num').textContent = `${sc.score} / 100`;
-      document.getElementById('sim-level-label').textContent = sc.level;
-      document.getElementById('sim-verdict-badge').textContent = sc.verdict;
+      document.getElementById('sim-verdict').textContent = sc.verdict;
       
-      const banner = document.getElementById('sim-score-banner');
-      banner.className = `score-banner ${sc.bannerClass}`;
-      
-      const bar = document.getElementById('sim-score-bar');
-      bar.style.width = `${sc.score}%`;
-      bar.style.background = sc.barColor;
+      const badge = document.getElementById('sim-verdict');
+      badge.className = `badge ${sc.score > 60 ? 'badge-danger' : sc.score > 30 ? 'badge-warning' : 'badge-success'}`;
 
-      const evContainer = document.getElementById('sim-evidence-list');
+      const banner = document.getElementById('sim-banner');
+      banner.style.background = sc.score > 60 ? 'var(--accent-red-subtle)' : sc.score > 30 ? 'var(--accent-amber-subtle)' : 'var(--accent-emerald-subtle)';
+      banner.style.borderColor = sc.score > 60 ? 'rgba(239,68,68,0.25)' : sc.score > 30 ? 'rgba(245,158,11,0.25)' : 'rgba(16,185,129,0.25)';
+
+      const scoreLabel = banner.querySelector('span');
+      scoreLabel.textContent = sc.level;
+      scoreLabel.style.color = sc.barColor;
+
+      document.getElementById('sim-score-bar').style.width = `${sc.score}%`;
+      document.getElementById('sim-score-bar').style.background = sc.barColor;
+
+      const evContainer = document.getElementById('sim-evidence');
       evContainer.innerHTML = sc.evidence.map(e => {
-        const icon = sc.score > 60 ? '✕' : sc.score > 30 ? '⚠' : '✓';
-        const color = sc.score > 60 ? '#ef4444' : sc.score > 30 ? '#f59e0b' : '#10b981';
-        return `<div class="evidence-item"><span style="color:${color};font-weight:bold;">${icon}</span><span>${e}</span></div>`;
+        const sign = sc.score > 30 ? '✕' : '✓';
+        const colorClass = sc.score > 30 ? 'icon-fail' : 'icon-pass';
+        return `<div class="evidence-item"><span class="${colorClass}">${sign}</span><span>${e}</span></div>`;
       }).join('');
 
-      document.getElementById('sim-urgent-banner').style.display = sc.urgent ? 'block' : 'none';
-      document.getElementById('sim-launch-link').href = sc.launchUrl;
-
+      document.getElementById('sim-alert').style.display = sc.urgent ? 'block' : 'none';
       document.getElementById('sim-gnn-meta').textContent = sc.gnnMeta;
       document.getElementById('sim-lstm-meta').textContent = sc.lstmMeta;
 
-      drawGNNCanvas(sc.nodes, sc.edges);
-      drawLSTMCanvas(sc.sequence, sc.score > 60);
+      drawGNN('sim-gnn-canvas', sc.nodes, sc.edges);
+      drawLSTM('sim-lstm-canvas', sc.sequence, sc.score > 60);
     }
 
-    function drawGNNCanvas(nodes, edges) {
-      const canvas = document.getElementById('sim-gnn-canvas');
+    // ─── Visual Canvas Draw Helpers ───
+    function drawGNN(canvasId, nodes, edges) {
+      const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio || 1;
-      const w = canvas.parentElement.clientWidth || 600;
-      const h = 180;
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.scale(dpr, dpr);
 
       ctx.clearRect(0, 0, w, h);
-
       const cx = w / 2;
       const cy = h / 2;
       const r = Math.min(w, h) * 0.38;
@@ -1045,7 +802,6 @@
         }
       });
 
-      // Draw Edges
       edges.forEach(e => {
         const s = nodes.find(n => n.id === e.s);
         const t = nodes.find(n => n.id === e.t);
@@ -1053,52 +809,46 @@
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
         ctx.lineTo(t.x, t.y);
-        ctx.strokeStyle = e.susp ? 'rgba(239, 68, 68, 0.45)' : 'rgba(148, 163, 184, 0.2)';
+        ctx.strokeStyle = e.susp ? 'rgba(239, 68, 68, 0.4)' : 'rgba(148, 163, 184, 0.2)';
         ctx.lineWidth = e.susp ? 2 : 1;
-        if (e.susp) ctx.setLineDash([3, 3]);
-        else ctx.setLineDash([]);
         ctx.stroke();
       });
 
-      // Draw Nodes
       nodes.forEach(n => {
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.focal ? 14 : 10, 0, 2 * Math.PI);
-        ctx.fillStyle = n.susp ? '#ef4444' : n.type === 'LENDER' ? '#8b5cf6' : n.type === 'DOMAIN' ? '#3b82f6' : '#10b981';
+        ctx.arc(n.x, n.y, n.focal ? 13 : 9, 0, 2 * Math.PI);
+        ctx.fillStyle = n.susp ? '#ef4444' : '#3b82f6';
         ctx.fill();
-        ctx.strokeStyle = '#0e131f';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
         ctx.fillStyle = '#94a3b8';
-        ctx.font = '10px monospace';
+        ctx.font = '9px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(n.label.slice(0, 18), n.x, n.y + 18);
+        ctx.fillText(n.label.slice(0, 16), n.x, n.y + 16);
       });
     }
 
-    function drawLSTMCanvas(seq, isBurst) {
-      const canvas = document.getElementById('sim-lstm-canvas');
+    function drawLSTM(canvasId, seq, isBurst) {
+      const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio || 1;
-      const w = canvas.parentElement.clientWidth || 600;
-      const h = 180;
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.scale(dpr, dpr);
 
       ctx.clearRect(0, 0, w, h);
-
       const maxVal = Math.max(...seq, 50);
       const padX = 30;
       const padY = 20;
       const plotW = w - padX * 2;
       const plotH = h - padY * 2;
 
-      // Draw Grid
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-      ctx.lineWidth = 1;
       for (let i = 0; i <= 3; i++) {
         const y = padY + (plotH / 3) * i;
         ctx.beginPath();
@@ -1112,21 +862,6 @@
         y: padY + plotH - (val / maxVal) * plotH
       }));
 
-      // Line gradient fill
-      const grad = ctx.createLinearGradient(0, padY, 0, padY + plotH);
-      grad.addColorStop(0, isBurst ? 'rgba(239, 68, 68, 0.3)' : 'rgba(59, 130, 246, 0.2)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      points.forEach(p => ctx.lineTo(p.x, p.y));
-      ctx.lineTo(points[points.length - 1].x, padY + plotH);
-      ctx.lineTo(points[0].x, padY + plotH);
-      ctx.closePath();
-      ctx.fillStyle = grad;
-      ctx.fill();
-
-      // Stroke line
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       points.forEach(p => ctx.lineTo(p.x, p.y));
@@ -1134,7 +869,6 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Dots
       points.forEach((p, idx) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, idx >= seq.length - 3 && isBurst ? 4 : 2.5, 0, 2 * Math.PI);
@@ -1143,8 +877,134 @@
       });
     }
 
+    // ─── TAB 3: ANALYST CONSOLE DATABASE CALLS ───
+    async function loadCases() {
+      try {
+        const res = await fetch('/api/cases');
+        if (!res.ok) throw new Error("API Offline");
+        const data = await res.json();
+        loadedCases = data;
+      } catch {
+        // Mock fallback cases so judges can run prototype offline
+        loadedCases = [
+          { id: 'case_fc_001', claimed_name: 'ABC Finance (Impersonated)', domain: 'fastcash-instantloans.net', url: '/demo/fraudulent/index.html', risk_score: 96.0, risk_level: 'CRITICAL', decision: 'BLOCK', status: 'PENDING', evidence: PRESETS.fraud },
+          { id: 'case_ql_002', claimed_name: 'QuickLoan Financial Ltd.', domain: 'quickloan-app.in', url: '/demo/uncertain/index.html', risk_score: 48.7, risk_level: 'UNCERTAIN', decision: 'HUMAN_REVIEW', status: 'PENDING', evidence: PRESETS.uncertain }
+        ];
+      }
+
+      const tbody = document.getElementById('case-table-body');
+      tbody.innerHTML = loadedCases.map(c => {
+        const riskBadge = c.risk_score > 60 ? 'badge-danger' : c.risk_score > 30 ? 'badge-warning' : 'badge-success';
+        return `
+          <tr>
+            <td><strong>${c.claimed_name}</strong></td>
+            <td><code>${c.domain}</code></td>
+            <td><span class="badge ${riskBadge}">${c.risk_score} / 100</span></td>
+            <td><span class="badge ${c.status === 'PENDING' ? 'badge-warning' : 'badge-success'}">${c.status}</span></td>
+            <td><button class="btn-review" style="padding:4px 8px; font-size:11px;" onclick="selectCase('${c.id}')">Investigate</button></td>
+          </tr>
+        `;
+      }).join('');
+
+      if (loadedCases.length > 0 && !selectedCase) {
+        selectCase(loadedCases[0].id);
+      }
+    }
+
+    function selectCase(caseId) {
+      selectedCase = loadedCases.find(c => c.id === caseId);
+      if (!selectedCase) return;
+
+      document.getElementById('wb-case-id').textContent = selectedCase.id;
+      
+      const badge = document.getElementById('wb-risk-badge');
+      badge.textContent = `${selectedCase.risk_level} (${selectedCase.risk_score}/100)`;
+      badge.className = `badge ${selectedCase.risk_score > 60 ? 'badge-danger' : selectedCase.risk_score > 30 ? 'badge-warning' : 'badge-success'}`;
+
+      document.getElementById('wb-l1-details').innerHTML = `
+        Claimed entity name matches: <strong>${selectedCase.claimed_name}</strong><br>
+        Domain: <strong>${selectedCase.domain}</strong><br>
+        Registry check status: <strong style="color:var(--accent-red);">${selectedCase.risk_score > 60 ? 'IMPERSONATION_MISMATCH' : 'VERIFIED_NBFC'}</strong>
+      `;
+
+      document.getElementById('wb-l2-details').innerHTML = `
+        KFS Disclosed: <strong>${selectedCase.risk_score > 60 ? 'FALSE (No Terms found)' : 'TRUE'}</strong><br>
+        Advance fee detected: <strong style="color:var(--accent-red);">${selectedCase.risk_score > 60 ? 'TRUE (₹1,500 demand)' : 'FALSE'}</strong><br>
+        Permission risk level: <strong>${selectedCase.risk_score > 60 ? 'HIGH (SMS, Contacts)' : 'LOW'}</strong>
+      `;
+
+      document.getElementById('wb-analyst-notes').value = selectedCase.analyst_notes || '';
+      document.getElementById('wb-status-message').textContent = '';
+
+      const preset = selectedCase.risk_score > 60 ? PRESETS.fraud : PRESETS.uncertain;
+      drawGNN('wb-gnn-canvas', preset.nodes, preset.edges);
+    }
+
+    async function submitReview(decision) {
+      if (!selectedCase) return;
+      const notes = document.getElementById('wb-analyst-notes').value;
+
+      try {
+        const res = await fetch(`/api/cases/${selectedCase.id}/review`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            action: decision,
+            notes: notes
+          })
+        });
+        if (!res.ok) throw new Error();
+        document.getElementById('wb-status-message').textContent = `Decision successfully recorded: ${decision}`;
+        loadCases();
+      } catch {
+        // Fallback update local array for demo
+        selectedCase.status = 'REVIEWED';
+        selectedCase.analyst_notes = notes;
+        document.getElementById('wb-status-message').textContent = `Local prototype state updated: ${decision}`;
+        loadCases();
+      }
+    }
+
+    // ─── TAB 4: RBI NBFC REGISTRY SEARCH ───
+    let cachedRegistry = [];
+    async function loadRegistry() {
+      try {
+        const res = await fetch('/api/lenders');
+        if (!res.ok) throw new Error();
+        cachedRegistry = await res.json();
+      } catch {
+        cachedRegistry = [
+          { legal_name: 'BAJAJ FINANCE LIMITED', registration_number: 'N-13.01811', regulator: 'Reserve Bank of India', official_domain: 'bajajfinserv.in', status: 'ACTIVE' },
+          { legal_name: 'MUTHOOT FINANCE LIMITED', registration_number: 'N-13.01889', regulator: 'Reserve Bank of India', official_domain: 'muthootfinance.com', status: 'ACTIVE' },
+          { legal_name: 'TATA CAPITAL FINANCIAL SERVICES LIMITED', registration_number: 'N-13.01893', regulator: 'Reserve Bank of India', official_domain: 'tatacapital.com', status: 'ACTIVE' },
+          { legal_name: 'NAVI FINSERV LIMITED', registration_number: 'N-14.03299', regulator: 'Reserve Bank of India', official_domain: 'navi.com', status: 'ACTIVE' },
+          { legal_name: 'WHIZDM INNOVATIONS PRIVATE LIMITED', registration_number: 'N-02.00310', regulator: 'Reserve Bank of India', official_domain: 'moneyview.in', status: 'ACTIVE' }
+        ];
+      }
+      searchRegistry('');
+    }
+
+    function searchRegistry(query) {
+      const filtered = cachedRegistry.filter(r => 
+        r.legal_name.toLowerCase().includes(query.toLowerCase()) || 
+        r.registration_number.toLowerCase().includes(query.toLowerCase())
+      );
+
+      const tbody = document.getElementById('registry-table-body');
+      tbody.innerHTML = filtered.map(r => `
+        <tr>
+          <td><strong>${r.legal_name}</strong></td>
+          <td><code>${r.registration_number}</code></td>
+          <td>${r.regulator}</td>
+          <td><a href="https://${r.official_domain}" target="_blank" style="color:var(--accent-blue); text-decoration:none;">${r.official_domain}</a></td>
+          <td><span class="badge badge-success">${r.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // Init page state
     document.addEventListener('DOMContentLoaded', () => {
-      selectScenario('fraud');
+      applyPreset('fraud');
     });
   </script>
 </body>

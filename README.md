@@ -103,3 +103,17 @@ LenderLens comes with 3 pre-built interactive demo loan websites:
 
 ## ⚠️ Prototype Notice
 > **Disclaimer**: Government/regulatory records, fraud histories, LSTM sequences, and GNN relationships shown in this demonstration use simulated/reference prototype data. Production deployment requires authorized regulatory data sources, validated datasets, security review, and model validation.
+
+---
+
+## ☁️ Deploy to Render in 1 Click
+
+To publish this unified prototype on **Render** as a web service:
+
+1. Create a new **Web Service** on Render and link your GitHub repository.
+2. Configure these build and startup settings:
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt && python backend/download_and_parse_rbi.py`
+   - **Start Command**: `python -m uvicorn main:app --app-dir backend/app --host 0.0.0.0 --port $PORT`
+3. Click **Deploy Web Service**. LenderLens will be live on your custom Render subdomain!
+
