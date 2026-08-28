@@ -29,35 +29,48 @@ LenderLens is a dual-interface AI loan fraud defense platform designed to protec
 
 ---
 
-## 🚀 Quickstart Guide
+## 🚀 Live Demo (Zero Setup)
 
-### 1. Start the Backend API & Demo Server
+The prototype is fully deployed and running in the cloud. You do not need to install anything locally to evaluate the system.
+
+**👉 Access the live system here:** [https://lenderlens-9rky.onrender.com](https://lenderlens-9rky.onrender.com)
+
+From the live link, you can:
+1. Try the interactive **Judge Simulator**.
+2. View the **Analyst Console** (Human-in-the-loop dashboard).
+3. Download the packaged **Chrome Extension** directly from the UI to test the live ML pipeline against the demo lender sites.
+
+---
+
+## 💻 Local Development (Optional)
+
+If you prefer to run the API and dashboard locally, use the following commands:
+
 ```bash
-# 1. Activate virtual environment (Windows PowerShell)
-.\.venv\Scripts\activate
+# 1. Clone the repository and navigate to the directory
+git clone https://github.com/sologif/lenderlens.git
+cd lenderlens
 
-# 2. Seed database with reference regulatory records & fraud graphs
-python backend\app\seed_data.py
+# 2. Install dependencies
+pip install -r requirements.txt
 
-# 3. Start the FastAPI server
-uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+# 3. Seed the local SQLite database with RBI registry records
+python backend/app/seed_data.py
+
+# 4. Start the backend API and Dashboard
+python -m uvicorn main:app --app-dir backend/app --host 0.0.0.0 --port 8000
 ```
-The server will start at **`https://lenderlens-9rky.onrender.com`**.
+The local server will start at **`http://localhost:8000`**.
 
 ---
 
-### 2. Load the Chrome Extension (Manifest V3)
-1. Open Google Chrome and navigate to `chrome://extensions/`.
-2. Toggle on **Developer mode** in the top right corner.
-3. Click **Load unpacked**.
-4. Select the `extension/` folder located in this workspace:
-   `C:\Users\anush\.gemini\antigravity\worktrees\lender lens\build_lenderlens_chrome_extension\extension`
-5. The **LenderLens** shield icon will appear in your Chrome toolbar.
+### 🔌 Testing the Chrome Extension
 
----
-
-### 3. Open the Analyst Dashboard
-Visit **`https://lenderlens-9rky.onrender.com/dashboard/index.html`** in your browser.
+1. Download the extension ZIP from the live site (or use the `extension/` folder if testing locally).
+2. Open Google Chrome and navigate to `chrome://extensions/`.
+3. Toggle on **Developer mode** in the top right corner.
+4. Click **Load unpacked** and select the unzipped extension folder.
+5. Visit one of the demo loan sites below to see the ML models and Trust Card in action!
 
 ---
 
