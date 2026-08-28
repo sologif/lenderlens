@@ -342,6 +342,210 @@
     }
     .product-card h3 { font-size: 18px; margin-bottom: 10px; color: #fff; }
     .product-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ─── Extension Demo: Simulated Browser Chrome ─── */
+    .browser-frame {
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0a0e1a;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .browser-topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #111827;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .browser-dots { display:flex; gap:5px; }
+    .browser-dots span { width:10px; height:10px; border-radius:50%; }
+    .dot-r { background: #ef4444; }
+    .dot-y { background: #f59e0b; }
+    .dot-g { background: #10b981; }
+    .browser-url-bar {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .url-lock { color: var(--accent-emerald); font-size: 11px; }
+    .browser-ext-icon {
+      width: 28px; height: 28px;
+      background: var(--accent-blue-subtle);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+    }
+    .ext-alert-dot {
+      position:absolute; top:-3px; right:-3px;
+      width:8px; height:8px; border-radius:50%;
+      background: var(--accent-red);
+      border: 2px solid #111827;
+    }
+    .browser-viewport {
+      position: relative;
+      min-height: 420px;
+      padding: 30px;
+      background: #f9fafb;
+      color: #1e293b;
+    }
+
+    /* Fake loan page content inside browser */
+    .fake-page-header {
+      background: linear-gradient(135deg, #1e40af, #7c3aed);
+      color: #fff;
+      padding: 24px 30px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .fake-page-header h2 { font-size: 22px; margin-bottom: 6px; }
+    .fake-page-header p { font-size: 13px; opacity: 0.85; }
+    .fake-page-form {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 24px;
+    }
+    .fake-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #475569;
+      background: #f8fafc;
+      margin-bottom: 12px;
+    }
+    .fake-cta-btn {
+      background: #7c3aed;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      width: 100%;
+      cursor: default;
+    }
+
+    /* Extension Trust Card overlay (positioned inside browser viewport) */
+    .ext-overlay-card {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 300px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      z-index: 10;
+      font-family: var(--font-sans);
+      color: #f8fafc;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.4s ease;
+    }
+    .ext-overlay-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Extension popup mockup */
+    .ext-popup-mockup {
+      width: 340px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+    .popup-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-surface-elevated);
+    }
+    .popup-body { padding: 16px; }
+    .popup-layer-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border-subtle);
+      font-size: 12.5px;
+    }
+    .popup-layer-row:last-child { border-bottom: none; }
+    .layer-icon {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* Step timeline */
+    .ext-step-timeline {
+      display: flex;
+      gap: 0;
+      margin-bottom: 30px;
+    }
+    .ext-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+    .ext-step::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--border-subtle);
+      z-index: 0;
+    }
+    .ext-step:last-child::after { display: none; }
+    .step-circle {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-subtle);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+    .ext-step.active .step-circle {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #fff;
+    }
+    .ext-step.done .step-circle {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      color: #fff;
+    }
+    .step-label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+    .ext-step.active .step-label, .ext-step.done .step-label { color: var(--text-primary); }
   </style>
 </head>
 <body>
@@ -357,6 +561,7 @@
     <div class="nav-links">
       <button class="tab-btn active" onclick="switchTab('tab-overview')">🛡️ Overview</button>
       <button class="tab-btn" onclick="switchTab('tab-simulator')">⚡ Judge Simulator</button>
+      <button class="tab-btn" onclick="switchTab('tab-extension')">🔌 Extension Demo</button>
       <button class="tab-btn" onclick="switchTab('tab-analyst')">🕵️ Analyst Console</button>
       <button class="tab-btn" onclick="switchTab('tab-registry')">📋 RBI NBFC Registry</button>
     </div>
@@ -472,6 +677,194 @@
             <div class="canvas-wrap">
               <canvas id="sim-lstm-canvas"></canvas>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: EXTENSION DEMO (INTERACTIVE BROWSER SIMULATION) ─── -->
+    <div class="tab-panel" id="tab-extension">
+      <div style="text-align:center; margin-bottom:24px;">
+        <h2 style="color:#fff; font-size:24px; margin-bottom:8px;">Chrome Extension — Live Walkthrough</h2>
+        <p style="color:var(--text-secondary); font-size:14px;">See exactly how LenderLens protects borrowers in real-time, step by step.</p>
+      </div>
+
+      <!-- Step Timeline -->
+      <div class="ext-step-timeline" id="ext-steps">
+        <div class="ext-step active" onclick="goExtStep(0)">
+          <span class="step-circle">1</span>
+          <span class="step-label">User Visits Loan Site</span>
+        </div>
+        <div class="ext-step" onclick="goExtStep(1)">
+          <span class="step-circle">2</span>
+          <span class="step-label">Extension Scans Page</span>
+        </div>
+        <div class="ext-step" onclick="goExtStep(2)">
+          <span class="step-circle">3</span>
+          <span class="step-label">4-Layer Analysis</span>
+        </div>
+        <div class="ext-step" onclick="goExtStep(3)">
+          <span class="step-circle">4</span>
+          <span class="step-label">Trust Card Injected</span>
+        </div>
+        <div class="ext-step" onclick="goExtStep(4)">
+          <span class="step-circle">5</span>
+          <span class="step-label">Popup Details</span>
+        </div>
+      </div>
+
+      <!-- Two-column: Browser Sim + Sidebar -->
+      <div style="display:grid; grid-template-columns:1fr 360px; gap:24px;">
+
+        <!-- Simulated Browser Window -->
+        <div class="browser-frame" id="ext-browser">
+          <div class="browser-topbar">
+            <div class="browser-dots">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+            </div>
+            <div class="browser-url-bar" id="ext-url-bar">
+              <span class="url-lock">🔓</span>
+              <span id="ext-url-text">https://fastcash-instantloans.net/apply</span>
+            </div>
+            <div class="browser-ext-icon" id="ext-toolbar-icon" title="LenderLens Extension">
+              🛡️
+            </div>
+          </div>
+
+          <div class="browser-viewport" id="ext-viewport">
+            <!-- Fake Loan Page -->
+            <div id="ext-fake-page">
+              <div class="fake-page-header">
+                <h2>💰 FastCash Instant Loans</h2>
+                <p>Get ₹50,000 deposited in 10 minutes! No documents needed. Trusted by ABC Finance Ltd.</p>
+              </div>
+              <div class="fake-page-form">
+                <div style="font-weight:700; color:#1e293b; margin-bottom:12px;">Apply Now — Instant Approval</div>
+                <input class="fake-input" value="Rahul Sharma" disabled>
+                <input class="fake-input" value="+91 98765 43210" disabled>
+                <input class="fake-input" value="₹50,000" disabled>
+                <div style="font-size:11px; color:#94a3b8; margin-bottom:12px;">
+                  ⚠️ A one-time processing fee of <strong style="color:#ef4444;">₹1,500</strong> is required before loan disbursement.
+                  Pay to UPI: <code>fastpay.collect@okhdfcbank</code>
+                </div>
+                <button class="fake-cta-btn">Pay ₹1,500 & Get Instant Loan →</button>
+              </div>
+            </div>
+
+            <!-- Scanning Overlay -->
+            <div id="ext-scan-overlay" style="display:none; position:absolute; inset:0; background:rgba(15,23,42,0.85); z-index:5; display:none; flex-direction:column; align-items:center; justify-content:center;">
+              <div style="font-size:40px; margin-bottom:12px;" id="ext-scan-spinner">🔍</div>
+              <div style="color:#f8fafc; font-weight:700; font-size:16px;" id="ext-scan-status">Scanning page content...</div>
+              <div style="color:#94a3b8; font-size:12px; margin-top:6px; font-family:var(--font-mono);" id="ext-scan-detail">Extracting domain, text, permissions…</div>
+            </div>
+
+            <!-- Trust Card Overlay (injected by extension) -->
+            <div class="ext-overlay-card" id="ext-trust-overlay">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:14px;">🛡️</span>
+                  <strong style="font-size:12px;">LenderLens</strong>
+                </div>
+                <span class="badge badge-danger" style="font-size:10px;">BLOCK</span>
+              </div>
+              <div style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:8px; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; font-weight:800; font-size:12px; color:#ef4444;">
+                  <span>🔴 CRITICAL RISK</span>
+                  <span>96 / 100</span>
+                </div>
+                <div style="height:4px; background:rgba(255,255,255,0.1); border-radius:2px; margin-top:6px; overflow:hidden;">
+                  <div style="height:100%; width:96%; background:#ef4444;"></div>
+                </div>
+              </div>
+              <div style="font-size:11px; color:#94a3b8; line-height:1.6;">
+                <div style="margin-bottom:4px;"><span style="color:#ef4444;">✕</span> RBI Registry mismatch — impersonates ABC Finance</div>
+                <div style="margin-bottom:4px;"><span style="color:#ef4444;">✕</span> Advance fee ₹1,500 to mule UPI</div>
+                <div style="margin-bottom:4px;"><span style="color:#ef4444;">✕</span> LSTM burst: +18.4x grievance surge</div>
+                <div><span style="color:#ef4444;">✕</span> GNN: linked to 3 flagged domains</div>
+              </div>
+              <div style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; font-weight:700; font-size:10.5px; padding:6px; border-radius:4px; text-align:center; margin-top:10px;">
+                ⚠ DO NOT TRANSFER MONEY TO THIS SITE
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar: Explanation + Popup Mockup -->
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <!-- Step Description Card -->
+          <div class="console-box" id="ext-step-description">
+            <div style="font-weight:700; color:#fff; margin-bottom:8px; font-size:14px;" id="ext-step-title">Step 1: User Visits a Loan Site</div>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;" id="ext-step-body">
+              A borrower searches for "instant loan" and lands on <strong>fastcash-instantloans.net</strong>.
+              The page claims to be affiliated with RBI-registered "ABC Finance Ltd." and asks for an upfront ₹1,500 processing fee.
+            </p>
+          </div>
+
+          <!-- Popup Mockup (shown at step 5) -->
+          <div class="ext-popup-mockup" id="ext-popup-panel" style="display:none;">
+            <div class="popup-header">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span>🛡️</span>
+                <strong style="font-size:13px; color:#fff;">LenderLens Popup</strong>
+              </div>
+              <span class="badge badge-danger" style="font-size:10px;">96 / 100</span>
+            </div>
+            <div class="popup-body">
+              <div style="font-weight:700; font-size:12px; color:#fff; margin-bottom:8px;">4-Layer Breakdown</div>
+              
+              <div class="popup-layer-row">
+                <div class="layer-icon" style="background:var(--accent-red-subtle); color:var(--accent-red);">L1</div>
+                <div>
+                  <div style="font-weight:700; color:#fff;">RBI Identity Check</div>
+                  <div style="font-size:11px; color:var(--text-tertiary);">IMPERSONATION — Claims ABC Finance, domain unregistered</div>
+                </div>
+                <span class="badge badge-danger" style="font-size:9px;">FAIL</span>
+              </div>
+
+              <div class="popup-layer-row">
+                <div class="layer-icon" style="background:var(--accent-red-subtle); color:var(--accent-red);">L2</div>
+                <div>
+                  <div style="font-weight:700; color:#fff;">Loan Risk Scan</div>
+                  <div style="font-size:11px; color:var(--text-tertiary);">Advance fee ₹1,500 · No KFS · SMS+Contacts access</div>
+                </div>
+                <span class="badge badge-danger" style="font-size:9px;">FAIL</span>
+              </div>
+
+              <div class="popup-layer-row">
+                <div class="layer-icon" style="background:var(--accent-amber-subtle); color:var(--accent-amber);">L3</div>
+                <div>
+                  <div style="font-weight:700; color:#fff;">LSTM Temporal</div>
+                  <div style="font-size:11px; color:var(--text-tertiary);">Grievance velocity +18.4x burst detected</div>
+                </div>
+                <span class="badge badge-danger" style="font-size:9px;">ALERT</span>
+              </div>
+
+              <div class="popup-layer-row">
+                <div class="layer-icon" style="background:var(--accent-red-subtle); color:var(--accent-red);">L4</div>
+                <div>
+                  <div style="font-weight:700; color:#fff;">GNN Network</div>
+                  <div style="font-size:11px; color:var(--text-tertiary);">Connected to 3 flagged domains + 2 mule UPIs</div>
+                </div>
+                <span class="badge badge-danger" style="font-size:9px;">FAIL</span>
+              </div>
+
+              <div style="border-top:1px solid var(--border-subtle); padding-top:10px; margin-top:8px;">
+                <div class="popup-layer-row" style="border:none; padding:6px 0;">
+                  <div class="layer-icon" style="background:rgba(139,92,246,0.12); color:#a78bfa;">👤</div>
+                  <div>
+                    <div style="font-weight:700; color:#fff;">Human-in-the-Loop</div>
+                    <div style="font-size:11px; color:var(--text-tertiary);">Case escalated to analyst workbench for review</div>
+                  </div>
+                  <span class="badge badge-warning" style="font-size:9px;">QUEUE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto-play controls -->
+          <div style="display:flex; gap:8px;">
+            <button class="btn-action" style="flex:1; font-size:12px; padding:10px;" onclick="autoPlayExtDemo()">▶ Auto-Play Demo</button>
+            <button class="btn-review" style="flex:1; font-size:12px; padding:10px;" onclick="resetExtDemo()">↺ Reset</button>
           </div>
         </div>
       </div>
@@ -1002,9 +1395,147 @@
       `).join('');
     }
 
+    // ─── EXTENSION DEMO: STEP-BY-STEP WALKTHROUGH ───
+    let currentExtStep = 0;
+    let autoPlayTimer = null;
+
+    const EXT_STEPS = [
+      {
+        title: 'Step 1: User Visits a Loan Site',
+        body: 'A borrower searches for "instant loan" and lands on <strong>fastcash-instantloans.net</strong>. The page claims to be affiliated with RBI-registered "ABC Finance Ltd." and demands an upfront ₹1,500 processing fee before disbursement.',
+        action() {
+          // Reset everything
+          document.getElementById('ext-scan-overlay').style.display = 'none';
+          document.getElementById('ext-trust-overlay').classList.remove('visible');
+          document.getElementById('ext-popup-panel').style.display = 'none';
+          document.getElementById('ext-toolbar-icon').innerHTML = '🛡️';
+          document.getElementById('ext-fake-page').style.opacity = '1';
+        }
+      },
+      {
+        title: 'Step 2: Extension Detects & Scans the Page',
+        body: 'The LenderLens content script automatically activates when a loan-related page loads. It extracts the <strong>domain</strong>, <strong>visible text</strong>, <strong>claimed entity names</strong>, <strong>fee amounts</strong>, and <strong>UPI handles</strong> — then sends this data to the backend API for multi-layer analysis.',
+        action() {
+          document.getElementById('ext-trust-overlay').classList.remove('visible');
+          document.getElementById('ext-popup-panel').style.display = 'none';
+          const overlay = document.getElementById('ext-scan-overlay');
+          overlay.style.display = 'flex';
+          document.getElementById('ext-fake-page').style.opacity = '0.3';
+
+          // Animate scan steps
+          const scanStatus = document.getElementById('ext-scan-status');
+          const scanDetail = document.getElementById('ext-scan-detail');
+          const scanSpinner = document.getElementById('ext-scan-spinner');
+          const steps = [
+            { icon: '🔍', status: 'Extracting page content...', detail: 'URL: fastcash-instantloans.net · Title: FastCash Instant Loans' },
+            { icon: '🏛️', status: 'Layer 1: RBI Registry lookup...', detail: 'Querying government_registry for domain match...' },
+            { icon: '📋', status: 'Layer 2: Scanning loan terms...', detail: 'Detected: advance fee ₹1,500, UPI: fastpay.collect@okhdfcbank' },
+            { icon: '📈', status: 'Layer 3: LSTM sequence analysis...', detail: 'Grievance velocity: [10,12,11,14,16,18,75,180,350]' },
+            { icon: '🕸️', status: 'Layer 4: GNN graph propagation...', detail: 'Neighborhood: 3 flagged domains, 2 mule UPI accounts' },
+          ];
+          let i = 0;
+          const scanInterval = setInterval(() => {
+            if (i >= steps.length) { clearInterval(scanInterval); return; }
+            scanSpinner.textContent = steps[i].icon;
+            scanStatus.textContent = steps[i].status;
+            scanDetail.textContent = steps[i].detail;
+            i++;
+          }, 800);
+        }
+      },
+      {
+        title: 'Step 3: 4-Layer Risk Analysis Complete',
+        body: `The backend returns a fused risk score from all 4 detection layers:<br><br>
+          <strong style="color:#ef4444;">L1 — RBI Identity:</strong> IMPERSONATION (claims ABC Finance, domain not registered)<br>
+          <strong style="color:#ef4444;">L2 — Loan Terms:</strong> Advance fee ₹1,500, no KFS disclosure, invasive permissions<br>
+          <strong style="color:#f59e0b;">L3 — LSTM Temporal:</strong> +18.4x grievance burst anomaly detected<br>
+          <strong style="color:#ef4444;">L4 — GNN Syndicate:</strong> Connected to 3 flagged phishing domains via shared hotline<br><br>
+          <strong>Fused Score: 96 / 100 → BLOCK</strong>`,
+        action() {
+          document.getElementById('ext-scan-overlay').style.display = 'none';
+          document.getElementById('ext-fake-page').style.opacity = '1';
+          document.getElementById('ext-trust-overlay').classList.remove('visible');
+          document.getElementById('ext-popup-panel').style.display = 'none';
+          // Flash the toolbar icon
+          const icon = document.getElementById('ext-toolbar-icon');
+          icon.innerHTML = '🛡️<span class="ext-alert-dot"></span>';
+        }
+      },
+      {
+        title: 'Step 4: Trust Card Injected Into Page',
+        body: 'The content script injects a <strong>floating Trust Card</strong> (Shadow DOM isolated) directly onto the loan page. The borrower immediately sees the risk score, all 4 layer findings, and a <strong>"DO NOT TRANSFER MONEY"</strong> warning — without needing to click anything.',
+        action() {
+          document.getElementById('ext-scan-overlay').style.display = 'none';
+          document.getElementById('ext-fake-page').style.opacity = '1';
+          document.getElementById('ext-popup-panel').style.display = 'none';
+          // Slide in the trust card overlay
+          setTimeout(() => {
+            document.getElementById('ext-trust-overlay').classList.add('visible');
+          }, 200);
+        }
+      },
+      {
+        title: 'Step 5: Popup Shows Full Layer Breakdown',
+        body: 'Clicking the <strong>🛡️ toolbar icon</strong> opens the extension popup with a detailed breakdown of each detection layer. Cases with scores above the threshold are automatically <strong>escalated to the Human-in-the-Loop analyst workbench</strong> for formal review and decision recording.',
+        action() {
+          document.getElementById('ext-scan-overlay').style.display = 'none';
+          document.getElementById('ext-fake-page').style.opacity = '1';
+          document.getElementById('ext-trust-overlay').classList.add('visible');
+          // Show the popup mockup
+          document.getElementById('ext-popup-panel').style.display = 'block';
+        }
+      }
+    ];
+
+    function goExtStep(stepIdx) {
+      if (stepIdx < 0 || stepIdx >= EXT_STEPS.length) return;
+      currentExtStep = stepIdx;
+
+      // Update timeline dots
+      const allSteps = document.querySelectorAll('#ext-steps .ext-step');
+      allSteps.forEach((el, i) => {
+        el.classList.remove('active', 'done');
+        if (i < stepIdx) el.classList.add('done');
+        if (i === stepIdx) el.classList.add('active');
+      });
+
+      // Update sidebar description
+      document.getElementById('ext-step-title').textContent = EXT_STEPS[stepIdx].title;
+      document.getElementById('ext-step-body').innerHTML = EXT_STEPS[stepIdx].body;
+
+      // Run step action
+      EXT_STEPS[stepIdx].action();
+    }
+
+    function autoPlayExtDemo() {
+      if (autoPlayTimer) { clearInterval(autoPlayTimer); autoPlayTimer = null; }
+      resetExtDemo();
+      let step = 0;
+      goExtStep(0);
+      autoPlayTimer = setInterval(() => {
+        step++;
+        if (step >= EXT_STEPS.length) {
+          clearInterval(autoPlayTimer);
+          autoPlayTimer = null;
+          return;
+        }
+        goExtStep(step);
+      }, 3000);
+    }
+
+    function resetExtDemo() {
+      if (autoPlayTimer) { clearInterval(autoPlayTimer); autoPlayTimer = null; }
+      currentExtStep = 0;
+      goExtStep(0);
+    }
+
     // Init page state
     document.addEventListener('DOMContentLoaded', () => {
       applyPreset('fraud');
+      // Pre-initialize extension demo step 1
+      if (document.getElementById('ext-trust-overlay')) {
+        goExtStep(0);
+      }
     });
   </script>
 </body>
