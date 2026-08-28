@@ -1288,12 +1288,13 @@
       const tbody = document.getElementById('case-table-body');
       tbody.innerHTML = loadedCases.map(c => {
         const riskBadge = c.risk_score > 60 ? 'badge-danger' : c.risk_score > 30 ? 'badge-warning' : 'badge-success';
+        const statusBadge = c.status === 'REVIEWED' ? `<span class="badge badge-success" style="background:#166534; color:#fff;">✅ ${c.analyst_action}</span>` : `<span class="badge" style="background:#4b5563; color:#e5e7eb;">PENDING</span>`;
         return `
-          <tr>
+          <tr style="${c.status === 'REVIEWED' ? 'opacity: 0.6;' : ''}">
             <td><strong>${c.claimed_name}</strong></td>
             <td><code>${c.domain}</code></td>
             <td><span class="badge ${riskBadge}">${c.risk_score} / 100</span></td>
-            <td><span class="badge ${c.status === 'PENDING' ? 'badge-warning' : 'badge-success'}">${c.status}</span></td>
+            <td>${statusBadge}</td>
             <td><button class="btn-review" style="padding:4px 8px; font-size:11px;" onclick="selectCase('${c.id}')">Investigate</button></td>
           </tr>
         `;
@@ -1326,8 +1327,21 @@
         Permission risk level: <strong>${selectedCase.risk_score > 60 ? 'HIGH (SMS, Contacts)' : 'LOW'}</strong>
       `;
 
-      document.getElementById('wb-analyst-notes').value = selectedCase.analyst_notes || '';
-      document.getElementById('wb-status-message').textContent = '';
+      if (selectedCase.status === 'REVIEWED') {
+        document.getElementById('wb-status-message').innerHTML = `
+          <div style="background:#166534; color:#fff; padding:8px 12px; border-radius:4px; margin-bottom:12px;">
+            <strong>✅ REVIEWED (${selectedCase.analyst_action})</strong><br>
+            <span style="font-weight:normal; opacity:0.9;">Notes: ${selectedCase.analyst_notes || 'No notes provided.'}</span>
+          </div>
+        `;
+        document.querySelector('.review-action-row').style.display = 'none';
+        document.getElementById('wb-analyst-notes').style.display = 'none';
+      } else {
+        document.getElementById('wb-status-message').textContent = '';
+        document.querySelector('.review-action-row').style.display = 'flex';
+        document.getElementById('wb-analyst-notes').style.display = 'block';
+        document.getElementById('wb-analyst-notes').value = selectedCase.analyst_notes || '';
+      }
 
       const preset = selectedCase.risk_score > 60 ? PRESETS.fraud : PRESETS.uncertain;
       drawGNN('wb-gnn-canvas', preset.nodes, preset.edges);
@@ -1343,17 +1357,34 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             action: decision,
-            notes: notes
+            analyst_notes: notes
           })
         });
         if (!res.ok) throw new Error();
-        document.getElementById('wb-status-message').textContent = `Decision successfully recorded: ${decision}`;
+        selectedCase.status = 'REVIEWED';
+        selectedCase.analyst_action = decision;
+        selectedCase.analyst_notes = notes;
+        document.getElementById('wb-status-message').innerHTML = `
+          <div style="background:#166534; color:#fff; padding:8px 12px; border-radius:4px; margin-bottom:12px;">
+            <strong>✅ REVIEWED (${decision})</strong><br>
+            <span style="font-weight:normal; opacity:0.9;">Notes: ${notes || 'No notes provided.'}</span>
+          </div>
+        `;
+        document.querySelector('.review-action-row').style.display = 'none';
+        document.getElementById('wb-analyst-notes').style.display = 'none';
         loadCases();
       } catch {
-        // Fallback update local array for demo
         selectedCase.status = 'REVIEWED';
+        selectedCase.analyst_action = decision;
         selectedCase.analyst_notes = notes;
-        document.getElementById('wb-status-message').textContent = `Local prototype state updated: ${decision}`;
+        document.getElementById('wb-status-message').innerHTML = `
+          <div style="background:#166534; color:#fff; padding:8px 12px; border-radius:4px; margin-bottom:12px;">
+            <strong>✅ REVIEWED (${decision}) (Local Mode)</strong><br>
+            <span style="font-weight:normal; opacity:0.9;">Notes: ${notes || 'No notes provided.'}</span>
+          </div>
+        `;
+        document.querySelector('.review-action-row').style.display = 'none';
+        document.getElementById('wb-analyst-notes').style.display = 'none';
         loadCases();
       }
     }
