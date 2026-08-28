@@ -70,36 +70,47 @@ def analyze_network_risk(
 
     flags = []
 
-    # If domain is not in graph at all, create an isolated node representation
+    # If domain is not in graph at all, we create it dynamically (Zero-Shot Graph Node)
     if not focal_node_id:
-        if "fastcash" in cleaned_domain or "fraud" in cleaned_domain:
-            focal_node_id = "node_domain_fc"
-        elif "quickloan" in cleaned_domain:
-            focal_node_id = "node_domain_ql_active"
-        elif "abcfinance" in cleaned_domain:
-            focal_node_id = "node_domain_abc"
-        else:
-            # Isolated benign domain
-            subgraph_nodes = [{
-                "id": "node_custom",
-                "entity_type": "DOMAIN",
-                "entity_value": cleaned_domain,
-                "label": cleaned_domain,
-                "is_suspicious": False,
-                "risk_score": 10.0
-            }]
-            flags.append("✅ GNN: Domain has no links to known fraud syndicates or flagged infrastructure")
-            return Layer4Result(
-                network_risk_score=10.0,
-                connected_flagged_domains=0,
-                connected_suspicious_accounts=0,
-                connected_reported_phones=0,
-                centrality_score=0.01,
-                subgraph_nodes=subgraph_nodes,
-                subgraph_edges=[],
-                flags=flags,
-                details={"status": "ISOLATED_NODE", "syndicate_cluster": "NONE"}
-            )
+        focal_node_id = f"node_dynamic_{cleaned_domain}"
+        G.add_node(
+            focal_node_id,
+            entity_type="DOMAIN",
+            entity_value=cleaned_domain,
+            label=cleaned_domain,
+            is_suspicious=False,
+            risk_score=10.0,
+            metadata={"status": "DYNAMICALLY_INJECTED"}
+        )
+    
+    # 2. Extract relationships from payment_info or page content
+    if payment_info:
+        upi = payment_info.get("upi_id", "")
+        phone = payment_info.get("phone", "")
+        
+        if upi:
+            # Check if UPI exists
+            upi_node = None
+            for n, d in G.nodes(data=True):
+                if d.get("entity_value") == upi:
+                    upi_node = n
+                    break
+            if not upi_node:
+                upi_node = f"node_dynamic_upi_{upi}"
+                G.add_node(upi_node, entity_type="UPI_ID", entity_value=upi, label=upi, is_suspicious=False, risk_score=10.0)
+            G.add_edge(focal_node_id, upi_node, relation_type="ROUTES_PAYMENT_TO", is_suspicious=False)
+            
+        if phone:
+            # Check if Phone exists
+            phone_node = None
+            for n, d in G.nodes(data=True):
+                if d.get("entity_value") == phone:
+                    phone_node = n
+                    break
+            if not phone_node:
+                phone_node = f"node_dynamic_phone_{phone}"
+                G.add_node(phone_node, entity_type="PHONE", entity_value=phone, label=phone, is_suspicious=False, risk_score=10.0)
+            G.add_edge(focal_node_id, phone_node, relation_type="SHARES_HOTLINE", is_suspicious=False)
 
     # Extract k-hop ego subgraph
     ego_nodes = set([focal_node_id])

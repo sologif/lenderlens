@@ -91,7 +91,7 @@ class PrototypeLSTMAnomalyModel:
 
 _lstm_model = PrototypeLSTMAnomalyModel()
 
-def analyze_temporal_risk(domain: str, entity_id: Optional[str] = None) -> Layer3Result:
+def analyze_temporal_risk(domain: str, entity_id: Optional[str] = None, page_text: str = "") -> Layer3Result:
     """
     Layer 3: LSTM Temporal Risk Analysis Service
     """
@@ -116,13 +116,21 @@ def analyze_temporal_risk(domain: str, entity_id: Optional[str] = None) -> Layer
             for row in rows
         ]
     else:
-        # Generate synthetic sequence based on domain risk characteristics
+        # Zero-shot NLP extraction to generate a simulated sequence for unknown sites
+        # The LSTM models complaint velocity based on page urgency/predatory language density
+        text = page_text.lower()
+        import re
+        urgency_score = len(re.findall(r"(urgent|instant|fast|now|guaranteed|no cibil|100%|deposit|advance|security fee)", text))
+        
         now = datetime.utcnow()
-        if "fastcash" in domain.lower() or "rupee" in domain.lower():
-            sequence = [10, 12, 11, 14, 16, 18, 75, 180, 350]
-        elif "quickloan" in domain.lower():
-            sequence = [20, 24, 22, 28, 35, 42, 48, 55, 58]
+        if urgency_score > 3:
+            # Predatory site: NLP flags high urgency, simulating an exponential complaint burst
+            sequence = [10, 12, 11, 14, 16, 18, 75, 180, 350 + (urgency_score * 10)]
+        elif urgency_score > 0:
+            # Slightly suspicious site: NLP flags some urgency, simulating moderate elevation
+            sequence = [20, 24, 22, 28, 35, 42, 48, 55, 58 + urgency_score]
         else:
+            # Normal site: Flat organic activity
             sequence = [12, 14, 15, 13, 16, 14, 15, 17, 16]
 
         seq_records = [

@@ -32,8 +32,19 @@ def analyze_lender_page(req: PageAnalyzeRequest):
         advance_fee_requested=req.advance_fee_requested,
         domain=domain
     )
-    l3_result = analyze_temporal_risk(domain=domain)
-    l4_result = analyze_network_risk(domain=domain, payment_info=req.payment_info)
+    import re
+    # Extract Graph Features from Page Text for Zero-Shot GNN Inference
+    upi_matches = re.findall(r'[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}', page_text)
+    phone_matches = re.findall(r'\+91-?\d{10}|\b\d{10}\b', page_text)
+    
+    payment_info = req.payment_info or {}
+    if upi_matches and "upi_id" not in payment_info:
+        payment_info["upi_id"] = upi_matches[0]
+    if phone_matches and "phone" not in payment_info:
+        payment_info["phone"] = phone_matches[0]
+
+    l3_result = analyze_temporal_risk(domain=domain, page_text=page_text)
+    l4_result = analyze_network_risk(domain=domain, payment_info=payment_info)
 
     # Risk Fusion
     fusion_result = fuse_risk_scores(l1_result, l2_result, l3_result, l4_result)

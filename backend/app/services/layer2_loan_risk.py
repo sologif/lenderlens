@@ -71,7 +71,7 @@ def analyze_loan_and_permissions(
 
     # 2. Advance Fee Detection (Massive Fraud Red Flag)
     if advance_fee_requested is None:
-        advance_fee_requested = any(re.search(p, text) for p in ADVANCE_FEE_PATTERNS) or ("fastcash" in (domain or "").lower())
+        advance_fee_requested = any(re.search(p, text) for p in ADVANCE_FEE_PATTERNS)
     
     # Bypassed on official government domains to prevent false positives from descriptive or educational texts
     if is_trusted_dom:
