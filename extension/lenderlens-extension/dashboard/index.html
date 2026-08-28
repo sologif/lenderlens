@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LenderLens — AI Loan Fraud Analyst Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-shield"><img src="data:image/png;base64,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" alt="LenderLens" style="width:20px;height:20px;display:block;"></div>
+          <div>
+            <div class="brand-title">LenderLens</div>
+            <div class="brand-subtitle">Analyst Console</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <div class="menu-label">Workspace</div>
+        <button class="nav-btn active" data-view="overview">
+          <span class="nav-icon">📊</span> Overview
+        </button>
+        <button class="nav-btn" data-view="cases">
+          <span class="nav-icon">📁</span> Cases
+          <span class="badge badge-neutral" id="sidebar-cases-count">3</span>
+        </button>
+        <button class="nav-btn" data-view="network">
+          <span class="nav-icon">🕸️</span> Network Graph
+        </button>
+        <button class="nav-btn" data-view="lenders">
+          <span class="nav-icon">🏛️</span> Regulatory Registry
+        </button>
+        <button class="nav-btn" data-view="reports">
+          <span class="nav-icon">📥</span> User Reports
+          <span class="badge badge-neutral" id="sidebar-reports-count">0</span>
+        </button>
+
+        <div class="menu-label" style="margin-top: 24px;">Demo Presets</div>
+        <button class="nav-btn demo-btn" onclick="window.open('https://lenderlens-9rky.onrender.com/demo/legitimate/index.html', '_blank')">
+          <span>🟢 ABC Finance (Legit)</span>
+        </button>
+        <button class="nav-btn demo-btn" onclick="window.open('https://lenderlens-9rky.onrender.com/demo/uncertain/index.html', '_blank')">
+          <span>🟡 QuickLoan (Uncertain)</span>
+        </button>
+        <button class="nav-btn demo-btn" onclick="window.open('https://lenderlens-9rky.onrender.com/demo/fraudulent/index.html', '_blank')">
+          <span>🔴 FastCash (Fraud Scam)</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="disclaimer-text">
+          <strong>Prototype Demo</strong><br>
+          Reference & simulated intelligence.
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ── -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-title" id="page-title">Analyst Overview</div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" id="btn-refresh-data">↻ Refresh</button>
+          <button class="btn btn-secondary" onclick="exportDataJSON()">⤓ Export JSON</button>
+        </div>
+      </header>
+
+      <!-- Views Container -->
+      <div class="content-body">
+        
+        <!-- ── 1. Overview View ── -->
+        <div class="view-panel active" id="view-overview">
+          
+          <!-- Metric Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-title">Total Cases</div>
+              <div class="metric-value" id="stat-total-cases">128</div>
+              <div class="metric-sub">Monitored loan applications</div>
+            </div>
+            <div class="metric-card metric-danger">
+              <div class="metric-title">High & Critical Risk</div>
+              <div class="metric-value" id="stat-high-risk">31</div>
+              <div class="metric-sub">Flagged fraud syndicates</div>
+            </div>
+            <div class="metric-card metric-warning">
+              <div class="metric-title">Pending Human Review</div>
+              <div class="metric-value" id="stat-pending">12</div>
+              <div class="metric-sub">Uncertain cases awaiting analyst</div>
+            </div>
+            <div class="metric-card metric-success">
+              <div class="metric-title">Cleared Legitimate</div>
+              <div class="metric-value" id="stat-reviewed">85</div>
+              <div class="metric-sub">Verified RBI NBFCs</div>
+            </div>
+          </div>
+
+          <!-- Risk Trend Section -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <div class="card-title">Risk Distribution Trend (Past 7 Days)</div>
+              <div class="card-sub">Aggregated daily signals from extension scanners</div>
+            </div>
+            <div class="card-body">
+              <div class="trend-bars-container" id="trend-bars"></div>
+              <div class="trend-legend">
+                <span><span class="legend-dot" style="background:#16a34a;"></span> Low Risk (Allow)</span>
+                <span><span class="legend-dot" style="background:#d97706;"></span> Uncertain (Review)</span>
+                <span><span class="legend-dot" style="background:#dc2626;"></span> High / Critical (Block)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Cases Table -->
+          <div class="card">
+            <div class="card-header flex-between">
+              <div>
+                <div class="card-title">Recent High-Risk Cases</div>
+                <div class="card-sub">Suspected fraud syndicates and impersonators</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="switchView('cases')">View All Cases →</button>
+            </div>
+            <div class="card-body p-0">
+              <table class="table" id="overview-cases-table">
+                <thead>
+                  <tr>
+                    <th>Lender / Domain</th>
+                    <th>Risk Score</th>
+                    <th>Status</th>
+                    <th>Key Evidence</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="overview-cases-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── 2. Cases List View ── -->
+        <div class="view-panel" id="view-cases">
+          <div class="card">
+            <div class="card-header flex-between">
+              <div>
+                <div class="card-title">Investigated Cases</div>
+                <div class="card-sub">All analyzed websites and human-in-the-loop review queues</div>
+              </div>
+              <div class="filter-group">
+                <select id="case-filter-risk" class="select-input" onchange="loadCases()">
+                  <option value="">All Risk Levels</option>
+                  <option value="CRITICAL">🚨 Critical</option>
+                  <option value="HIGH">🔴 High</option>
+                  <option value="UNCERTAIN">🟡 Uncertain</option>
+                  <option value="LOW">🟢 Low</option>
+                </select>
+                <select id="case-filter-status" class="select-input" onchange="loadCases()">
+                  <option value="">All Statuses</option>
+                  <option value="PENDING">Pending Review</option>
+                  <option value="REVIEWED">Reviewed</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table" id="full-cases-table">
+                <thead>
+                  <tr>
+                    <th>Case ID</th>
+                    <th>Claimed Lender</th>
+                    <th>Domain</th>
+                    <th>Risk Score</th>
+                    <th>Decision</th>
+                    <th>Review Status</th>
+                    <th>Investigate</th>
+                  </tr>
+                </thead>
+                <tbody id="full-cases-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 3. Case Investigation View (Single Case Detail) ── -->
+        <div class="view-panel" id="view-case-detail">
+          <div class="back-link" onclick="switchView('cases')">← Back to Cases</div>
+
+          <!-- Header Bar -->
+          <div class="case-detail-header card mb-4">
+            <div class="flex-between align-start">
+              <div>
+                <div class="flex-center gap-2">
+                  <h1 class="case-detail-name" id="cd-claimed-name">ABC Finance (Impersonated)</h1>
+                  <span class="badge badge-danger" id="cd-risk-badge">HIGH RISK (91/100)</span>
+                </div>
+                <div class="case-detail-meta" id="cd-meta">
+                  Domain: <strong id="cd-domain">fastcash-instantloans.net</strong> | Case ID: <span id="cd-case-id">case_fc_001</span>
+                </div>
+              </div>
+              <div class="score-pill" id="cd-score-pill">
+                <div class="score-pill-num" id="cd-score-num">91</div>
+                <div class="score-pill-label">Risk Score</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Evidence Breakdown Cards Grid -->
+          <div class="evidence-grid mb-4">
+            
+            <!-- Layer 1: Identity & Govt Registry -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>🏛️ Layer 1: Identity & Regulatory</span>
+                  <span class="badge" id="cd-l1-badge">FAILED</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l1-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Layer 2: Loan & Permission Analysis -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>📋 Layer 2: Loan & Permissions</span>
+                  <span class="badge" id="cd-l2-badge">CRITICAL</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l2-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Layer 3: LSTM Temporal Risk -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>📈 Layer 3: LSTM Temporal Risk</span>
+                  <span class="badge" id="cd-l3-badge">ABNORMAL BURST</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l3-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Layer 4: GNN Graph Network Risk -->
+            <div class="card evidence-card">
+              <div class="card-header">
+                <div class="evidence-card-title">
+                  <span>🕸️ Layer 4: GNN Network Risk</span>
+                  <span class="badge" id="cd-l4-badge">HIGH SYNDICATE</span>
+                </div>
+              </div>
+              <div class="card-body" id="cd-l4-body">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Interactive Visualizations: GNN Network & LSTM Timeline -->
+          <div class="vis-grid mb-4">
+            
+            <!-- Interactive GNN Subgraph -->
+            <div class="card">
+              <div class="card-header flex-between">
+                <div>
+                  <div class="card-title">🕸️ GNN Entity Relationship Graph</div>
+                  <div class="card-sub">Interactive neighborhood fraud cluster (Click node to inspect)</div>
+                </div>
+                <div class="graph-legend">
+                  <span><span class="legend-node-dot" style="background:#2563eb;"></span> Domain</span>
+                  <span><span class="legend-node-dot" style="background:#7c3aed;"></span> Lender</span>
+                  <span><span class="legend-node-dot" style="background:#dc2626;"></span> Mule UPI / Account</span>
+                  <span><span class="legend-node-dot" style="background:#d97706;"></span> Phone</span>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="canvas-wrapper">
+                  <canvas id="gnn-canvas" width="600" height="380"></canvas>
+                  <div class="graph-tooltip" id="graph-tooltip"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LSTM Sequence Timeline -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">📈 LSTM Activity Sequence & Anomaly Velocity</div>
+                <div class="card-sub">Temporal volume of inquiries, complaints, and velocity bursts</div>
+              </div>
+              <div class="card-body">
+                <div class="timeline-canvas-wrapper">
+                  <canvas id="lstm-canvas" width="500" height="280"></canvas>
+                </div>
+                <div class="timeline-stats-row" id="lstm-stats-row">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Reviewer Action Box (Human in the Loop) -->
+          <div class="card reviewer-card">
+            <div class="card-header">
+              <div class="card-title">🛡️ Human-in-the-Loop Analyst Decision</div>
+              <div class="card-sub">Take formal regulatory/platform action on this investigated entity</div>
+            </div>
+            <div class="card-body">
+              <div class="reviewer-form">
+                <div class="form-group mb-3">
+                  <label class="form-label">Analyst Case Notes & Rationales</label>
+                  <textarea class="textarea-input" id="analyst-notes-input" placeholder="Provide investigation details, regulatory citations, or escalation reasons..."></textarea>
+                </div>
+
+                <div class="action-buttons-group">
+                  <button class="btn btn-success" onclick="submitReviewDecision('APPROVE')">✓ APPROVE (Allow)</button>
+                  <button class="btn btn-warning" onclick="submitReviewDecision('WARN')">⚠️ WARN (Add Warning)</button>
+                  <button class="btn btn-danger" onclick="submitReviewDecision('BLOCK')">⛔ BLOCK (Flag Fraud Syndicate)</button>
+                  <button class="btn btn-purple" onclick="submitReviewDecision('ESCALATE')">🔺 ESCALATE (Send to RBI/Cyber Cell)</button>
+                </div>
+                <div id="review-feedback" class="review-feedback"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── 4. Global Network Graph View ── -->
+        <div class="view-panel" id="view-network">
+          <div class="card">
+            <div class="card-header flex-between">
+              <div>
+                <div class="card-title">Global Fraud Syndicate Knowledge Graph</div>
+                <div class="card-sub">Aggregated entities, shared phone numbers, mule accounts, and predatory APK relationships</div>
+              </div>
+              <div class="graph-legend">
+                <span><span class="legend-node-dot" style="background:#dc2626;"></span> Flagged Entity</span>
+                <span><span class="legend-node-dot" style="background:#16a34a;"></span> Verified Legitimate</span>
+                <span><span class="legend-node-dot" style="background:#2563eb;"></span> Active Investigation</span>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="canvas-wrapper">
+                <canvas id="global-graph-canvas" width="960" height="560"></canvas>
+                <div class="graph-tooltip" id="global-graph-tooltip"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 5. Regulatory Registry View ── -->
+        <div class="view-panel" id="view-lenders">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Government / Regulatory Reference Directory</div>
+              <div class="card-sub">Reserve Bank of India (RBI) Registered NBFC reference baseline data</div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Registration No.</th>
+                    <th>Legal Entity Name</th>
+                    <th>Regulator</th>
+                    <th>Status</th>
+                    <th>Official Domain</th>
+                    <th>Official Phone</th>
+                    <th>Date Registered</th>
+                  </tr>
+                </thead>
+                <tbody id="registry-table-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 6. User Reports View ── -->
+        <div class="view-panel" id="view-reports">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Borrower Incident Reports</div>
+              <div class="card-sub">Direct fraud reports submitted via Chrome extension Trust Card</div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Report ID</th>
+                    <th>Reported URL / Domain</th>
+                    <th>Lender Name</th>
+                    <th>Reason</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="reports-table-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Prototype Disclaimer Footer -->
+      <footer class="app-footer">
+        <div class="disclaimer-banner">
+          <strong>Prototype Notice:</strong> Government/regulatory records, fraud histories, LSTM sequences, and GNN relationships shown in this demonstration use simulated/reference data. Production deployment requires authorized data sources, validated datasets, security review, and model validation.
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
