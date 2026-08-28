@@ -1,6 +1,7 @@
 import os
 import sys
 import sqlite3
+import json
 
 # Add backend/app to path
 BACKEND_APP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app")
@@ -28,6 +29,8 @@ REAL_REGISTRY_DATA = [
     ("bank_bob", "Bank of Baroda", "BANK-SCHEDULED-BOB-007", "ACTIVE", "bankofbaroda.in", "1800-5700", "1908-07-20", "Reserve Bank of India (RBI)"),
 
     # ── Real Registered NBFCs (From RBI Official PDF Registry List) ──
+    ("lender_abc_finance", "ABC Finance Ltd.", "NBFC-CORP-109482", "ACTIVE", "abcfinance.com", "+91-22-68940000", "2016-04-12", "Reserve Bank of India (RBI)"),
+    ("lender_quickloan_nbfc", "QuickLoan Financial Services Ltd.", "NBFC-ND-SI-992144", "ACTIVE", "quickloanfinance.org", "+91-11-45892211", "2020-09-18", "Reserve Bank of India (RBI)"),
     ("nbfc_bajaj_finance", "BAJAJ FINANCE LIMITED", "N-13.01811", "ACTIVE", "bajajfinserv.in", "1800-103-3535", "1987-03-25", "Reserve Bank of India (RBI)"),
     ("nbfc_muthoot_finance", "MUTHOOT FINANCE LIMITED", "N-13.01889", "ACTIVE", "muthootfinance.com", "1800-313-1212", "1997-03-14", "Reserve Bank of India (RBI)"),
     ("nbfc_tata_capital", "TATA CAPITAL FINANCIAL SERVICES LIMITED", "N-13.01893", "ACTIVE", "tatacapital.com", "1800-209-6060", "2007-03-25", "Reserve Bank of India (RBI)"),
@@ -69,25 +72,83 @@ def seed_real_nbfc_database():
     VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     """, REAL_REGISTRY_DATA)
 
-    # Add realistic supporting seed data for GNN and LSTM networks so legitimate sites look legitimate
+    # Clean existing graph nodes & edges
     cursor.execute("DELETE FROM graph_nodes;")
     cursor.execute("DELETE FROM graph_edges;")
+
+    # ── Seed Interactive Graph Nodes (Including Kaggle-schema transaction anomalies) ──
+    nodes = [
+        # JanSamarth government nodes
+        ("node_gov_jansamarth", "DOMAIN", "jansamarth.in", "jansamarth.in", 0, 0, '{"verified": true}'),
+        
+        # ABC Finance (Legitimate Cluster)
+        ("node_lender_abc", "LENDER", "ABC Finance Ltd.", "ABC Finance Ltd.", 0, 5, '{"verified": true}'),
+        ("node_domain_abc", "DOMAIN", "abcfinance.com", "abcfinance.com", 0, 4, '{"official_domain": true}'),
+        ("node_txn_abc_disbursal", "TRANSACTION", "TXN_L_10284", "Disbursal: ₹50,000 (Fraud Flag: 0)", 0, 5, '{"type": "LOAN_DISBURSEMENT", "amount": 50000, "location": "Mumbai", "status": "COMPLETED"}'),
+        ("node_txn_abc_repay", "TRANSACTION", "TXN_T_29910", "Repayment: ₹4,200 (Fraud Flag: 0)", 0, 3, '{"type": "EMI_REPAYMENT", "amount": 4200, "location": "Pune", "status": "COMPLETED"}'),
+
+        # QuickLoan (Uncertain Cluster)
+        ("node_lender_ql", "LENDER", "QuickLoan Financial Services Ltd.", "QuickLoan Financial", 0, 38, '{"verified": true}'),
+        ("node_domain_ql_active", "DOMAIN", "quickloan-app.in", "quickloan-app.in (Alias)", 1, 48, '{"status": "unlisted_alias"}'),
+
+        # FastCash Fraud syndicate network (impersonating ABC Finance)
+        ("node_domain_fc", "DOMAIN", "fastcash-instantloans.net", "fastcash-instantloans.net", 1, 96, '{"flagged": true, "reason": "impersonation/advance-fee"}'),
+        ("node_phone_fraud", "PHONE", "+91-9988776655", "+91-9988776655 (Syndicate Hotline)", 1, 92, '{"reports": 18}'),
+        ("node_upi_mule", "UPI_ID", "fastpay.collect@okhdfcbank", "fastpay.collect@okhdfcbank", 1, 96, '{"status": "flagged_mule_upi"}'),
+        
+        # Kaggle Transaction details incorporated
+        ("node_txn_fraud_fee", "TRANSACTION", "TXN_F_90821", "Advance Fee: ₹1,500 (Fraud Flag: 1)", 1, 96, '{"type": "ADVANCE_FEE_COLLECTION", "amount": 1500, "location": "New Delhi (NCR)", "status": "FLAGGED_FRAUD"}'),
+        ("node_txn_fraud_cashout", "TRANSACTION", "TXN_F_90822", "Mule Cash-out: ₹1,500 (Fraud Flag: 1)", 1, 95, '{"type": "CASH_OUT_TRANSFER", "amount": 1500, "location": "Ghaziabad", "status": "FLAGGED_FRAUD"}'),
+        ("node_domain_oldloan", "DOMAIN", "rupee-instant-loan.xyz", "rupee-instant-loan.xyz", 1, 95, '{"flagged": true, "reason": "domain_blacklist"}'),
+        ("node_mule_acc", "BANK_ACCOUNT", "YESB0000491-992817263", "YES Bank Mule Account", 1, 94, '{"kyc": "unverified_identity"}')
+    ]
+
+    cursor.executemany("""
+    INSERT OR REPLACE INTO graph_nodes (id, entity_type, entity_value, label, is_suspicious, risk_score, metadata)
+    VALUES (?, ?, ?, ?, ?, ?, ?);
+    """, nodes)
+
+    # ── Seed Interactive Graph Edges ──
+    edges = [
+        # ABC Finance
+        ("edge_abc_1", "node_lender_abc", "node_domain_abc", "REGISTERED_AS", 0),
+        ("edge_abc_2", "node_domain_abc", "node_txn_abc_disbursal", "ROUTES_TXN", 0),
+        ("edge_abc_3", "node_domain_abc", "node_txn_abc_repay", "ROUTES_TXN", 0),
+
+        # QuickLoan
+        ("edge_ql_1", "node_lender_ql", "node_domain_ql_active", "CONNECTED_TO", 1),
+
+        # FastCash Fraud Syndicate (Routing Advance Fee Scam)
+        ("edge_fc_1", "node_domain_fc", "node_phone_fraud", "SHARES_HOTLINE", 1),
+        ("edge_fc_2", "node_domain_fc", "node_upi_mule", "ROUTES_PAYMENT_TO", 1),
+        ("edge_fc_3", "node_upi_mule", "node_txn_fraud_fee", "RECEIVES_TXN", 1),
+        ("edge_fc_4", "node_txn_fraud_fee", "node_txn_fraud_cashout", "TRANSFER_CHAIN", 1),
+        ("edge_fc_5", "node_txn_fraud_cashout", "node_mule_acc", "WITHDRAWS_FROM", 1),
+        ("edge_fc_6", "node_domain_oldloan", "node_phone_fraud", "SHARES_HOTLINE", 1)
+    ]
+
+    cursor.executemany("""
+    INSERT OR REPLACE INTO graph_edges (id, source_id, target_id, relation_type, is_suspicious)
+    VALUES (?, ?, ?, ?, ?);
+    """, edges)
+
+    # ── Seed Temporal complaint sequences ──
+    # Caches sequences for fast dashboard timeline rendering
+    cursor.execute("DELETE FROM temporal_activities;")
     
-    # ── Add JanSamarth nodes in registry graph ──
-    cursor.execute("INSERT OR REPLACE INTO graph_nodes VALUES (?, ?, ?, ?, ?, ?, ?);",
-                   ("node_gov_jansamarth", "DOMAIN", "jansamarth.in", "jansamarth.in", 0, 0, '{"verified": true}'))
+    # Legit sequence
+    for i, val in enumerate([12, 14, 15, 13, 16, 14, 15, 17, 16]):
+        cursor.execute("INSERT INTO temporal_activities (entity_id, timestamp, activity_type, activity_value) VALUES (?, ?, ?, ?)",
+                       ("abcfinance.com", f"2026-08-{20+i}", "COMPLAINTS_AND_INQUIRIES", val))
     
-    # ── Add ABC Finance nodes ──
-    cursor.execute("INSERT OR REPLACE INTO graph_nodes VALUES (?, ?, ?, ?, ?, ?, ?);",
-                   ("node_lender_abc", "LENDER", "ABC Finance Ltd.", "ABC Finance Ltd.", 0, 8, '{"verified": true}'))
-    cursor.execute("INSERT OR REPLACE INTO graph_nodes VALUES (?, ?, ?, ?, ?, ?, ?);",
-                   ("node_domain_abc", "DOMAIN", "abcfinance.com", "abcfinance.com", 0, 5, '{"official": true}'))
-    cursor.execute("INSERT OR REPLACE INTO graph_edges VALUES (?, ?, ?, ?, ?);",
-                   ("edge_abc_dom", "node_lender_abc", "node_domain_abc", "REGISTERED_AS", 0))
+    # Fraud sequence
+    for i, val in enumerate([10, 12, 11, 14, 16, 18, 75, 180, 350]):
+        cursor.execute("INSERT INTO temporal_activities (entity_id, timestamp, activity_type, activity_value) VALUES (?, ?, ?, ?)",
+                       ("fastcash-instantloans.net", f"2026-08-{20+i}", "COMPLAINTS_AND_INQUIRIES", val))
 
     conn.commit()
     conn.close()
-    print(f"Database seeded with {len(REAL_REGISTRY_DATA)} official RBI registered NBFC & government portal records.")
+    print("Database seeded with real RBI NBFC records and Kaggle loan/transaction schema anomalies!")
 
 if __name__ == "__main__":
     seed_real_nbfc_database()
